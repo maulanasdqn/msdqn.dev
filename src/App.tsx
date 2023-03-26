@@ -1,4 +1,4 @@
-import { Fragment, Key, useState } from "react";
+import React, { Fragment, Key, useState } from "react";
 
 function App() {
   const [data, setData] = useState<Array<IData>>([
@@ -14,6 +14,8 @@ function App() {
     nama: string;
     divisi: string;
   }
+
+  const addData = (payload: IData) => setData((prev) => [...prev, payload]);
 
   return (
     <div className="App">
