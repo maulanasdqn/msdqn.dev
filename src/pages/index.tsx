@@ -42,8 +42,8 @@ const HomePages: FC = (): ReactElement => {
           Remove All Data
         </button>
       </div>
-      <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 border rounded-lg">
-        <thead className="text-xs text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400 rounded-lg">
+      <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 border rounded-lg min-w-[200px] overflow-x-auto">
+        <thead className="text-xs text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400 rounded-lg overflow-x-auto">
           <tr>
             <th scope="col" className="px-6 py-3">
               Number
