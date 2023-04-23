@@ -37,9 +37,8 @@ export const TwitterEmbedModule: FC = (): ReactElement => {
           <img src="" alt="twitter icon" />
         </div>
         <p className="text-[16px] font-[400]">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae sunt
-          minima explicabo nostrum libero corporis perspiciatis, unde quos vero
-          perferendis magni. Ducimus, aspernatur obcaecati. Quis distinctio sunt
+          Why do they call it 'debugging' when it feels more like 'wildly
+          guessing and hoping for the best'? #programming #coding #debugging
         </p>
       </section>
     </BaseLayout>
