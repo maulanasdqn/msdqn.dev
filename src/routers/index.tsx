@@ -2,8 +2,12 @@ import { SuspenseError } from "@/modules";
 import { ETwitterEmbedModule } from "@/modules/challange/beginner/twitter-embed/error";
 import { LTwitterEmbedModule } from "@/modules/challange/beginner/twitter-embed/loading";
 import HomePages from "@/pages";
-import TwitterEmmbedPages from "@/pages/challenge/beginner/twitter-embed";
+import { lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
+
+const TwitterEmmbedPages = lazy(
+  () => import("@/pages/challenge/beginner/twitter-embed")
+);
 
 const routes = [
   {
