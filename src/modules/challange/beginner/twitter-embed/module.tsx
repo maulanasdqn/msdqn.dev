@@ -8,13 +8,40 @@ export const TwitterEmbedModule: FC = (): ReactElement => {
   return (
     <BaseLayout bg="bg-[#ECF8FF]">
       <Button
-        className="bg-red-600 p-3 border-2 rounded-lg"
+        className="bg-teal-400 shadow-teal-100 shadow-md text-white p-3 border-2 rounded-lg"
         type="button"
         onClick={setLike}
       >
         Re-Generate Tweet
       </Button>
-      <section className="flex p-6 w-30 bg-white"></section>
+      <section className="flex flex-col px-[31px] py-[35px] gap-y-4 bg-white my-6 rounded-lg shadow-gray-200 shadow-sm w-[601px] h-[228px]">
+        <div className="flex w-full justify-between">
+          <div className="flex gap-x-4 justify-center">
+            <img
+              className="rounded-full w-[50px] h-[50px]"
+              width={50}
+              height={50}
+              src="/beginner/twitter-embed/profile.jpg"
+              alt="profile picture"
+              loading="eager"
+            />
+            <div className="flex flex-col">
+              <h1 className="text-black-900 font-[700] text-[18px]">
+                Jhon Doe
+              </h1>
+              <h2 className="text-gray-500 font-normal text-[16px]">
+                @realjhondoe
+              </h2>
+            </div>
+          </div>
+          <img src="" alt="twitter icon" />
+        </div>
+        <p className="text-[16px] font-[400]">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae sunt
+          minima explicabo nostrum libero corporis perspiciatis, unde quos vero
+          perferendis magni. Ducimus, aspernatur obcaecati. Quis distinctio sunt
+        </p>
+      </section>
     </BaseLayout>
   );
 };
