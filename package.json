@@ -17,6 +17,8 @@
     "react-hook-form": "^7.43.9",
     "react-router-dom": "^6.10.0",
     "recoil": "^0.7.7",
+    "sass": "^1.62.0",
+    "scss": "^0.2.4",
     "zod": "^3.21.4"
   },
   "devDependencies": {

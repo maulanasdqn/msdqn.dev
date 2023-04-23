@@ -1,18 +1,26 @@
 import { SuspenseError } from "@/modules";
 import { ETwitterEmbedModule } from "@/modules/challange/beginner/twitter-embed/error";
 import { LTwitterEmbedModule } from "@/modules/challange/beginner/twitter-embed/loading";
-import HomePages from "@/pages";
 import { lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
 
 const TwitterEmmbedPages = lazy(
   () => import("@/pages/challenge/beginner/twitter-embed")
 );
+const HomePages = lazy(() => import("@/pages"));
+const ServerErrorPages = lazy(() => import("@/pages/error/server-error"));
+const NotFoundErrorPages = lazy(() => import("@/pages/error/not-found"));
 
 const routes = [
   {
+    path: "*",
+    element: <NotFoundErrorPages />,
+    errorElement: <ServerErrorPages />,
+  },
+  {
     path: "/",
     element: <HomePages />,
+    errorElement: <ServerErrorPages />,
   },
   {
     path: "/challange/beginner/twitter-embed",
@@ -24,6 +32,7 @@ const routes = [
         <TwitterEmmbedPages />
       </SuspenseError>
     ),
+    errorElement: <ServerErrorPages />,
   },
 ];
 
