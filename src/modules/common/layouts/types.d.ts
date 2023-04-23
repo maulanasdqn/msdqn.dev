@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 
 export interface ICommonLayout {
-  children: ReactNode;
+  children?: ReactNode;
   bg?: string;
+  justify?: string;
 }

@@ -1,9 +1,9 @@
-import { BaseLayout } from "@/modules";
-import { FC, ReactElement, useState } from "react";
+import { FC, Fragment, ReactElement, useEffect, useState } from "react";
 import { useTwitterLike } from "./hooks";
 import { Button } from "@/components";
 import { faker } from "@faker-js/faker";
 import { IconLove, TweeterLogo } from "./icons";
+import { useBGColor, useJustify } from "@/modules";
 
 export const TwitterEmbedModule: FC = (): ReactElement => {
   const { getLike, setLike } = useTwitterLike();
@@ -24,8 +24,16 @@ export const TwitterEmbedModule: FC = (): ReactElement => {
     });
   };
 
+  const { setBGColor } = useBGColor();
+  const { setJustify } = useJustify();
+
+  useEffect(() => {
+    setBGColor("bg-[#ECF8FF]");
+    setJustify("center");
+  }, []);
+
   return (
-    <BaseLayout bg="bg-[#ECF8FF]">
+    <Fragment>
       <div className="flex gap-x-4">
         <Button
           onClick={() => generateTweet()}
@@ -73,6 +81,6 @@ export const TwitterEmbedModule: FC = (): ReactElement => {
           <span>3.30 PM - Feb 24, 2022</span>
         </div>
       </section>
-    </BaseLayout>
+    </Fragment>
   );
 };

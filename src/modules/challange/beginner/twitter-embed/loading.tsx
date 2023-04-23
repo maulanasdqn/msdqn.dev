@@ -4,7 +4,7 @@ import { FC, ReactElement } from "react";
 
 export const LTwitterEmbedModule: FC = (): ReactElement => {
   return (
-    <BaseLayout bg="bg-[#ECF8FF]">
+    <BaseLayout bg="bg-[#ECF8FF]" justify="center">
       <Button
         className="bg-teal-400 shadow-teal-100 shadow-md text-white p-3 border-2 rounded-lg"
         type="button"

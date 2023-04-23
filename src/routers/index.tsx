@@ -1,6 +1,6 @@
-import { SuspenseError } from "@/modules";
+import { BaseLayout, SuspenseError, useJustify } from "@/modules";
 import { ETwitterEmbedModule, LTwitterEmbedModule } from "@/modules";
-import { lazy } from "react";
+import { FC, lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
 
 const TwitterEmmbedPages = lazy(
@@ -22,16 +22,23 @@ const routes = [
     errorElement: <ServerErrorPages />,
   },
   {
-    path: "/challange/beginner/twitter-embed",
-    element: (
-      <SuspenseError
-        loading={<LTwitterEmbedModule />}
-        error={<ETwitterEmbedModule />}
-      >
-        <TwitterEmmbedPages />
-      </SuspenseError>
-    ),
+    path: "/challange",
+    element: <BaseLayout />,
     errorElement: <ServerErrorPages />,
+    children: [
+      {
+        path: "/challange/beginner/twitter-embed",
+        element: (
+          <SuspenseError
+            loading={<LTwitterEmbedModule />}
+            error={<ETwitterEmbedModule />}
+          >
+            <TwitterEmmbedPages />
+          </SuspenseError>
+        ),
+        errorElement: <ServerErrorPages />,
+      },
+    ],
   },
 ];
 
