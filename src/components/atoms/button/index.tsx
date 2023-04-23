@@ -3,7 +3,6 @@ import { IButtonProps } from "./types";
 
 export const Button: FC<IButtonProps> = ({
   children,
-  variant = "solid",
   loading,
   ...props
 }): ReactElement => {
