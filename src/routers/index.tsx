@@ -1,6 +1,5 @@
 import { SuspenseError } from "@/modules";
-import { ETwitterEmbedModule } from "@/modules/challange/beginner/twitter-embed/error";
-import { LTwitterEmbedModule } from "@/modules/challange/beginner/twitter-embed/loading";
+import { ETwitterEmbedModule, LTwitterEmbedModule } from "@/modules";
 import { lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
 

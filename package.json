@@ -24,14 +24,14 @@
   "devDependencies": {
     "@faker-js/faker": "^7.6.0",
     "@tailwindcss/language-server": "^0.0.12",
+    "@types/node": "^18.16.0",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
     "@vitejs/plugin-react-swc": "^3.0.0",
-    "autoprefixer": "^10.4.14",
     "eslint": "^8.36.0",
-    "postcss": "^8.4.21",
-    "tailwindcss": "^3.2.7",
+    "postcss": "^8.4.23",
     "typescript": "^4.9.3",
+    "unocss": "^0.51.6",
     "vite": "^4.2.0"
   }
 }

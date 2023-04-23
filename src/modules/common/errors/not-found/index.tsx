@@ -35,47 +35,49 @@ export const NotFoundErrorModules: FC = (): ReactElement => {
   }, []);
 
   return (
-    <div className="box">
-      <div className="box__ghost">
-        <div className="symbol"></div>
-        <div className="symbol"></div>
-        <div className="symbol"></div>
-        <div className="symbol"></div>
-        <div className="symbol"></div>
-        <div className="symbol"></div>
+    <section className="wrapper">
+      <div className="box">
+        <div className="box__ghost">
+          <div className="symbol" />
+          <div className="symbol" />
+          <div className="symbol" />
+          <div className="symbol" />
+          <div className="symbol" />
+          <div className="symbol" />
 
-        <div className="box__ghost-container">
-          <div className="box__ghost-eyes" ref={boxGhostEyesRef}>
-            <div className="box__eye-left"></div>
-            <div className="box__eye-right"></div>
+          <div className="box__ghost-container">
+            <div className="box__ghost-eyes" ref={boxGhostEyesRef}>
+              <div className="box__eye-left"></div>
+              <div className="box__eye-right"></div>
+            </div>
+            <div className="box__ghost-bottom">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
           </div>
-          <div className="box__ghost-bottom">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-          </div>
-        </div>
-        <div className="box__ghost-shadow"></div>
-      </div>
-
-      <div className="box__description">
-        <div className="box__description-container">
-          <div className="box__description-title">Waduh!</div>
-          <div className="box__description-text">
-            Halaman yang anda cari tidak dapat di temukan
-          </div>
+          <div className="box__ghost-shadow"></div>
         </div>
 
-        <a
-          href="https://codepen.io/diogo_ml_gomes/"
-          target="_blank"
-          className="box__button"
-        >
-          Kembali
-        </a>
+        <div className="box__description">
+          <div className="box__description-container">
+            <div className="box__description-title">Waduh!</div>
+            <div className="box__description-text">
+              Halaman yang anda cari tidak dapat di temukan
+            </div>
+          </div>
+
+          <a
+            href="https://codepen.io/diogo_ml_gomes/"
+            target="_blank"
+            className="box__button"
+          >
+            Kembali
+          </a>
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
