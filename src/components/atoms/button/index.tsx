@@ -1,7 +1,7 @@
 import { FC, ReactElement } from "react";
-import { IButton } from "./types";
+import { IButtonProps } from "./types";
 
-export const Button: FC<IButton> = ({
+export const Button: FC<IButtonProps> = ({
   children,
   variant = "solid",
   loading,

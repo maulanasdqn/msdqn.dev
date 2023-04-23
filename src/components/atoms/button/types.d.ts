@@ -1,6 +1,6 @@
 import { ReactNode, ButtonHTMLAttributes } from "react";
 
-export interface IButton extends ButtonHTMLAttributes<HTMLButtonElement> {
+export interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   loading?: boolean;
   children: ReactNode;
   disabled?: boolean;

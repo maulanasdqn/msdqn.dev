@@ -47,7 +47,7 @@ const EyeOpen: FC = (): ReactElement => (
   </svg>
 );
 
-const TextField = <T extends FieldValues>({
+export const TextField = <T extends FieldValues>({
   variant = "lg",
   type = "text",
   status = "none",
@@ -179,5 +179,3 @@ const TextField = <T extends FieldValues>({
     </section>
   );
 };
-
-export default TextField;
