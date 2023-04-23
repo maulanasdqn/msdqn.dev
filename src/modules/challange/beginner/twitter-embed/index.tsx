@@ -6,8 +6,8 @@ export const TwitterEmbedModule: FC = (): ReactElement => {
   const { getLike, setLike } = useTwitterLike();
   return (
     <BaseLayout>
-      <button>Re-Generate Tweet</button>
-      <span onClick={setLike}>Twitter Emmbed {getLike}</span>
+      <button onClick={setLike}>Re-Generate Tweet</button>
+      <span>Twitter Emmbed {getLike}</span>
     </BaseLayout>
   );
 };
