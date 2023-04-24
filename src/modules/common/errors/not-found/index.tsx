@@ -35,7 +35,7 @@ export const NotFoundErrorModules: FC = (): ReactElement => {
   }, []);
 
   return (
-    <section className="wrapper">
+    <section className="wrapper bg-purple-800 h-screen w-full">
       <div className="box">
         <div className="box__ghost">
           <div className="symbol" />
@@ -69,11 +69,7 @@ export const NotFoundErrorModules: FC = (): ReactElement => {
             </div>
           </div>
 
-          <a
-            href="https://codepen.io/diogo_ml_gomes/"
-            target="_blank"
-            className="box__button"
-          >
+          <a href="https://codepen.io/diogo_ml_gomes/" target="_blank" className="box__button">
             Kembali
           </a>
         </div>

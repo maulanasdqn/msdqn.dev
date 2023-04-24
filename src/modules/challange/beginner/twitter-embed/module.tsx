@@ -1,9 +1,12 @@
 import { FC, Fragment, ReactElement, useEffect, useState } from "react";
+import { lazily } from "react-lazily";
 import { useTwitterLike } from "./hooks";
-import { Button } from "@/components";
+
 import { faker } from "@faker-js/faker";
-import { IconLove, TweeterLogo } from "./icons";
 import { useBaseLayout } from "@/modules";
+
+const { Button } = lazily(() => import("@/components"));
+const { IconLove, TweeterLogo } = lazily(() => import("./icons"));
 
 export const TwitterEmbedModule: FC = (): ReactElement => {
   const { getLike, setLike } = useTwitterLike();
@@ -60,12 +63,8 @@ export const TwitterEmbedModule: FC = (): ReactElement => {
               loading="eager"
             />
             <div className="flex flex-col">
-              <h1 className="text-black-900 font-[700] text-[18px]">
-                {tweeter.name}
-              </h1>
-              <h2 className="text-gray-500 font-normal text-[16px]">
-                @{tweeter.username}
-              </h2>
+              <h1 className="text-black-900 font-[700] text-[18px]">{tweeter.name}</h1>
+              <h2 className="text-gray-500 font-normal text-[16px]">@{tweeter.username}</h2>
             </div>
           </div>
           <TweeterLogo />

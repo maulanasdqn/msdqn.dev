@@ -1,6 +1,8 @@
-import { Button } from "@/components";
-import { BaseLayout } from "@/modules/common";
 import { FC, ReactElement } from "react";
+import { lazily } from "react-lazily";
+
+const { BaseLayout } = lazily(() => import("@/modules"));
+const { Button } = lazily(() => import("@/components"));
 
 export const ETwitterEmbedModule: FC = (): ReactElement => {
   return (
