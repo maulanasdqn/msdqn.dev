@@ -1,6 +1,7 @@
 import { ChangeEventHandler, ReactNode } from "react";
+import { FieldValues, UseControllerProps } from "react-hook-form";
 
-export interface IInputTextProps {
+export type TTextFieldProps<T extends FieldValues> = UseControllerProps<T> & {
   type?: "text" | "password" | "email";
   label?: string;
   name: string;
@@ -20,4 +21,4 @@ export interface IInputTextProps {
   prependColor?: string;
   appendColor?: string;
   hint?: string;
-}
+};
