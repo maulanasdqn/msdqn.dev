@@ -1,7 +1,4 @@
 import { ReactElement, FC, Fragment } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
-import { faker } from "@faker-js/faker";
 
 const HomePages: FC = (): ReactElement => {
   return (
