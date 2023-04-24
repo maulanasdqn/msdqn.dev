@@ -1,18 +1,13 @@
-import { BGColorMutation, JustifyAtom } from "./stores";
+import { BGColorMutation, JustifyMutation } from "./stores";
 import { useRecoilState } from "recoil";
 
-export const useBGColor = () => {
-  const [get, set] = useRecoilState(BGColorMutation);
+export const useBaseLayout = () => {
+  const [getBGColor, setBGColor] = useRecoilState(BGColorMutation);
+  const [getJustify, setJustify] = useRecoilState(JustifyMutation);
   return {
-    getBGColor: get,
-    setBGColor: (val: string) => set(val),
-  };
-};
-
-export const useJustify = () => {
-  const [get, set] = useRecoilState(JustifyAtom);
-  return {
-    getJustify: get,
-    setJustify: (val: string) => set(val),
+    getJustify,
+    setJustify: (val: string) => setJustify(val),
+    getBGColor,
+    setBGColor: (val: string) => setBGColor(val),
   };
 };

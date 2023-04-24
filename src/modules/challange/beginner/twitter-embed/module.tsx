@@ -3,10 +3,11 @@ import { useTwitterLike } from "./hooks";
 import { Button } from "@/components";
 import { faker } from "@faker-js/faker";
 import { IconLove, TweeterLogo } from "./icons";
-import { useBGColor, useJustify } from "@/modules";
+import { useBaseLayout } from "@/modules";
 
 export const TwitterEmbedModule: FC = (): ReactElement => {
   const { getLike, setLike } = useTwitterLike();
+  const { setBGColor, setJustify } = useBaseLayout();
 
   const [tweeter, setTweeter] = useState({
     name: faker.name.fullName(),
@@ -23,9 +24,6 @@ export const TwitterEmbedModule: FC = (): ReactElement => {
       image: faker.internet.avatar(),
     });
   };
-
-  const { setBGColor } = useBGColor();
-  const { setJustify } = useJustify();
 
   useEffect(() => {
     setBGColor("bg-[#ECF8FF]");
