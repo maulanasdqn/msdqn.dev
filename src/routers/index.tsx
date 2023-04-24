@@ -1,8 +1,10 @@
 import { createBrowserRouter } from "react-router-dom";
 import { lazily } from "react-lazily";
+import { SuspenseError } from "@/modules";
 
-const { SuspenseError, BaseLayout, LTwitterEmbedModule, ETwitterEmbedModule, EHoladok, LHoladok } =
-  lazily(() => import("@/modules"));
+const { BaseLayout, LTwitterEmbedModule, ETwitterEmbedModule, EHoladok, LHoladok } = lazily(
+  () => import("@/modules"),
+);
 
 const { NotFoundErrorPages, ServerErrorPages, TwitterEmmbedPages, HoladokPages, HomePages } =
   lazily(() => import("@/pages"));
