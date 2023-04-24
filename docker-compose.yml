@@ -1,0 +1,7 @@
+version: "3"
+services:
+  boilerplate:
+    build: ./
+    container_name: "msdqn.dev"
+    ports:
+      - "80:8080"
