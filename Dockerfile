@@ -4,12 +4,10 @@ ENV PORT=8080
 WORKDIR /app
 COPY package.json ./
 COPY yarn.lock ./
-RUN yarn
+RUN yarn install
 COPY . .
-RUN yarn format
-RUN yarn lint:fix
-RUN yarn test:run
-RUN yarn build
+RUN yarn build:client
+RUN yarn build:server
 
 FROM nginx:alpine AS prod
 
