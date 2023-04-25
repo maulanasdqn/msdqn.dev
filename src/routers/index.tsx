@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import { lazily } from "react-lazily";
 import { SuspenseError } from "@/modules";
 
-const { BaseLayout, LTwitterEmbedModule, ETwitterEmbedModule, EHoladok, LHoladok } = lazily(
+const { BaseLayout, LTwitterEmbed, ETwitterEmbed, EHoladok, LHoladok } = lazily(
   () => import("@/modules"),
 );
 
@@ -28,11 +28,10 @@ const routes = [
       {
         path: "/challange/beginner/twitter-embed",
         element: (
-          <SuspenseError loading={<LTwitterEmbedModule />} error={<ETwitterEmbedModule />}>
+          <SuspenseError loading={<LTwitterEmbed />} error={<ETwitterEmbed />}>
             <TwitterEmmbedPages />
           </SuspenseError>
         ),
-        errorElement: <ServerErrorPages />,
       },
       {
         path: "/challange/easy/holadok",
@@ -41,7 +40,6 @@ const routes = [
             <HoladokPages />
           </SuspenseError>
         ),
-        errorElement: <ServerErrorPages />,
       },
     ],
   },
