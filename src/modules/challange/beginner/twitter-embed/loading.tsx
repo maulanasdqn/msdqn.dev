@@ -1,5 +1,6 @@
 import { FC, ReactElement } from "react";
 import { lazily } from "react-lazily";
+import { TweeterLogo } from "./icons";
 
 const { BaseLayout } = lazily(() => import("@/modules"));
 const { Button } = lazily(() => import("@/components"));
@@ -22,21 +23,16 @@ export const LTwitterEmbedModule: FC = (): ReactElement => {
               <div className="bg-gray-200 h-[16px] roudned-lg w-[120px] animate-pulse" />
             </div>
           </div>
-          <img
-            width={27}
-            height={27}
-            className="h-[27px] w-[27px]"
-            src="/beginner/twitter-embed/twitter-logo.png"
-            alt="profile picture"
-            loading="eager"
-          />
+          <div className="bg-gray-200 rounded-full w-6 h-6" />
         </div>
         <div className="flex flex-col gap-y-3">
           <span className="h-[16px] bg-gray-200 w-full animate-pulse" />
           <span className="h-[16px] bg-gray-200 w-1/2 animate-pulse" />
         </div>
-        <div className="flex gap-x-6 text-[14px] text-gray-500 font-[500]">
+        <div className="flex gap-x-4 text-[14px] text-gray-500 font-[500]">
           <span className="h-[16px] bg-gray-200 w-[10px] animate-pulse" />
+          <span className="h-[16px] bg-gray-200 w-[10px] animate-pulse" />
+          <span className="h-[16px] bg-gray-200 w-[60px] animate-pulse" />
           <span className="h-[16px] bg-gray-200 w-[60px] animate-pulse" />
         </div>
       </section>

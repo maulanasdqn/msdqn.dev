@@ -3,7 +3,7 @@ import { lazily } from "react-lazily";
 import { useTwitterLike } from "./hooks";
 
 import { faker } from "@faker-js/faker";
-import { useBaseLayout } from "@/modules";
+import { LTwitterEmbedModule, useBaseLayout } from "@/modules";
 
 const { Button } = lazily(() => import("@/components"));
 const { IconLove, TweeterLogo } = lazily(() => import("./icons"));
@@ -19,14 +19,17 @@ export const TwitterEmbedModule: FC = (): ReactElement => {
     image: faker.internet.avatar(),
   });
 
-  const generateTweet = () => {
-    setTweeter({
-      name: faker.name.fullName(),
-      tweet: faker.commerce.productDescription(),
-      username: faker.internet.userName(),
-      image: faker.internet.avatar(),
+  const generateTweet = () =>
+    new Promise((res) => {
+      res(
+        setTweeter({
+          name: faker.name.fullName(),
+          tweet: faker.commerce.productDescription(),
+          username: faker.internet.userName(),
+          image: faker.internet.avatar(),
+        }),
+      );
     });
-  };
 
   useLayoutEffect(() => {
     setBGColor("bg-[#ECF8FF]");
