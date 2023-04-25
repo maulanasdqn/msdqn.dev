@@ -46,7 +46,7 @@
     "@types/react-dom": "^18.0.11",
     "@unocss/preset-web-fonts": "^0.51.6",
     "@vitejs/plugin-react-swc": "^3.3.0",
-    "eslint": "^8.36.0",
+    "eslint": "^8.39.0",
     "postcss": "^8.4.23",
     "typescript": "^5.0.4",
     "unocss": "^0.51.8",
