@@ -47,10 +47,4 @@ const routes = [
   },
 ];
 
-declare module "react-router-dom" {
-  interface Register {
-    router: typeof router;
-  }
-}
-
 export const router = createBrowserRouter(routes);
