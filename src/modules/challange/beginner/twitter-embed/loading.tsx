@@ -1,6 +1,6 @@
 import { FC, ReactElement } from "react";
 
-export const LTwitterEmbedModule: FC = (): ReactElement => {
+export const LTwitterEmbed: FC = (): ReactElement => {
   return (
     <section className="flex flex-col px-[31px] py-[35px] gap-y-4 bg-white my-6 rounded-lg shadow-gray-200 shadow-sm w-[601px] h-[228px]">
       <div className="flex w-full justify-between">
