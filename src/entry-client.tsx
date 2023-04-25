@@ -5,11 +5,15 @@ import { RecoilRoot } from "recoil";
 import { RouterProvider } from "react-router-dom";
 import "virtual:uno.css";
 import "@unocss/reset/tailwind-compat.css";
+import { LoadingSpinner, SuspenseError } from "@/modules";
+import { ServerErrorPages } from "./pages";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <RecoilRoot>
-      <RouterProvider router={router} />
-    </RecoilRoot>
-  </React.StrictMode>
+    <SuspenseError loading={<LoadingSpinner />} error={<ServerErrorPages />}>
+      <RecoilRoot>
+        <RouterProvider router={router} fallbackElement={<LoadingSpinner />} />
+      </RecoilRoot>
+    </SuspenseError>
+  </React.StrictMode>,
 );
