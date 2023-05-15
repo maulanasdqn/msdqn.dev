@@ -566,6 +566,11 @@
     "@unocss/core" "0.51.8"
     unconfig "^0.3.7"
 
+"@unocss/core@0.51.12":
+  version "0.51.12"
+  resolved "https://registry.yarnpkg.com/@unocss/core/-/core-0.51.12.tgz#4090deafb62787a7d46429616a9f3fd03905042a"
+  integrity sha512-H8mLy6ZKu9nGZe5jlHhLPIVwh2G3cCDSBGl5aIZJFI1qpmDC+Zb3iueBGigNpX75IzkjaGKZiK1WUWq8TShjtA==
+
 "@unocss/core@0.51.8":
   version "0.51.8"
   resolved "https://registry.yarnpkg.com/@unocss/core/-/core-0.51.8.tgz#f44ff566efd0f109f580d8acad069ff1a70eb859"
@@ -646,12 +651,20 @@
     "@unocss/preset-mini" "0.51.8"
     "@unocss/preset-wind" "0.51.8"
 
-"@unocss/preset-web-fonts@0.51.8", "@unocss/preset-web-fonts@^0.51.6":
+"@unocss/preset-web-fonts@0.51.8":
   version "0.51.8"
   resolved "https://registry.yarnpkg.com/@unocss/preset-web-fonts/-/preset-web-fonts-0.51.8.tgz#8b0ba5a8638376116391a0524a94f36a3eed6a51"
   integrity sha512-s9kKEiV21qYTdrfb3uZRc+Eos1e1/UN6lCC4KPqzD5LfdsZgel5a0xD9RpKUoKOnPgzDkvg22yn8rfsC5NBafg==
   dependencies:
     "@unocss/core" "0.51.8"
+    ofetch "^1.0.1"
+
+"@unocss/preset-web-fonts@^0.51.12":
+  version "0.51.12"
+  resolved "https://registry.yarnpkg.com/@unocss/preset-web-fonts/-/preset-web-fonts-0.51.12.tgz#9e44396a461616361667c405af5b4f3f6a9ade90"
+  integrity sha512-brkQ9gWCqZMrCPvz/LhzSW/VHxZMwXVqXy2bn10HSlmbhpj5X8K4h4PpOZnqioZnMG0hUkXhrcCBf2++iKdiIA==
+  dependencies:
+    "@unocss/core" "0.51.12"
     ofetch "^1.0.1"
 
 "@unocss/preset-wind@0.51.8":
