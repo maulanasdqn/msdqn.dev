@@ -9,7 +9,7 @@
     "build:server": "vite build --outDir dist/server --ssr src/entry-server.tsx"
   },
   "dependencies": {
-    "@hookform/resolvers": "^3.1.0",
+    "@hookform/resolvers": "^3.2.0",
     "@types/set-cookie-parser": "^2.4.2",
     "@unocss/reset": "^0.53.3",
     "axios": "^1.4.0",
