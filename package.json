@@ -30,7 +30,7 @@
     "@types/bcrypt": "^5.0.0",
     "@types/express": "^4.17.17",
     "@types/node": "^20.2.4",
-    "@types/react": "^18.2.14",
+    "@types/react": "^18.2.28",
     "@types/react-dom": "^18.2.7",
     "@unocss/preset-web-fonts": "^0.53.1",
     "@vitejs/plugin-react-swc": "^3.3.2",
