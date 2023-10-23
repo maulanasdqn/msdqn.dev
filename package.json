@@ -34,7 +34,7 @@
     "@types/react-dom": "^18.2.7",
     "@unocss/preset-web-fonts": "^0.53.1",
     "@vitejs/plugin-react-swc": "^3.3.2",
-    "eslint": "^8.44.0",
+    "eslint": "^8.52.0",
     "postcss": "^8.4.27",
     "prettier": "^2.8.8",
     "ts-node-dev": "^2.0.0",
