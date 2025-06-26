@@ -1,16 +1,32 @@
 ---
-
+import NavigationBar from '../components/ui/navigation-bar.astro';
+import HeroSection from '../components/ui/hero-section.astro';
+import FooterSection from '../components/ui/footer-section.astro';
 ---
 
+<!DOCTYPE html>
 <html lang="en">
 	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Maulana Sodiqin - Software Engineer</title>
+		<meta name="description" content="Frontend-focused Software Engineer with 5+ years experience in ReactJS, TypeScript, and modern web technologies. Based in Malang, Indonesia.">
+		<meta name="keywords" content="software engineer, react developer, typescript, frontend developer, maulana sodiqin, web developer">
+		<meta property="og:title" content="Maulana Sodiqin - Software Engineer">
+		<meta property="og:description" content="Frontend-focused Software Engineer with 5+ years experience building scalable web applications">
+		<meta property="og:type" content="website">
+		<link rel="canonical" href="https://msdqn.dev">
 	</head>
-	<body>
-		<h1>Astro</h1>
+	<body class="bg-rose-pine-base text-rose-pine-text">
+		<NavigationBar />
+		
+		<main>
+			<HeroSection 
+				title="Maulana Sodiqin"
+				subtitle="Software Engineer & Frontend Specialist"
+				ctaText="Let's talk"
+				ctaLink="/contact"
+			/>
+		</main>
 	</body>
 </html>

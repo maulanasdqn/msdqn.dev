@@ -1,0 +1,107 @@
+---
+interface Props {
+  currentPath?: string;
+}
+
+const { currentPath = '' } = Astro.props;
+
+const navItems = [
+  { name: 'Home', href: '/' },
+  { name: 'About', href: '/about' },
+  { name: 'Projects', href: '/projects' },
+  { name: 'Experience', href: '/experience' },
+];
+---
+
+<nav class="fixed top-0 left-0 right-0 bg-rose-pine-base/95 backdrop-blur-sm z-50">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="flex justify-between items-center h-20">
+      <!-- Logo/Brand -->
+      <div class="flex-shrink-0">
+        <a href="/" class="text-2xl font-bold text-rose-pine-text hover:text-rose-pine-iris transition-colors duration-200">
+          MSDQN.
+        </a>
+      </div>
+
+      <!-- Desktop Navigation -->
+      <div class="hidden md:flex items-center space-x-8">
+        {navItems.map((item) => (
+          <a
+            href={item.href}
+            class={`text-rose-pine-subtle hover:text-rose-pine-text transition-colors duration-200 font-medium ${
+              currentPath === item.href ? 'text-rose-pine-text' : ''
+            }`}
+          >
+            {item.name}
+          </a>
+        ))}
+        <a
+          href="/contact"
+          class="bg-rose-pine-iris hover:bg-rose-pine-iris/80 text-rose-pine-base px-6 py-2.5 rounded-full font-medium transition-all duration-200 transform hover:scale-105"
+        >
+          Contacts →
+        </a>
+      </div>
+
+      <!-- Mobile menu button -->
+      <div class="md:hidden">
+        <button 
+          type="button" 
+          class="mobile-menu-button bg-rose-pine-overlay hover:bg-rose-pine-highlight-med text-rose-pine-text inline-flex items-center justify-center p-2 rounded-lg transition-colors duration-200"
+          aria-controls="mobile-menu" 
+          aria-expanded="false"
+        >
+          <span class="sr-only">Open main menu</span>
+          <svg class="menu-icon block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          <svg class="close-icon hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile menu -->
+  <div class="mobile-menu hidden md:hidden">
+    <div class="px-6 pt-4 pb-6 space-y-4 bg-rose-pine-surface border-t border-rose-pine-highlight-med">
+      {navItems.map((item) => (
+        <a
+          href={item.href}
+          class={`block text-rose-pine-subtle hover:text-rose-pine-text transition-colors duration-200 font-medium ${
+            currentPath === item.href ? 'text-rose-pine-text' : ''
+          }`}
+        >
+          {item.name}
+        </a>
+      ))}
+      <a
+        href="/contact"
+        class="inline-block bg-rose-pine-iris hover:bg-rose-pine-iris/80 text-rose-pine-base px-6 py-2.5 rounded-full font-medium transition-all duration-200"
+      >
+        Contacts →
+      </a>
+    </div>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const mobileMenuButton = document.querySelector('.mobile-menu-button');
+    const mobileMenu = document.querySelector('.mobile-menu');
+    const menuIcon = document.querySelector('.menu-icon');
+    const closeIcon = document.querySelector('.close-icon');
+
+    if (mobileMenuButton && mobileMenu && menuIcon && closeIcon) {
+      mobileMenuButton.addEventListener('click', function() {
+        const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+        
+        mobileMenuButton.setAttribute('aria-expanded', String(!isExpanded));
+        mobileMenu.classList.toggle('hidden');
+        menuIcon.classList.toggle('hidden');
+        closeIcon.classList.toggle('hidden');
+      });
+    }
+  });
+</script> 

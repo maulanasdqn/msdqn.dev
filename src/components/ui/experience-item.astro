@@ -1,0 +1,42 @@
+---
+interface Props {
+  title: string;
+  company: string;
+  duration: string;
+  description: string;
+  responsibilities?: string[];
+  type?: 'work' | 'education';
+}
+
+const { title, company, duration, description, responsibilities, type = 'work' } = Astro.props;
+---
+
+<div class="bg-rose-pine-surface/50 backdrop-blur-sm rounded-2xl p-6 mb-6 hover:bg-rose-pine-surface/70 transition-all duration-300 border border-rose-pine-highlight-med">
+  <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
+    <div class="mb-2 md:mb-0">
+      <h3 class="text-xl font-bold text-rose-pine-text">{title}</h3>
+      <h4 class="text-lg text-rose-pine-iris font-semibold">{company}</h4>
+    </div>
+    <div class="flex items-center text-rose-pine-muted">
+      <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 002 2z"></path>
+      </svg>
+      <span class="font-medium">{duration}</span>
+    </div>
+  </div>
+  
+  <p class="text-rose-pine-subtle mb-4 leading-relaxed">{description}</p>
+  
+  {responsibilities && responsibilities.length > 0 && (
+    <div>
+      <h5 class="font-semibold text-rose-pine-text mb-2">
+        {type === 'work' ? 'Key Responsibilities:' : 'Key Achievements:'}
+      </h5>
+      <ul class="list-disc list-inside text-rose-pine-subtle space-y-1">
+        {responsibilities.map((item) => (
+          <li class="leading-relaxed">{item}</li>
+        ))}
+      </ul>
+    </div>
+  )}
+</div> 
