@@ -27,9 +27,20 @@ const navItems = [
     icon: 'M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 012 2v6a2 2 0 01-2 2H6a2 2 0 01-2-2V8a2 2 0 012-2V6',
   },
   {
+    name: 'Blog',
+    href: '/blog',
+    icon: 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253',
+  },
+  {
     name: 'Contact',
     href: '#contact',
     icon: 'M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z',
+  },
+  {
+    name: 'Hire Me',
+    href: '/hire-me',
+    icon: 'M13 10V3L4 14h7v7l9-11h-7z',
+    isSpecial: true,
   },
 ];
 ---
@@ -56,16 +67,20 @@ const navItems = [
         <a
           href={item.href}
           class={`flex items-center w-full px-2 py-2 transition-all duration-300 rounded-xl group relative ${
-            currentPath === item.href
-              ? 'bg-rose-pine-iris/30 text-rose-pine-iris'
-              : 'hover:bg-rose-pine-iris/20 text-rose-pine-text hover:text-rose-pine-iris'
+            item.isSpecial
+              ? 'bg-rose-pine-love/30 hover:bg-rose-pine-love/40 text-rose-pine-love border border-rose-pine-love/50'
+              : currentPath === item.href
+                ? 'bg-rose-pine-iris/30 text-rose-pine-iris'
+                : 'hover:bg-rose-pine-iris/20 text-rose-pine-text hover:text-rose-pine-iris'
           }`}
         >
           <div
             class={`flex items-center justify-center w-12 h-12 transition-all duration-300 rounded-2xl hover:rounded-xl flex-shrink-0 ${
-              currentPath === item.href
-                ? 'bg-rose-pine-iris text-rose-pine-base'
-                : 'bg-rose-pine-surface hover:bg-rose-pine-iris text-rose-pine-text hover:text-rose-pine-base'
+              item.isSpecial
+                ? 'bg-rose-pine-love text-rose-pine-base hover:bg-rose-pine-love/80'
+                : currentPath === item.href
+                  ? 'bg-rose-pine-iris text-rose-pine-base'
+                  : 'bg-rose-pine-surface hover:bg-rose-pine-iris text-rose-pine-text hover:text-rose-pine-base'
             }`}
           >
             <svg
@@ -118,16 +133,20 @@ const navItems = [
           <a
             href={item.href}
             class={`flex items-center space-x-4 py-4 px-4 transition-all duration-300 rounded-xl ${
-              currentPath === item.href
-                ? 'bg-rose-pine-iris/30 text-rose-pine-iris'
-                : 'hover:bg-rose-pine-iris/20 text-rose-pine-text hover:text-rose-pine-iris'
+              item.isSpecial
+                ? 'bg-rose-pine-love/30 hover:bg-rose-pine-love/40 text-rose-pine-love border border-rose-pine-love/50'
+                : currentPath === item.href
+                  ? 'bg-rose-pine-iris/30 text-rose-pine-iris'
+                  : 'hover:bg-rose-pine-iris/20 text-rose-pine-text hover:text-rose-pine-iris'
             }`}
           >
             <div
               class={`flex items-center justify-center w-12 h-12 transition-all duration-300 rounded-2xl ${
-                currentPath === item.href
-                  ? 'bg-rose-pine-iris text-rose-pine-base'
-                  : 'bg-rose-pine-surface hover:bg-rose-pine-iris text-rose-pine-text hover:text-rose-pine-base'
+                item.isSpecial
+                  ? 'bg-rose-pine-love text-rose-pine-base hover:bg-rose-pine-love/80'
+                  : currentPath === item.href
+                    ? 'bg-rose-pine-iris text-rose-pine-base'
+                    : 'bg-rose-pine-surface hover:bg-rose-pine-iris text-rose-pine-text hover:text-rose-pine-base'
               }`}
             >
               <svg

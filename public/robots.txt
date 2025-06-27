@@ -1,0 +1,27 @@
+User-agent: *
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: LinkedInBot
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+Disallow: /api/
+Disallow: /cms/
+Disallow: /*.json
+Disallow: /admin/
+Disallow: /private/
+
+Sitemap: https://msdqn.dev/sitemap.xml 

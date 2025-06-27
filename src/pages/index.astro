@@ -6,6 +6,26 @@ import ExperienceItem from '@/components/ui/experience-item.astro';
 import ContactForm from '@/components/ui/contact-form.astro';
 import FooterSection from '@/components/ui/footer-section.astro';
 import AnimationWrapper from '@/components/ui/animation-wrapper.astro';
+import TestimonialsSection from '@/components/ui/testimonials-section.astro';
+import CaseStudiesSection from '@/components/ui/case-studies-section.astro';
+import PerformanceMonitor from '@/components/ui/performance-monitor.astro';
+
+const homeResponse = await fetch(`${Astro.url.origin}/api/home`);
+const homeData = homeResponse.ok ? await homeResponse.json() : null;
+
+const aboutResponse = await fetch(`${Astro.url.origin}/api/about`);
+const aboutData = aboutResponse.ok ? await aboutResponse.json() : null;
+
+const experienceResponse = await fetch(`${Astro.url.origin}/api/experience`);
+const experiences = experienceResponse.ok
+  ? await experienceResponse.json()
+  : [];
+
+const projectsResponse = await fetch(`${Astro.url.origin}/api/project`);
+const projects = projectsResponse.ok ? await projectsResponse.json() : [];
+
+const siteUrl = 'https://msdqn.dev';
+const siteName = 'Maulana Sodiqin - Fullstack Developer';
 ---
 
 <!doctype html>
@@ -13,32 +33,218 @@ import AnimationWrapper from '@/components/ui/animation-wrapper.astro';
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Maulana Sodiqin - Fullstack Developer & Software Engineer</title>
+    
+    <title>
+      {
+        homeData?.title ||
+          'Hire Maulana Sodiqin - Senior Fullstack Developer | React, TypeScript, Rust Expert'
+      }
+    </title>
+    
     <meta
       name="description"
-      content="Fullstack Developer with 5+ years experience in ReactJS, TypeScript, Rust, and modern web technologies. Based in Malang, Indonesia."
+      content={homeData?.meta_description ||
+        'Hire experienced Fullstack Developer Maulana Sodiqin. 5+ years React, TypeScript, Rust expertise. Available for full-time positions, freelance projects. Based in Malang, Indonesia. Open to remote work.'}
     />
+    
     <meta
       name="keywords"
-      content="software engineer, fullstack developer, react developer, typescript, rust, frontend developer, maulana sodiqin, web developer"
+      content={homeData?.meta_keywords ||
+        'hire fullstack developer, react developer for hire, typescript expert, rust developer, frontend developer job, software engineer hire, maulana sodiqin, fullstack developer malang, remote developer indonesia, react typescript developer, senior frontend developer, javascript developer hire, software engineer portfolio, web developer for hire, full stack engineer, react specialist, modern web developer'}
     />
-    <meta
-      property="og:title"
-      content="Maulana Sodiqin - Fullstack Developer & Software Engineer"
-    />
-    <meta
-      property="og:description"
-      content="Fullstack Developer with 5+ years experience building scalable web applications"
-    />
-    <meta property="og:type" content="website" />
-    <link rel="canonical" href="https://msdqn.dev" />
+    
+    <meta name="author" content="Maulana Sodiqin" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="language" content="English" />
+    <meta name="revisit-after" content="7 days" />
+    <meta name="classification" content="Professional Portfolio" />
+    <meta name="rating" content="General" />
+    <meta name="distribution" content="Global" />
+    <meta name="theme-color" content="#191724" />
+    
+    <link rel="canonical" href={siteUrl} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="manifest" href="/manifest.json" />
+    
+    <meta property="og:title" content="Hire Maulana Sodiqin - Senior Fullstack Developer | React, TypeScript, Rust Expert" />
+    <meta property="og:description" content="Experienced Fullstack Developer available for hire. 5+ years expertise in React, TypeScript, Rust. Open to full-time positions and freelance projects." />
+    <meta property="og:type" content="profile" />
+    <meta property="og:url" content={siteUrl} />
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:image" content={`${siteUrl}/favicon.svg`} />
+    <meta property="og:image:width" content="512" />
+    <meta property="og:image:height" content="512" />
+    <meta property="og:image:alt" content="Maulana Sodiqin - Fullstack Developer Portfolio" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="profile:first_name" content="Maulana" />
+    <meta property="profile:last_name" content="Sodiqin" />
+    <meta property="profile:username" content="maulanasdqn" />
+    
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Hire Maulana Sodiqin - Senior Fullstack Developer" />
+    <meta name="twitter:description" content="Experienced Fullstack Developer available for hire. 5+ years expertise in React, TypeScript, Rust." />
+    <meta name="twitter:image" content={`${siteUrl}/favicon.svg`} />
+    <meta name="twitter:image:alt" content="Maulana Sodiqin - Fullstack Developer Portfolio" />
+    <meta name="twitter:creator" content="@maulanasdqn" />
+    <meta name="twitter:site" content="@maulanasdqn" />
+    
+    <meta name="linkedin:owner" content="maulana-sodiqin" />
+    
+    <script type="application/ld+json">
+      {
+        JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Person",
+          "name": "Maulana Sodiqin",
+          "givenName": "Maulana",
+          "familyName": "Sodiqin",
+          "url": siteUrl,
+          "image": `${siteUrl}/favicon.svg`,
+          "sameAs": [
+            "https://www.linkedin.com/in/maulana-sodiqin/",
+            "https://github.com/maulanasdqn",
+            "mailto:maulanasdqn@gmail.com"
+          ],
+          "jobTitle": "Senior Fullstack Developer",
+          "description": "Experienced Fullstack Developer with 5+ years of expertise in React, TypeScript, and Rust. Available for full-time positions and freelance projects.",
+          "knowsAbout": [
+            "React",
+            "TypeScript",
+            "JavaScript",
+            "Rust",
+            "Next.js",
+            "Node.js",
+            "Frontend Development",
+            "Backend Development",
+            "Full Stack Development",
+            "Web Development",
+            "Software Engineering",
+            "UI/UX Development",
+            "Modern Web Technologies"
+          ],
+          "alumniOf": {
+            "@type": "EducationalOrganization",
+            "name": "Education Institution"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Malang",
+            "addressRegion": "East Java",
+            "addressCountry": "Indonesia"
+          },
+          "email": "maulanasdqn@gmail.com",
+          "telephone": "+6285156085579",
+          "worksFor": {
+            "@type": "Organization",
+            "name": "Freelance Developer"
+          },
+          "hasOccupation": {
+            "@type": "Occupation",
+            "name": "Fullstack Developer",
+            "occupationLocation": {
+              "@type": "Place",
+              "name": "Remote/Malang, Indonesia"
+            },
+            "skills": [
+              "React Development",
+              "TypeScript Programming",
+              "JavaScript Development",
+              "Rust Programming",
+              "Frontend Architecture",
+              "Backend Development",
+              "Full Stack Development",
+              "Web Application Development",
+              "Software Engineering",
+              "UI/UX Implementation"
+            ]
+          },
+          "seeks": {
+            "@type": "JobPosting",
+            "title": "Senior Fullstack Developer Position",
+            "description": "Seeking full-time or freelance opportunities as a Senior Fullstack Developer",
+            "employmentType": ["FULL_TIME", "CONTRACTOR", "TEMPORARY"],
+            "experienceRequirements": "5+ years",
+            "skills": ["React", "TypeScript", "Rust", "JavaScript", "Node.js", "Next.js"]
+          }
+        })
+      }
+    </script>
+    
+    <script type="application/ld+json">
+      {
+        JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "name": siteName,
+          "url": siteUrl,
+          "description": "Professional portfolio of Maulana Sodiqin, Senior Fullstack Developer specializing in React, TypeScript, and Rust development.",
+          "author": {
+            "@type": "Person",
+            "name": "Maulana Sodiqin"
+          },
+          "inLanguage": "en-US",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": `${siteUrl}/?q={search_term_string}`
+            },
+            "query-input": "required name=search_term_string"
+          }
+        })
+      }
+    </script>
+    
+    <script type="application/ld+json">
+      {
+        JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "ProfessionalService",
+          "name": "Maulana Sodiqin - Fullstack Development Services",
+          "description": "Professional fullstack development services specializing in React, TypeScript, and Rust applications",
+          "provider": {
+            "@type": "Person",
+            "name": "Maulana Sodiqin"
+          },
+          "areaServed": "Worldwide",
+          "availableLanguage": "English",
+          "priceRange": "$$",
+          "serviceType": [
+            "Fullstack Development",
+            "Frontend Development",
+            "Backend Development",
+            "Web Application Development",
+            "React Development",
+            "TypeScript Development",
+            "Rust Development"
+          ]
+        })
+      }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" href="/favicon.svg" as="image" />
+    <link rel="dns-prefetch" href="//www.google-analytics.com" />
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){window.dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    </script>
   </head>
   <body class="bg-rose-pine-base text-rose-pine-text">
+    <PerformanceMonitor />
     <NavigationBar />
 
     <main>
       <section id="home">
-        <HeroSection ctaText="Let's talk" ctaLink="#contact" />
+        <HeroSection
+          ctaText={homeData?.hero_cta_text || "Let's talk"}
+          ctaLink={homeData?.hero_cta_link || '#contact'}
+        />
       </section>
 
       <section id="about" class="py-16 px-6 bg-rose-pine-surface">
@@ -50,17 +256,16 @@ import AnimationWrapper from '@/components/ui/animation-wrapper.astro';
             class="bg-rose-pine-overlay/50 backdrop-blur-sm p-8 rounded-xl border border-rose-pine-highlight-med"
           >
             <p class="text-rose-pine-subtle text-lg leading-relaxed mb-6">
-              I am proficient in modular UI architecture, design systems,
-              test-driven development, and modern state management with React
-              Query and Jotai. I have extensive experience working with micro
-              frontend structures and NX monorepos to support large-scale
-              applications.
+              {
+                aboutData?.description_1 ||
+                  'I am proficient in modular UI architecture, design systems, test-driven development, and modern state management with React Query and Jotai. I have extensive experience working with micro frontend structures and NX monorepos to support large-scale applications.'
+              }
             </p>
             <p class="text-rose-pine-subtle text-lg leading-relaxed">
-              Currently expanding my full-stack skills with <span
-                class="text-rose-pine-iris font-semibold">Rust and Axum</span
-              > to gain deeper backend architecture understanding, while maintaining
-              my expertise in modern frontend technologies.
+              {
+                aboutData?.description_2 ||
+                  'Currently expanding my full-stack skills with Rust and Axum to gain deeper backend architecture understanding, while maintaining my expertise in modern frontend technologies.'
+              }
             </p>
           </div>
 
@@ -310,51 +515,32 @@ import AnimationWrapper from '@/components/ui/animation-wrapper.astro';
               Work Experience
             </h3>
 
-            <AnimationWrapper animation="slide-left" distance={80}>
-              <ExperienceItem
-                title="Software Engineer"
-                company="DOT Indonesia"
-                duration="Aug 2022 - Present"
-                description="Full-time position developing scalable web applications using modern React ecosystem and improving development workflows for enhanced team productivity."
-                responsibilities={[
-                  'Built and maintained scalable web components using ReactJS, TailwindCSS, and Ant Design, reducing development time for new features by 35%',
-                  'Implemented modular UI architecture and design patterns, improving code reusability across 20+ modules',
-                  'Introduced React Query and Zustand for robust state management, enhancing frontend performance and developer experience',
-                  'Collaborated with backend teams using Agile practices to deliver UX improvements, increasing user retention by 18%',
-                ]}
-                type="work"
-              />
-            </AnimationWrapper>
+            {
+              experiences &&
+                experiences.length > 0 &&
+                experiences.map((experience: any, index: number) => {
+                  const animations = [
+                    'slide-left',
+                    'slide-right',
+                    'rotate-in',
+                  ] as const;
+                  const animation = animations[index % animations.length];
+                  const duration = `${experience.start_date}${experience.end_date ? ` - ${experience.end_date}` : ' - Present'}`;
 
-            <AnimationWrapper animation="slide-right" distance={80}>
-              <ExperienceItem
-                title="Lead Software Engineer"
-                company="PT Indonusa Persada Teknologi"
-                duration="Jan 2025 - May 2025"
-                description="Freelance leadership role managing a team of engineers to develop micro frontend-based agriculture backoffice application with advanced architecture and testing practices."
-                responsibilities={[
-                  'Led 4 engineers to develop a micro frontend-based agriculture backoffice app with module federation and shared UI components',
-                  'Reduced manual data processing by 70% through scalable CRUD workflows and reusable logic blocks',
-                  'Developed integration and unit tests using React Testing Library, Vitest, and MSW, ensuring frontend reliability',
-                ]}
-                type="work"
-              />
-            </AnimationWrapper>
-
-            <AnimationWrapper animation="rotate-in" distance={80}>
-              <ExperienceItem
-                title="Lead Software Engineer"
-                company="M-Knows Consulting"
-                duration="Feb 2023 - Jun 2023"
-                description="Internship role leading development of modular financial dashboard components with focus on performance optimization and robust API integration."
-                responsibilities={[
-                  'Built modular financial dashboard components using ReactJS and TypeScript, reducing dev time by 40%',
-                  'Integrated 10+ APIs with robust error handling and fallback states, reducing client-reported issues by 90%',
-                  'Spearheaded Nx-based monorepo architecture to support shared tooling, versioned libs, and CI/CD pipelines, reducing deployment time by 50%',
-                ]}
-                type="work"
-              />
-            </AnimationWrapper>
+                  return (
+                    <AnimationWrapper animation={animation} distance={80}>
+                      <ExperienceItem
+                        title={experience.title}
+                        company={experience.company}
+                        duration={duration}
+                        description={experience.description || ''}
+                        responsibilities={experience.responsibilities || []}
+                        type="work"
+                      />
+                    </AnimationWrapper>
+                  );
+                })
+            }
           </div>
 
           <div class="mb-16">
@@ -364,7 +550,7 @@ import AnimationWrapper from '@/components/ui/animation-wrapper.astro';
               <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
                 <div>
                   <div class="text-3xl font-bold text-rose-pine-iris mb-2">
-                    5+
+                    {aboutData?.stats_years || '5+'}
                   </div>
                   <div class="text-rose-pine-subtle font-medium">
                     Years Experience
@@ -372,7 +558,7 @@ import AnimationWrapper from '@/components/ui/animation-wrapper.astro';
                 </div>
                 <div>
                   <div class="text-3xl font-bold text-rose-pine-foam mb-2">
-                    10+
+                    {aboutData?.stats_projects || '10+'}
                   </div>
                   <div class="text-rose-pine-subtle font-medium">
                     Projects Delivered
@@ -380,7 +566,7 @@ import AnimationWrapper from '@/components/ui/animation-wrapper.astro';
                 </div>
                 <div>
                   <div class="text-3xl font-bold text-rose-pine-rose mb-2">
-                    1000+
+                    {aboutData?.stats_users || '1000+'}
                   </div>
                   <div class="text-rose-pine-subtle font-medium">
                     Users Served
@@ -391,6 +577,10 @@ import AnimationWrapper from '@/components/ui/animation-wrapper.astro';
           </div>
         </div>
       </section>
+
+      <CaseStudiesSection />
+
+      <TestimonialsSection />
 
       <section id="projects" class="py-16 px-6 bg-rose-pine-surface">
         <div class="max-w-7xl mx-auto">
@@ -408,111 +598,47 @@ import AnimationWrapper from '@/components/ui/animation-wrapper.astro';
           </div>
 
           <div
-            class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8"
+            class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8 auto-rows-fr"
             data-stagger="150"
           >
-            <AnimationWrapper animation="fade-up" distance={50}>
-              <ProjectCard
-                title="NAJM Course Frontend"
-                description="Computer-Assisted Test Platform built with React 19, Vite, Ant Design, and TailwindCSS within an Nx Monorepo setup. Features protected routes, role-based access, and robust state management."
-                technologies={[
-                  'React 19',
-                  'Vite',
-                  'Ant Design',
-                  'TailwindCSS',
-                  'Nx Monorepo',
-                  'React Query',
-                  'Jotai',
-                  'Vitest',
-                  'MSW',
-                ]}
-                period="Jan 2025 – Apr 2025"
-                category="Frontend Development"
-              />
-            </AnimationWrapper>
+            {
+              projects &&
+                projects.length > 0 &&
+                projects.map((project: any, index: number) => {
+                  const animations = [
+                    'fade-up',
+                    'scale-up',
+                    'fade-right',
+                    'zoom-in',
+                    'flip-up',
+                    'bounce-in',
+                  ] as const;
+                  const animation = animations[index % animations.length];
 
-            <AnimationWrapper animation="scale-up" distance={50}>
-              <ProjectCard
-                title="NAJM Course API"
-                description="Backend service architected with Rust, Axum, and SurrealDB. Features strong type-safety, modular service layers, full integration test coverage, and enforced validation with access control."
-                technologies={[
-                  'Rust',
-                  'Axum',
-                  'SurrealDB',
-                  'Integration Testing',
-                  'Type Safety',
-                ]}
-                period="Jan 2025 – Apr 2025"
-                category="Backend Development"
-              />
-            </AnimationWrapper>
-
-            <AnimationWrapper animation="fade-right" distance={50}>
-              <ProjectCard
-                title="Kuncie Scholarship System"
-                description="Responsive web-based enrollment system for scholarship management. Features dynamic forms, admin workflows, role-based access, and atomic design principles."
-                technologies={[
-                  'Next.js',
-                  'TailwindCSS',
-                  'React Context',
-                  'Atomic Design',
-                  'Responsive Design',
-                ]}
-                period="Jun 2024"
-                category="Web Application"
-              />
-            </AnimationWrapper>
-
-            <AnimationWrapper animation="zoom-in" distance={50}>
-              <ProjectCard
-                title="Sobat Bangun Platform"
-                description="Scalable modular property building platform engineered with Next.js, TailwindCSS, and Nx Monorepo. Contributed to shared design system and optimized build pipelines for cross-team collaboration."
-                technologies={[
-                  'Next.js',
-                  'TailwindCSS',
-                  'Nx Monorepo',
-                  'Design System',
-                  'Build Optimization',
-                ]}
-                period="May 2023 – Nov 2023"
-                category="Platform Development"
-              />
-            </AnimationWrapper>
-
-            <AnimationWrapper animation="flip-up" distance={50}>
-              <ProjectCard
-                title="Learning Management System"
-                description="Complete LMS platform serving 1,000+ users built with ReactJS, TailwindCSS, and atomic component structure. Optimized for performance with lazy loading and role-segmented access."
-                technologies={[
-                  'ReactJS',
-                  'TailwindCSS',
-                  'Atomic Components',
-                  'Lazy Loading',
-                  'Role Management',
-                ]}
-                period="Jul 2023 – Dec 2023"
-                category="Educational Platform"
-                highlights={['1,000+ Users', 'High Performance']}
-              />
-            </AnimationWrapper>
-
-            <AnimationWrapper animation="bounce-in" distance={50}>
-              <ProjectCard
-                title="Votsu - Voting System"
-                description="Secure Web3-enabled decentralized voting system built with Next.js, TailwindCSS, and Solana blockchain. Achieved 100% vote integrity with mobile-first UX for university elections."
-                technologies={[
-                  'Next.js',
-                  'TailwindCSS',
-                  'Solana',
-                  'Web3',
-                  'Blockchain',
-                  'Mobile-First',
-                ]}
-                period="May 2023 – Jun 2023"
-                category="Blockchain Application"
-                highlights={['100% Vote Integrity', 'Web3 Integration']}
-              />
-            </AnimationWrapper>
+                  return (
+                    <AnimationWrapper
+                      animation={animation}
+                      distance={50}
+                      class="h-full"
+                    >
+                      <ProjectCard
+                        title={project.title}
+                        description={project.description || ''}
+                        technologies={project.technologies || []}
+                        period={
+                          project.start_date
+                            ? `${project.start_date}${project.end_date ? ` – ${project.end_date}` : ''}`
+                            : undefined
+                        }
+                        category={project.category || undefined}
+                        demoLink={project.live_url || undefined}
+                        githubLink={project.github_url || undefined}
+                        highlights={project.is_featured ? ['Featured'] : []}
+                      />
+                    </AnimationWrapper>
+                  );
+                })
+            }
           </div>
         </div>
       </section>

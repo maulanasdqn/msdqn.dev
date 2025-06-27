@@ -1,0 +1,20 @@
+{
+  "name": "Maulana Sodiqin - Fullstack Developer",
+  "short_name": "Maulana Sodiqin",
+  "description": "Professional portfolio of Maulana Sodiqin, Senior Fullstack Developer specializing in React, TypeScript, and Rust development.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#191724",
+  "theme_color": "#191724",
+  "orientation": "portrait-primary",
+  "categories": ["business", "productivity", "developer", "portfolio"],
+  "lang": "en-US",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+} 

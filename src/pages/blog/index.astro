@@ -1,0 +1,162 @@
+---
+import FooterSection from '@/components/ui/footer-section.astro';
+import NavigationBar from '@/components/ui/navigation-bar.astro';
+
+const siteUrl = 'https://msdqn.dev';
+
+const blogPosts = [
+  {
+    id: 1,
+    title: "Building Scalable React Applications with TypeScript",
+    excerpt: "Best practices for architecting large-scale React applications using TypeScript, including design patterns and performance optimization techniques.",
+    publishDate: "2024-12-01",
+    readTime: "8 min read",
+    tags: ["React", "TypeScript", "Architecture"],
+    slug: "scalable-react-typescript"
+  },
+  {
+    id: 2,
+    title: "Exploring Rust for Backend Development",
+    excerpt: "My journey learning Rust and building high-performance backend services with Axum framework. Performance benchmarks and developer experience insights.",
+    publishDate: "2024-11-15",
+    readTime: "12 min read",
+    tags: ["Rust", "Backend", "Performance"],
+    slug: "rust-backend-development"
+  },
+  {
+    id: 3,
+    title: "Modern Frontend Testing Strategies",
+    excerpt: "Comprehensive guide to testing React applications with React Testing Library, MSW, and Vitest. TDD approach and best practices.",
+    publishDate: "2024-10-28",
+    readTime: "10 min read",
+    tags: ["Testing", "React", "TDD"],
+    slug: "modern-frontend-testing"
+  }
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <title>Tech Blog - Maulana Sodiqin | React, TypeScript, Rust Insights</title>
+    
+    <meta
+      name="description"
+      content="Technical blog by Maulana Sodiqin covering React, TypeScript, Rust, and modern web development. Insights, tutorials, and best practices from a senior fullstack developer."
+    />
+    
+    <meta
+      name="keywords"
+      content="react blog, typescript tutorials, rust programming, fullstack development blog, web development insights, maulana sodiqin blog, tech articles"
+    />
+    
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={`${siteUrl}/blog`} />
+    
+    <meta property="og:title" content="Tech Blog - Maulana Sodiqin" />
+    <meta property="og:description" content="Technical insights and tutorials on React, TypeScript, and Rust development" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={`${siteUrl}/blog`} />
+    
+    <script type="application/ld+json">
+      {
+        JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Blog",
+          "name": "Maulana Sodiqin Tech Blog",
+          "description": "Technical blog covering React, TypeScript, Rust, and modern web development",
+          "url": `${siteUrl}/blog`,
+          "author": {
+            "@type": "Person",
+            "name": "Maulana Sodiqin"
+          },
+          "blogPost": blogPosts.map(post => ({
+            "@type": "BlogPosting",
+            "headline": post.title,
+            "description": post.excerpt,
+            "datePublished": post.publishDate,
+            "author": {
+              "@type": "Person",
+              "name": "Maulana Sodiqin"
+            },
+            "url": `${siteUrl}/blog/${post.slug}`
+          }))
+        })
+      }
+    </script>
+  </head>
+  
+  <body class="bg-rose-pine-base text-rose-pine-text">
+    <NavigationBar />
+    
+    <main class="pt-20">
+      <section class="py-20 px-6">
+        <div class="max-w-4xl mx-auto">
+          <div class="text-center mb-16">
+            <h1 class="text-5xl font-bold text-rose-pine-text mb-6">
+              Tech Blog
+            </h1>
+            <p class="text-xl text-rose-pine-subtle max-w-3xl mx-auto leading-relaxed">
+              Insights, tutorials, and thoughts on modern web development, 
+              React ecosystems, TypeScript best practices, and Rust exploration.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {blogPosts.map((post) => (
+              <article class="bg-rose-pine-surface/50 backdrop-blur-sm p-6 rounded-xl border border-rose-pine-highlight-med hover:bg-rose-pine-surface/70 transition-all duration-300">
+                <div class="mb-4">
+                  <div class="flex items-center gap-4 text-sm text-rose-pine-subtle mb-2">
+                    <time datetime={post.publishDate}>
+                      {new Date(post.publishDate).toLocaleDateString('en-US', { 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric' 
+                      })}
+                    </time>
+                    <span>{post.readTime}</span>
+                  </div>
+                  <h2 class="text-xl font-bold text-rose-pine-text mb-3 hover:text-rose-pine-foam transition-colors">
+                    <a href={`/blog/${post.slug}`}>
+                      {post.title}
+                    </a>
+                  </h2>
+                  <p class="text-rose-pine-subtle leading-relaxed mb-4">
+                    {post.excerpt}
+                  </p>
+                  <div class="flex flex-wrap gap-2">
+                    {post.tags.map((tag) => (
+                      <span class="bg-rose-pine-highlight-low text-rose-pine-text px-3 py-1 rounded-full text-sm">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <a 
+                  href={`/blog/${post.slug}`}
+                  class="text-rose-pine-love hover:text-rose-pine-love/80 font-semibold text-sm inline-flex items-center gap-1 transition-colors"
+                >
+                  Read More 
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                  </svg>
+                </a>
+              </article>
+            ))}
+          </div>
+
+          <div class="mt-16 text-center">
+            <p class="text-rose-pine-subtle">
+              More articles coming soon. Subscribe to stay updated with the latest insights.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+    
+    <FooterSection />
+  </body>
+</html> 

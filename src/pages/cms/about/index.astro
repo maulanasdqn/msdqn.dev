@@ -1,0 +1,403 @@
+---
+import { supabase } from '@/libs/supabase';
+
+const { cookies, redirect } = Astro;
+const accessToken = cookies.get('sb-access-token');
+const refreshToken = cookies.get('sb-refresh-token');
+
+if (!accessToken || !refreshToken) {
+  return redirect('/login');
+}
+
+let session;
+try {
+  session = await supabase.auth.setSession({
+    refresh_token: refreshToken.value,
+    access_token: accessToken.value,
+  });
+  if (session.error) {
+    return redirect('/login');
+  }
+} catch {
+  return redirect('/login');
+}
+
+const { data: aboutContent } = await supabase
+  .from('about_content')
+  .select('*')
+  .single();
+
+const email = session.data.user?.email;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Content Management - CMS</title>
+    <meta name="description" content="Manage about page content" />
+    <style>
+      :root {
+        --rp-base: #191724;
+        --rp-surface: #1f1d2e;
+        --rp-overlay: #26233a;
+        --rp-muted: #6e6a86;
+        --rp-subtle: #908caa;
+        --rp-text: #e0def4;
+        --rp-love: #eb6f92;
+        --rp-gold: #f6c177;
+        --rp-rose: #ebbcba;
+        --rp-pine: #31748f;
+        --rp-foam: #9ccfd8;
+        --rp-iris: #c4a7e7;
+      }
+      body {
+        background-color: var(--rp-base);
+        color: var(--rp-text);
+        font-family:
+          system-ui,
+          -apple-system,
+          sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+      .nav-bg {
+        background-color: var(--rp-surface);
+        border-bottom: 1px solid var(--rp-overlay);
+      }
+      .card-bg {
+        background-color: var(--rp-surface);
+        border: 1px solid var(--rp-overlay);
+        border-radius: 8px;
+        padding: 24px;
+      }
+      .btn-primary {
+        background-color: var(--rp-pine);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: 14px;
+        font-weight: 500;
+      }
+      .btn-primary:hover {
+        background-color: var(--rp-foam);
+        color: var(--rp-base);
+      }
+      .btn-signout {
+        background-color: var(--rp-love);
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+      .btn-signout:hover {
+        background-color: #d4556a;
+      }
+      .text-muted {
+        color: var(--rp-muted);
+      }
+      .text-subtle {
+        color: var(--rp-subtle);
+      }
+      .nav-link {
+        color: var(--rp-subtle);
+        border-bottom: 2px solid transparent;
+        text-decoration: none;
+        padding: 8px 4px;
+        transition: all 0.2s;
+      }
+      .nav-link:hover {
+        color: var(--rp-text);
+        border-bottom-color: var(--rp-overlay);
+      }
+      .nav-link.active {
+        color: var(--rp-pine);
+        border-bottom-color: var(--rp-pine);
+      }
+      .form-group {
+        margin-bottom: 20px;
+      }
+      .form-label {
+        display: block;
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 8px;
+        color: var(--rp-text);
+      }
+      .form-input {
+        background-color: var(--rp-overlay);
+        border: 1px solid var(--rp-muted);
+        color: var(--rp-text);
+        padding: 12px;
+        border-radius: 6px;
+        width: 100%;
+        box-sizing: border-box;
+        font-size: 14px;
+      }
+      .form-input:focus {
+        outline: none;
+        border-color: var(--rp-pine);
+      }
+      .form-textarea {
+        min-height: 120px;
+        resize: vertical;
+      }
+      .success-message {
+        background-color: rgba(156, 207, 216, 0.2);
+        border: 1px solid var(--rp-foam);
+        color: var(--rp-foam);
+        padding: 12px;
+        border-radius: 6px;
+        margin-bottom: 16px;
+      }
+      .error-message {
+        background-color: rgba(235, 111, 146, 0.2);
+        border: 1px solid var(--rp-love);
+        color: var(--rp-love);
+        padding: 12px;
+        border-radius: 6px;
+        margin-bottom: 16px;
+      }
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+        margin-top: 16px;
+      }
+      .stat-input {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .stat-input input {
+        flex: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="nav-bg">
+      <div style="max-width: 1200px; margin: 0 auto; padding: 0 16px;">
+        <div
+          style="display: flex; justify-content: space-between; height: 64px;"
+        >
+          <div style="display: flex;">
+            <div style="display: flex; align-items: center;">
+              <a
+                href="/cms"
+                style="text-decoration: none; color: var(--rp-text); font-size: 20px; font-weight: bold;"
+                >🌹 CMS</a
+              >
+            </div>
+            <div
+              style="display: flex; margin-left: 24px; gap: 32px; align-items: center;"
+            >
+              <a href="/cms" class="nav-link">Dashboard</a>
+              <a href="/cms/experience" class="nav-link">Experience</a>
+              <a href="/cms/projects" class="nav-link">Projects</a>
+              <a href="/cms/home" class="nav-link">Home</a>
+              <a href="/cms/about" class="nav-link active">About</a>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 16px;">
+            <span style="font-size: 14px;" class="text-subtle">{email}</span>
+            <form action="/api/auth/signout" method="post">
+              <button type="submit" class="btn-signout">Sign out</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <main style="max-width: 800px; margin: 0 auto; padding: 24px 16px;">
+      <div style="margin-bottom: 32px;">
+        <h1 style="font-size: 24px; font-weight: bold; margin: 0 0 8px 0;">
+          About Page Content
+        </h1>
+        <p class="text-subtle">
+          Manage your personal information, skills, and professional statistics.
+        </p>
+      </div>
+
+      <div id="message-container"></div>
+
+      <div class="card-bg">
+        <form id="aboutForm">
+          <div class="form-group">
+            <label class="form-label">About Me - First Paragraph</label>
+            <textarea
+              id="description1"
+              class="form-input form-textarea"
+              placeholder="Your professional background and current expertise..."
+              >{aboutContent?.description_1 || ''}</textarea
+            >
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">About Me - Second Paragraph</label>
+            <textarea
+              id="description2"
+              class="form-input form-textarea"
+              placeholder="Your current learning goals and future direction..."
+              >{aboutContent?.description_2 || ''}</textarea
+            >
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Skills Categories (JSON format)</label>
+            <textarea
+              id="skillsCategories"
+              class="form-input form-textarea"
+              placeholder='[{"name": "Frontend Development", "color": "iris", "skills": ["ReactJS", "NextJS", "TypeScript"]}]'
+              style="height: 200px;"
+              >{
+                aboutContent?.skills_categories
+                  ? JSON.stringify(aboutContent.skills_categories, null, 2)
+                  : ''
+              }</textarea
+            >
+            <small class="text-subtle"
+              >Enter skills in JSON format. Each category should have name,
+              color (iris, love, foam, pine, gold, rose), and skills array.</small
+            >
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Professional Statistics</label>
+            <div class="stats-grid">
+              <div class="stat-input">
+                <label class="form-label" style="margin: 0; min-width: 120px;"
+                  >Years Experience:</label
+                >
+                <input
+                  type="text"
+                  id="statsYears"
+                  class="form-input"
+                  value={aboutContent?.stats_years || ''}
+                  placeholder="5+"
+                />
+              </div>
+              <div class="stat-input">
+                <label class="form-label" style="margin: 0; min-width: 120px;"
+                  >Projects Delivered:</label
+                >
+                <input
+                  type="text"
+                  id="statsProjects"
+                  class="form-input"
+                  value={aboutContent?.stats_projects || ''}
+                  placeholder="10+"
+                />
+              </div>
+              <div class="stat-input">
+                <label class="form-label" style="margin: 0; min-width: 120px;"
+                  >Users Served:</label
+                >
+                <input
+                  type="text"
+                  id="statsUsers"
+                  class="form-input"
+                  value={aboutContent?.stats_users || ''}
+                  placeholder="1000+"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Location</label>
+            <input
+              type="text"
+              id="location"
+              class="form-input"
+              value={aboutContent?.location || ''}
+              placeholder="Malang, East Java, Indonesia"
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Remote Work Status</label>
+            <input
+              type="text"
+              id="remoteStatus"
+              class="form-input"
+              value={aboutContent?.remote_status || ''}
+              placeholder="Open to remote work opportunities worldwide"
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">What I'm Looking For (JSON array)</label>
+            <textarea
+              id="lookingFor"
+              class="form-input form-textarea"
+              placeholder='["Full-time software development opportunities", "Freelance and contract projects"]'
+              >{
+                aboutContent?.looking_for
+                  ? JSON.stringify(aboutContent.looking_for, null, 2)
+                  : ''
+              }</textarea
+            >
+            <small class="text-subtle">Enter as JSON array of strings.</small>
+          </div>
+
+          <div style="display: flex; justify-content: flex-end;">
+            <button type="submit" class="btn-primary">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <script is:inline>
+      document
+        .getElementById('aboutForm')
+        .addEventListener('submit', async e => {
+          e.preventDefault();
+
+          const messageContainer = document.getElementById('message-container');
+          messageContainer.innerHTML = '';
+
+          try {
+            const formData = {
+              description_1: document.getElementById('description1').value,
+              description_2: document.getElementById('description2').value,
+              skills_categories: JSON.parse(
+                document.getElementById('skillsCategories').value || '[]'
+              ),
+              stats_years: document.getElementById('statsYears').value,
+              stats_projects: document.getElementById('statsProjects').value,
+              stats_users: document.getElementById('statsUsers').value,
+              location: document.getElementById('location').value,
+              remote_status: document.getElementById('remoteStatus').value,
+              looking_for: JSON.parse(
+                document.getElementById('lookingFor').value || '[]'
+              ),
+            };
+
+            const response = await fetch('/api/about', {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(formData),
+            });
+
+            if (response.ok) {
+              messageContainer.innerHTML =
+                '<div class="success-message">About content updated successfully!</div>';
+            } else {
+              const error = await response.json();
+              messageContainer.innerHTML = `<div class="error-message">Error: ${error.error}</div>`;
+            }
+          } catch (error) {
+            messageContainer.innerHTML = `<div class="error-message">Error: ${error.message}</div>`;
+          }
+        });
+    </script>
+  </body>
+</html>
+

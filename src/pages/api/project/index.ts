@@ -1,19 +1,7 @@
 import { supabase } from '@/libs/supabase';
 import type { APIRoute } from 'astro';
 
-export const GET: APIRoute = async ({ cookies }) => {
-  const accessToken = cookies.get('sb-access-token');
-  const refreshToken = cookies.get('sb-refresh-token');
-
-  if (!accessToken || !refreshToken) {
-    return new Response('Unauthorized', { status: 401 });
-  }
-
-  await supabase.auth.setSession({
-    access_token: accessToken.value,
-    refresh_token: refreshToken.value,
-  });
-
+export const GET: APIRoute = async () => {
   const { data, error } = await supabase
     .from('projects')
     .select('*')

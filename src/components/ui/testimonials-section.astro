@@ -1,0 +1,106 @@
+---
+const testimonials = [
+  {
+    id: 1,
+    name: "Sarah Chen",
+    role: "Senior Product Manager",
+    company: "TechCorp Solutions",
+    content: "Maulana delivered exceptional work on our React application. His attention to detail and ability to solve complex problems quickly made him an invaluable team member. The code quality was outstanding.",
+    rating: 5,
+    image: "/favicon.svg"
+  },
+  {
+    id: 2,
+    name: "David Rodriguez",
+    role: "CTO",
+    company: "StartupX",
+    content: "Working with Maulana was a game-changer for our project. His expertise in TypeScript and modern React patterns helped us build a scalable frontend architecture that serves thousands of users daily.",
+    rating: 5,
+    image: "/favicon.svg"
+  },
+  {
+    id: 3,
+    name: "Emily Johnson",
+    role: "Lead Developer",
+    company: "Digital Innovations",
+    content: "Maulana's knowledge of frontend testing and TDD practices significantly improved our code quality. His mentoring helped our junior developers level up their skills quickly.",
+    rating: 5,
+    image: "/favicon.svg"
+  }
+];
+---
+
+<section class="py-16 bg-rose-pine-surface">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="text-center mb-16">
+      <h2 class="text-4xl font-bold text-rose-pine-text mb-6">
+        What Clients Say
+      </h2>
+      <p class="text-lg text-rose-pine-subtle max-w-3xl mx-auto leading-relaxed">
+        Feedback from colleagues, clients, and team members I've worked with
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {testimonials.map((testimonial) => (
+        <div class="bg-rose-pine-base/50 backdrop-blur-sm p-8 rounded-xl border border-rose-pine-highlight-med">
+          <div class="flex items-center mb-6">
+            <img 
+              src={testimonial.image} 
+              alt={testimonial.name}
+              class="w-12 h-12 rounded-full mr-4 bg-rose-pine-overlay"
+            />
+            <div>
+              <h3 class="text-lg font-semibold text-rose-pine-text">
+                {testimonial.name}
+              </h3>
+              <p class="text-sm text-rose-pine-subtle">
+                {testimonial.role} at {testimonial.company}
+              </p>
+            </div>
+          </div>
+          
+          <div class="flex mb-4">
+            {Array.from({ length: testimonial.rating }).map((_, i) => (
+              <svg class="w-5 h-5 text-rose-pine-foam" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 0l3.09 6.26L22 7.27l-5 4.87 1.18 6.88L12 15.77l-6.18 3.25L7 12.14 2 7.27l6.91-1.01L12 0z"></path>
+              </svg>
+            ))}
+          </div>
+          
+          <blockquote class="text-rose-pine-subtle leading-relaxed italic">
+            "{testimonial.content}"
+          </blockquote>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script type="application/ld+json">
+  {
+    JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Maulana Sodiqin",
+      "review": testimonials.map(testimonial => ({
+        "@type": "Review",
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": testimonial.rating,
+          "bestRating": 5
+        },
+        "author": {
+          "@type": "Person",
+          "name": testimonial.name,
+          "jobTitle": testimonial.role,
+          "worksFor": {
+            "@type": "Organization",
+            "name": testimonial.company
+          }
+        },
+        "reviewBody": testimonial.content
+      }))
+    })
+  }
+</script> 

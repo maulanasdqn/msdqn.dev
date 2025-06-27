@@ -23,7 +23,7 @@ const {
 ---
 
 <div
-  class="bg-rose-pine-overlay/50 backdrop-blur-sm p-6 rounded-xl border border-rose-pine-highlight-med hover:border-rose-pine-iris/50 transition-all duration-300 group"
+  class="bg-rose-pine-overlay/50 backdrop-blur-sm p-6 rounded-xl border border-rose-pine-highlight-med hover:border-rose-pine-iris/50 transition-all duration-300 group h-full flex flex-col"
 >
   <div class="flex justify-between items-start mb-4">
     <div class="flex-1">
@@ -43,39 +43,41 @@ const {
     </div>
   </div>
 
-  <p class="text-rose-pine-subtle text-sm leading-relaxed mb-4">
-    {description}
-  </p>
+  <div class="flex-grow">
+    <p class="text-rose-pine-subtle text-sm leading-relaxed mb-4">
+      {description}
+    </p>
 
-  {
-    highlights.length > 0 && (
-      <div class="mb-4">
-        <div class="flex flex-wrap gap-2">
-          {highlights.map(highlight => (
-            <span class="bg-rose-pine-love/20 text-rose-pine-love px-2 py-1 rounded text-xs font-medium">
-              {highlight}
-            </span>
-          ))}
+    {
+      highlights.length > 0 && (
+        <div class="mb-4">
+          <div class="flex flex-wrap gap-2">
+            {highlights.map(highlight => (
+              <span class="bg-rose-pine-love/20 text-rose-pine-love px-2 py-1 rounded text-xs font-medium">
+                {highlight}
+              </span>
+            ))}
+          </div>
         </div>
-      </div>
-    )
-  }
+      )
+    }
 
-  <div class="mb-6">
-    <div class="flex flex-wrap gap-2">
-      {
-        technologies.map(tech => (
-          <span class="bg-rose-pine-surface text-rose-pine-text px-2 py-1 rounded text-xs font-medium border border-rose-pine-highlight-med">
-            {tech}
-          </span>
-        ))
-      }
+    <div class="mb-6">
+      <div class="flex flex-wrap gap-2">
+        {
+          technologies.map(tech => (
+            <span class="bg-rose-pine-surface text-rose-pine-text px-2 py-1 rounded text-xs font-medium border border-rose-pine-highlight-med">
+              {tech}
+            </span>
+          ))
+        }
+      </div>
     </div>
   </div>
 
   {
     (demoLink || githubLink) && (
-      <div class="flex gap-3">
+      <div class="flex gap-3 mt-auto">
         {demoLink && (
           <a
             href={demoLink}

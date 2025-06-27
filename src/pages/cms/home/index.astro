@@ -1,0 +1,412 @@
+---
+import { supabase } from '@/libs/supabase';
+
+const { cookies, redirect } = Astro;
+const accessToken = cookies.get('sb-access-token');
+const refreshToken = cookies.get('sb-refresh-token');
+
+if (!accessToken || !refreshToken) {
+  return redirect('/login');
+}
+
+let session;
+try {
+  session = await supabase.auth.setSession({
+    refresh_token: refreshToken.value,
+    access_token: accessToken.value,
+  });
+  if (session.error) {
+    return redirect('/login');
+  }
+} catch {
+  return redirect('/login');
+}
+
+const { data: homeContent } = await supabase
+  .from('home_content')
+  .select('*')
+  .single();
+
+const email = session.data.user?.email;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home Content Management - CMS</title>
+    <meta name="description" content="Manage homepage content" />
+    <style>
+      :root {
+        --rp-base: #191724;
+        --rp-surface: #1f1d2e;
+        --rp-overlay: #26233a;
+        --rp-muted: #6e6a86;
+        --rp-subtle: #908caa;
+        --rp-text: #e0def4;
+        --rp-love: #eb6f92;
+        --rp-gold: #f6c177;
+        --rp-rose: #ebbcba;
+        --rp-pine: #31748f;
+        --rp-foam: #9ccfd8;
+        --rp-iris: #c4a7e7;
+      }
+      body {
+        background-color: var(--rp-base);
+        color: var(--rp-text);
+        font-family:
+          system-ui,
+          -apple-system,
+          sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+      .nav-bg {
+        background-color: var(--rp-surface);
+        border-bottom: 1px solid var(--rp-overlay);
+      }
+      .card-bg {
+        background-color: var(--rp-surface);
+        border: 1px solid var(--rp-overlay);
+        border-radius: 8px;
+        padding: 24px;
+      }
+      .btn-primary {
+        background-color: var(--rp-pine);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: 14px;
+        font-weight: 500;
+      }
+      .btn-primary:hover {
+        background-color: var(--rp-foam);
+        color: var(--rp-base);
+      }
+      .btn-signout {
+        background-color: var(--rp-love);
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+      .btn-signout:hover {
+        background-color: #d4556a;
+      }
+      .text-muted {
+        color: var(--rp-muted);
+      }
+      .text-subtle {
+        color: var(--rp-subtle);
+      }
+      .nav-link {
+        color: var(--rp-subtle);
+        border-bottom: 2px solid transparent;
+        text-decoration: none;
+        padding: 8px 4px;
+        transition: all 0.2s;
+      }
+      .nav-link:hover {
+        color: var(--rp-text);
+        border-bottom-color: var(--rp-overlay);
+      }
+      .nav-link.active {
+        color: var(--rp-pine);
+        border-bottom-color: var(--rp-pine);
+      }
+      .form-group {
+        margin-bottom: 20px;
+      }
+      .form-label {
+        display: block;
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 8px;
+        color: var(--rp-text);
+      }
+      .form-input {
+        background-color: var(--rp-overlay);
+        border: 1px solid var(--rp-muted);
+        color: var(--rp-text);
+        padding: 12px;
+        border-radius: 6px;
+        width: 100%;
+        box-sizing: border-box;
+        font-size: 14px;
+      }
+      .form-input:focus {
+        outline: none;
+        border-color: var(--rp-pine);
+      }
+      .form-textarea {
+        min-height: 100px;
+        resize: vertical;
+      }
+      .success-message {
+        background-color: rgba(156, 207, 216, 0.2);
+        border: 1px solid var(--rp-foam);
+        color: var(--rp-foam);
+        padding: 12px;
+        border-radius: 6px;
+        margin-bottom: 16px;
+      }
+      .error-message {
+        background-color: rgba(235, 111, 146, 0.2);
+        border: 1px solid var(--rp-love);
+        color: var(--rp-love);
+        padding: 12px;
+        border-radius: 6px;
+        margin-bottom: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="nav-bg">
+      <div style="max-width: 1200px; margin: 0 auto; padding: 0 16px;">
+        <div
+          style="display: flex; justify-content: space-between; height: 64px;"
+        >
+          <div style="display: flex;">
+            <div style="display: flex; align-items: center;">
+              <a
+                href="/cms"
+                style="text-decoration: none; color: var(--rp-text); font-size: 20px; font-weight: bold;"
+                >🌹 CMS</a
+              >
+            </div>
+            <div
+              style="display: flex; margin-left: 24px; gap: 32px; align-items: center;"
+            >
+              <a href="/cms" class="nav-link">Dashboard</a>
+              <a href="/cms/experience" class="nav-link">Experience</a>
+              <a href="/cms/projects" class="nav-link">Projects</a>
+              <a href="/cms/home" class="nav-link active">Home</a>
+              <a href="/cms/about" class="nav-link">About</a>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 16px;">
+            <span style="font-size: 14px;" class="text-subtle">{email}</span>
+            <form action="/api/auth/signout" method="post">
+              <button type="submit" class="btn-signout">Sign out</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <main style="max-width: 800px; margin: 0 auto; padding: 24px 16px;">
+      <div style="margin-bottom: 32px;">
+        <h1 style="font-size: 24px; font-weight: bold; margin: 0 0 8px 0;">
+          Home Page Content
+        </h1>
+        <p class="text-subtle">
+          Manage your homepage content including hero section and meta
+          information.
+        </p>
+      </div>
+
+      <div id="message-container"></div>
+
+      <div class="card-bg">
+        <form id="homeForm">
+          <div class="form-group">
+            <label class="form-label">Page Title</label>
+            <input
+              type="text"
+              id="title"
+              class="form-input"
+              value={homeContent?.title || ''}
+              placeholder="Maulana Sodiqin - Fullstack Developer & Software Engineer"
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Meta Description</label>
+            <textarea
+              id="metaDescription"
+              class="form-input form-textarea"
+              placeholder="Brief description for search engines"
+              >{homeContent?.meta_description || ''}</textarea
+            >
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Meta Keywords</label>
+            <input
+              type="text"
+              id="metaKeywords"
+              class="form-input"
+              value={homeContent?.meta_keywords || ''}
+              placeholder="software engineer, fullstack developer, react developer"
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Hero Section - Main Heading</label>
+            <input
+              type="text"
+              id="heroHeading"
+              class="form-input"
+              value={homeContent?.hero_heading || ''}
+              placeholder="Your main heading"
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Hero Section - Subheading</label>
+            <textarea
+              id="heroSubheading"
+              class="form-input form-textarea"
+              placeholder="Your subheading or description"
+              >{homeContent?.hero_subheading || ''}</textarea
+            >
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Hero CTA Button Text</label>
+            <input
+              type="text"
+              id="heroCta"
+              class="form-input"
+              value={homeContent?.hero_cta_text || ''}
+              placeholder="Let's talk"
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Hero CTA Button Link</label>
+            <input
+              type="text"
+              id="heroCtaLink"
+              class="form-input"
+              value={homeContent?.hero_cta_link || ''}
+              placeholder="#contact"
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Contact Email</label>
+            <input
+              type="email"
+              id="contactEmail"
+              class="form-input"
+              value={homeContent?.contact_email || ''}
+              placeholder="your@email.com"
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Contact Phone</label>
+            <input
+              type="text"
+              id="contactPhone"
+              class="form-input"
+              value={homeContent?.contact_phone || ''}
+              placeholder="+62 851-5608-5579"
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">LinkedIn URL</label>
+            <input
+              type="url"
+              id="linkedinUrl"
+              class="form-input"
+              value={homeContent?.linkedin_url || ''}
+              placeholder="https://linkedin.com/in/your-profile"
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">GitHub URL</label>
+            <input
+              type="url"
+              id="githubUrl"
+              class="form-input"
+              value={homeContent?.github_url || ''}
+              placeholder="https://github.com/your-username"
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Resume Download Text</label>
+            <input
+              type="text"
+              id="resumeText"
+              class="form-input"
+              value={homeContent?.resume_text || ''}
+              placeholder="Download Resume"
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Resume File URL</label>
+            <input
+              type="text"
+              id="resumeUrl"
+              class="form-input"
+              value={homeContent?.resume_url || ''}
+              placeholder="/resume.pdf"
+            />
+          </div>
+
+          <div style="display: flex; justify-content: flex-end;">
+            <button type="submit" class="btn-primary">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <script is:inline>
+      document
+        .getElementById('homeForm')
+        .addEventListener('submit', async e => {
+          e.preventDefault();
+
+          const messageContainer = document.getElementById('message-container');
+          messageContainer.innerHTML = '';
+
+          const formData = {
+            title: document.getElementById('title').value,
+            meta_description: document.getElementById('metaDescription').value,
+            meta_keywords: document.getElementById('metaKeywords').value,
+            hero_heading: document.getElementById('heroHeading').value,
+            hero_subheading: document.getElementById('heroSubheading').value,
+            hero_cta_text: document.getElementById('heroCta').value,
+            hero_cta_link: document.getElementById('heroCtaLink').value,
+            contact_email: document.getElementById('contactEmail').value,
+            contact_phone: document.getElementById('contactPhone').value,
+            linkedin_url: document.getElementById('linkedinUrl').value,
+            github_url: document.getElementById('githubUrl').value,
+            resume_text: document.getElementById('resumeText').value,
+            resume_url: document.getElementById('resumeUrl').value,
+          };
+
+          try {
+            const response = await fetch('/api/home', {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(formData),
+            });
+
+            if (response.ok) {
+              messageContainer.innerHTML =
+                '<div class="success-message">Home content updated successfully!</div>';
+            } else {
+              const error = await response.json();
+              messageContainer.innerHTML = `<div class="error-message">Error: ${error.error}</div>`;
+            }
+          } catch (error) {
+            messageContainer.innerHTML = `<div class="error-message">Error: ${error.message}</div>`;
+          }
+        });
+    </script>
+  </body>
+</html>

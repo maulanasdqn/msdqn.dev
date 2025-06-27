@@ -288,6 +288,21 @@ const email = session.data.user?.email;
                     >
                       {experience.description}
                     </p>
+                    {experience.responsibilities &&
+                      experience.responsibilities.length > 0 && (
+                        <div style="margin: 12px 0;">
+                          <h4 style="font-size: 14px; font-weight: 600; margin: 0 0 8px 0; color: var(--rp-text);">
+                            Key Responsibilities:
+                          </h4>
+                          <ul style="margin: 0; padding-left: 20px;">
+                            {experience.responsibilities.map((resp: any) => (
+                              <li style="font-size: 13px; margin: 4px 0; color: var(--rp-subtle);">
+                                {resp}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
                     {experience.technologies &&
                       experience.technologies.length > 0 && (
                         <div style="margin-top: 12px;">
@@ -378,7 +393,26 @@ const email = session.data.user?.email;
               style="display: block; font-size: 14px; font-weight: 500; margin-bottom: 4px;"
               >Description</label
             >
-            <textarea id="description" rows="4" class="form-input"></textarea>
+            <textarea id="description" rows="3" class="form-input"></textarea>
+          </div>
+
+          <div style="margin-bottom: 16px;">
+            <label
+              style="display: block; font-size: 14px; font-weight: 500; margin-bottom: 4px;"
+              >Key Responsibilities (one per line)</label
+            >
+            <textarea
+              id="responsibilities"
+              rows="6"
+              class="form-input"
+              placeholder="Built and maintained scalable web components using ReactJS
+Implemented modular UI architecture and design patterns
+Introduced React Query for robust state management
+Collaborated with backend teams using Agile practices"
+            ></textarea>
+            <small style="color: var(--rp-muted); font-size: 12px;"
+              >Enter each responsibility on a new line</small
+            >
           </div>
 
           <div style="margin-bottom: 24px;">
@@ -436,6 +470,7 @@ const email = session.data.user?.email;
           const endDate = document.getElementById('endDate');
           const location = document.getElementById('location');
           const description = document.getElementById('description');
+          const responsibilities = document.getElementById('responsibilities');
           const technologies = document.getElementById('technologies');
           const experienceModal = document.getElementById('experienceModal');
 
@@ -447,6 +482,9 @@ const email = session.data.user?.email;
           endDate.value = experience.end_date || '';
           location.value = experience.location || '';
           description.value = experience.description || '';
+          responsibilities.value = experience.responsibilities
+            ? experience.responsibilities.join('\n')
+            : '';
           technologies.value = experience.technologies
             ? experience.technologies.join(', ')
             : '';
@@ -499,6 +537,7 @@ const email = session.data.user?.email;
           const endDate = document.getElementById('endDate');
           const location = document.getElementById('location');
           const description = document.getElementById('description');
+          const responsibilities = document.getElementById('responsibilities');
           const technologies = document.getElementById('technologies');
 
           const formData = {
@@ -508,6 +547,12 @@ const email = session.data.user?.email;
             end_date: endDate.value || null,
             location: location.value || null,
             description: description.value || null,
+            responsibilities: responsibilities.value
+              ? responsibilities.value
+                  .split('\n')
+                  .map(r => r.trim())
+                  .filter(r => r)
+              : [],
             technologies: technologies.value
               ? technologies.value
                   .split(',')
