@@ -1,185 +1,46 @@
 ---
-const caseStudies = [
-  {
-    id: 1,
-    title: 'E-commerce Platform Modernization',
-    client: 'RetailTech Solutions',
-    duration: '6 months',
-    technologies: ['React', 'TypeScript', 'Next.js', 'PostgreSQL'],
-    challenge:
-      'Legacy PHP application needed complete frontend overhaul to support 10x user growth',
-    solution:
-      'Built modern React-based frontend with micro-frontend architecture, implemented caching strategies, and optimized for Core Web Vitals',
-    results: [
-      '75% improvement in page load times',
-      '40% increase in conversion rates',
-      '99.9% uptime achieved',
-      'Served 100K+ daily active users',
-    ],
-    featured: true,
-  },
-  {
-    id: 2,
-    title: 'Real-time Dashboard Development',
-    client: 'DataFlow Analytics',
-    duration: '4 months',
-    technologies: ['React', 'TypeScript', 'D3.js', 'WebSocket'],
-    challenge:
-      'Complex data visualization requirements with real-time updates for financial trading platform',
-    solution:
-      'Developed high-performance dashboard with custom chart components, WebSocket integration, and optimized rendering for large datasets',
-    results: [
-      'Real-time data processing',
-      'Custom visualization library',
-      '60fps chart performance',
-      'Enterprise-grade security',
-    ],
-    featured: true,
-  },
-  {
-    id: 3,
-    title: 'Design System Implementation',
-    client: 'FinanceApp Startup',
-    duration: '3 months',
-    technologies: ['React', 'TypeScript', 'Storybook', 'TailwindCSS'],
-    challenge:
-      'Inconsistent UI across multiple products, slow development cycles, and maintenance overhead',
-    solution:
-      'Created comprehensive design system with reusable components, documentation, and automated testing',
-    results: [
-      '50% faster development cycles',
-      '100% design consistency',
-      'Reduced bug reports by 60%',
-      'Improved developer experience',
-    ],
-    featured: false,
-  },
-];
+import { supabase } from '@/libs/supabase';
+import AnimationWrapper from './animation-wrapper.astro';
+import CaseStudyCard from './case-study-card.astro';
+
+const { data: caseStudies } = await supabase
+  .from('case_studies')
+  .select('*')
+  .eq('is_featured', true)
+  .order('created_at', { ascending: false });
 ---
 
 <section class="py-16 bg-rose-pine-base">
   <div class="max-w-6xl mx-auto px-6">
-    <div class="text-center mb-16">
-      <h2 class="text-4xl font-bold text-rose-pine-text mb-6">Case Studies</h2>
-      <p
-        class="text-lg text-rose-pine-subtle max-w-3xl mx-auto leading-relaxed"
-      >
-        Real-world projects showcasing problem-solving skills and technical
-        expertise
-      </p>
-    </div>
+    <AnimationWrapper animation="fade-in" delay={0}>
+      <div class="text-center mb-16">
+        <h2 class="text-4xl font-bold text-rose-pine-text mb-6">
+          Case Studies
+        </h2>
+        <p
+          class="text-lg text-rose-pine-subtle max-w-3xl mx-auto leading-relaxed"
+        >
+          Real-world projects showcasing problem-solving skills and technical
+          expertise
+        </p>
+      </div>
+    </AnimationWrapper>
 
     <div class="space-y-12">
       {
-        caseStudies
-          .filter(study => study.featured)
-          .map(study => (
-            <article class="bg-rose-pine-surface/50 backdrop-blur-sm p-8 rounded-xl border border-rose-pine-highlight-med">
-              <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div class="lg:col-span-2">
-                  <h3 class="text-2xl font-bold text-rose-pine-text mb-4">
-                    {study.title}
-                  </h3>
-
-                  <div class="flex flex-wrap gap-4 mb-6 text-sm text-rose-pine-subtle">
-                    <span class="flex items-center gap-2">
-                      <svg
-                        class="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-                        />
-                      </svg>
-                      {study.client}
-                    </span>
-                    <span class="flex items-center gap-2">
-                      <svg
-                        class="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
-                      {study.duration}
-                    </span>
-                  </div>
-
-                  <div class="space-y-6">
-                    <div>
-                      <h4 class="text-lg font-semibold text-rose-pine-text mb-3">
-                        Challenge
-                      </h4>
-                      <p class="text-rose-pine-subtle leading-relaxed">
-                        {study.challenge}
-                      </p>
-                    </div>
-
-                    <div>
-                      <h4 class="text-lg font-semibold text-rose-pine-text mb-3">
-                        Solution
-                      </h4>
-                      <p class="text-rose-pine-subtle leading-relaxed">
-                        {study.solution}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="space-y-6">
-                  <div>
-                    <h4 class="text-lg font-semibold text-rose-pine-text mb-3">
-                      Technologies
-                    </h4>
-                    <div class="flex flex-wrap gap-2">
-                      {study.technologies.map(tech => (
-                        <span class="bg-rose-pine-highlight-low text-rose-pine-text px-3 py-1 rounded-full text-sm">
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div>
-                    <h4 class="text-lg font-semibold text-rose-pine-text mb-3">
-                      Key Results
-                    </h4>
-                    <ul class="space-y-2">
-                      {study.results.map(result => (
-                        <li class="flex items-start gap-2 text-rose-pine-subtle">
-                          <svg
-                            class="w-5 h-5 text-rose-pine-foam mt-0.5 flex-shrink-0"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="2"
-                              d="M5 13l4 4L19 7"
-                            />
-                          </svg>
-                          {result}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </article>
-          ))
+        caseStudies?.map((study, index) => (
+          <AnimationWrapper animation="slide-right" delay={index * 200}>
+            <CaseStudyCard
+              title={study.title}
+              client={study.client}
+              duration={study.duration}
+              technologies={study.technologies}
+              challenge={study.challenge}
+              solution={study.solution}
+              results={study.results}
+            />
+          </AnimationWrapper>
+        ))
       }
     </div>
 
@@ -217,13 +78,14 @@ const caseStudies = [
       '@type': 'WebPage',
       '@id': 'https://msdqn.dev',
     },
-    hasCredential: caseStudies.map(study => ({
-      '@type': 'EducationalOccupationalCredential',
-      name: study.title,
-      description: study.solution,
-      credentialCategory: 'Professional Experience',
-      educationalLevel: 'Professional',
-      competencyRequired: study.technologies.join(', '),
-    })),
+    hasCredential:
+      caseStudies?.map(study => ({
+        '@type': 'EducationalOccupationalCredential',
+        name: study.title,
+        description: study.solution,
+        credentialCategory: 'Professional Experience',
+        educationalLevel: 'Professional',
+        competencyRequired: study.technologies?.join(', ') || '',
+      })) || [],
   })}
 />

@@ -1,6 +1,5 @@
 ---
 import { supabase } from '@/libs/supabase';
-import ProjectCard from '@/components/ui/project-card.astro';
 
 const { cookies, redirect } = Astro;
 const accessToken = cookies.get('sb-access-token');
@@ -23,8 +22,8 @@ try {
   return redirect('/login');
 }
 
-const { data: projects, error } = await supabase
-  .from('projects')
+const { data: caseStudies, error } = await supabase
+  .from('case_studies')
   .select('*')
   .order('created_at', { ascending: false });
 
@@ -36,8 +35,9 @@ const email = session.data.user?.email;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Projects Management - CMS</title>
-    <meta name="description" content="Manage portfolio projects" />
+    <title>Case Studies Management - CMS</title>
+    <meta name="description" content="Manage portfolio case studies" />
+    <meta name="robots" content="noindex, nofollow" />
     <style>
       :root {
         --rp-base: #191724;
@@ -161,7 +161,7 @@ const email = session.data.user?.email;
         border-radius: 8px;
         padding: 24px;
         width: 100%;
-        max-width: 500px;
+        max-width: 600px;
         margin: 16px;
         max-height: 90vh;
         overflow-y: auto;
@@ -188,7 +188,6 @@ const email = session.data.user?.email;
         display: inline-block;
         margin: 2px;
       }
-
       .featured-badge {
         background-color: var(--rp-love);
         color: white;
@@ -197,21 +196,42 @@ const email = session.data.user?.email;
         font-size: 12px;
         font-weight: 500;
       }
-      .project-grid {
+      .case-study-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
         gap: 1.5rem;
         align-items: stretch;
       }
-      .project-grid > div {
+      .case-study-card {
         display: flex;
         flex-direction: column;
         height: 100%;
+        position: relative;
+        transition: all 0.2s;
       }
-      .project-grid > div > div:first-child {
+      .case-study-card:hover {
+        transform: translateY(-2px);
+      }
+      .case-study-content {
         flex: 1;
-        display: flex;
-        flex-direction: column;
+        padding: 20px;
+      }
+      .results-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      .results-list li {
+        padding: 4px 0;
+        position: relative;
+        padding-left: 16px;
+      }
+      .results-list li::before {
+        content: '✓';
+        position: absolute;
+        left: 0;
+        color: var(--rp-foam);
+        font-weight: bold;
       }
     </style>
   </head>
@@ -234,8 +254,10 @@ const email = session.data.user?.email;
             >
               <a href="/cms" class="nav-link">Dashboard</a>
               <a href="/cms/experience" class="nav-link">Experience</a>
-              <a href="/cms/projects" class="nav-link active">Projects</a>
-              <a href="/cms/case-studies" class="nav-link">Case Studies</a>
+              <a href="/cms/projects" class="nav-link">Projects</a>
+              <a href="/cms/case-studies" class="nav-link active"
+                >Case Studies</a
+              >
               <a href="/cms/testimonials" class="nav-link">Testimonials</a>
               <a href="/cms/about" class="nav-link">About</a>
               <a href="/cms/home" class="nav-link">Home</a>
@@ -256,63 +278,120 @@ const email = session.data.user?.email;
         style="border-bottom: 1px solid var(--rp-overlay); padding-bottom: 20px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;"
       >
         <h1 style="font-size: 24px; font-weight: bold; margin: 0;">
-          Projects Management
+          Case Studies Management
         </h1>
         <button onclick="showCreateForm()" class="btn-primary"
-          >+ Add Project</button
+          >+ Add Case Study</button
         >
       </div>
 
       {
         error && (
           <div style="background-color: rgba(235, 111, 146, 0.2); border: 1px solid var(--rp-love); color: var(--rp-love); padding: 12px; border-radius: 6px; margin-bottom: 16px;">
-            Error loading projects: {error.message}
+            Error loading case studies: {error.message}
           </div>
         )
       }
 
       {
-        projects && projects.length === 0 && (
+        caseStudies && caseStudies.length === 0 && (
           <div style="text-align: center; padding: 48px 0;">
-            <div style="font-size: 48px; margin-bottom: 16px;">🚀</div>
-            <h3 style="margin: 8px 0; font-size: 18px;">No projects</h3>
+            <div style="font-size: 48px; margin-bottom: 16px;">📊</div>
+            <h3 style="margin: 8px 0; font-size: 18px;">No case studies</h3>
             <p style="margin: 4px 0; font-size: 14px;" class="text-subtle">
-              Get started by adding your first project.
+              Get started by adding your first case study.
             </p>
           </div>
         )
       }
 
       {
-        projects && projects.length > 0 && (
-          <div class="project-grid" id="projectsGrid">
-            {projects.map(project => (
-              <div class="relative group h-full flex flex-col">
-                <div class="flex-1">
-                  <ProjectCard
-                    title={project.title}
-                    description={project.description || ''}
-                    technologies={project.technologies || []}
-                    period={
-                      project.start_date
-                        ? `${project.start_date}${project.end_date ? ` - ${project.end_date}` : ''}`
-                        : undefined
-                    }
-                    category={project.category || undefined}
-                    demoLink={project.live_url || undefined}
-                    githubLink={project.github_url || undefined}
-                    highlights={project.is_featured ? ['Featured'] : []}
-                  />
+        caseStudies && caseStudies.length > 0 && (
+          <div class="case-study-grid" id="caseStudiesGrid">
+            {caseStudies.map(study => (
+              <div class="case-study-card card-bg rounded-lg">
+                <div class="case-study-content">
+                  <div style="display: flex; justify-content: between; align-items: start; margin-bottom: 12px;">
+                    <h3 style="font-size: 18px; font-weight: bold; margin: 0; flex: 1;">
+                      {study.title}
+                    </h3>
+                    {study.is_featured && (
+                      <span class="featured-badge" style="margin-left: 8px;">
+                        Featured
+                      </span>
+                    )}
+                  </div>
+
+                  <div
+                    style="display: flex; gap: 16px; margin-bottom: 16px; font-size: 14px;"
+                    class="text-subtle"
+                  >
+                    <span>📝 {study.client}</span>
+                    <span>⏱️ {study.duration}</span>
+                  </div>
+
+                  <div style="margin-bottom: 16px;">
+                    <h4 style="font-size: 14px; font-weight: 600; margin: 0 0 8px 0;">
+                      Challenge:
+                    </h4>
+                    <p
+                      style="font-size: 14px; margin: 0; line-height: 1.4;"
+                      class="text-subtle"
+                    >
+                      {study.challenge}
+                    </p>
+                  </div>
+
+                  <div style="margin-bottom: 16px;">
+                    <h4 style="font-size: 14px; font-weight: 600; margin: 0 0 8px 0;">
+                      Solution:
+                    </h4>
+                    <p
+                      style="font-size: 14px; margin: 0; line-height: 1.4;"
+                      class="text-subtle"
+                    >
+                      {study.solution}
+                    </p>
+                  </div>
+
+                  {study.technologies && study.technologies.length > 0 && (
+                    <div style="margin-bottom: 16px;">
+                      <h4 style="font-size: 14px; font-weight: 600; margin: 0 0 8px 0;">
+                        Technologies:
+                      </h4>
+                      <div style="display: flex; flex-wrap: wrap; gap: 4px;">
+                        {study.technologies.map(tech => (
+                          <span class="tech-tag">{tech}</span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {study.results && study.results.length > 0 && (
+                    <div style="margin-bottom: 16px;">
+                      <h4 style="font-size: 14px; font-weight: 600; margin: 0 0 8px 0;">
+                        Key Results:
+                      </h4>
+                      <ul class="results-list">
+                        {study.results.map(result => (
+                          <li style="font-size: 14px;" class="text-subtle">
+                            {result}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                 </div>
-                <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex gap-2">
+
+                <div style="padding: 0 20px 20px; display: flex; justify-content: flex-end; gap: 8px;">
                   <button
-                    onclick={`editProject('${project.id}')`}
+                    onclick={`editCaseStudy('${study.id}')`}
                     class="btn-edit px-3 py-1 text-xs"
                   >
                     Edit
                   </button>
                   <button
-                    onclick={`deleteProject('${project.id}')`}
+                    onclick={`deleteCaseStudy('${study.id}')`}
                     class="btn-delete px-3 py-1 text-xs"
                   >
                     Delete
@@ -325,39 +404,56 @@ const email = session.data.user?.email;
       }
     </main>
 
-    <!-- Modal -->
-    <div id="projectModal" class="modal hidden">
+    <div id="caseStudyModal" class="modal hidden">
       <div class="modal-content">
         <h2
           id="modalTitle"
           style="font-size: 20px; font-weight: bold; margin: 0 0 16px 0;"
         >
-          Add Project
+          Add Case Study
         </h2>
-        <form id="projectForm">
-          <input type="hidden" id="projectId" />
+        <form id="caseStudyForm">
+          <input type="hidden" id="caseStudyId" />
 
           <div style="margin-bottom: 16px;">
             <label
               style="display: block; font-size: 14px; font-weight: 500; margin-bottom: 4px;"
-              >Project Title</label
             >
+              Case Study Title
+            </label>
             <input type="text" id="title" required class="form-input" />
           </div>
 
           <div style="margin-bottom: 16px;">
             <label
               style="display: block; font-size: 14px; font-weight: 500; margin-bottom: 4px;"
-              >Description</label
             >
-            <textarea id="description" rows="4" class="form-input"></textarea>
+              Client
+            </label>
+            <input type="text" id="client" required class="form-input" />
           </div>
 
           <div style="margin-bottom: 16px;">
             <label
               style="display: block; font-size: 14px; font-weight: 500; margin-bottom: 4px;"
-              >Technologies (comma-separated)</label
             >
+              Duration
+            </label>
+            <input
+              type="text"
+              id="duration"
+              placeholder="6 months"
+              required
+              class="form-input"
+            />
+          </div>
+
+          <div style="margin-bottom: 16px;">
+            <label
+              style="display: block; font-size: 14px; font-weight: 500; margin-bottom: 4px;"
+            >
+              Technologies (comma-separated)
+            </label>
             <input
               type="text"
               id="technologies"
@@ -369,25 +465,35 @@ const email = session.data.user?.email;
           <div style="margin-bottom: 16px;">
             <label
               style="display: block; font-size: 14px; font-weight: 500; margin-bottom: 4px;"
-              >GitHub URL</label
             >
-            <input type="url" id="githubUrl" class="form-input" />
+              Challenge
+            </label>
+            <textarea id="challenge" rows="3" required class="form-input"
+            ></textarea>
           </div>
 
           <div style="margin-bottom: 16px;">
             <label
               style="display: block; font-size: 14px; font-weight: 500; margin-bottom: 4px;"
-              >Live Demo URL</label
             >
-            <input type="url" id="liveUrl" class="form-input" />
+              Solution
+            </label>
+            <textarea id="solution" rows="4" required class="form-input"
+            ></textarea>
           </div>
 
           <div style="margin-bottom: 16px;">
             <label
               style="display: block; font-size: 14px; font-weight: 500; margin-bottom: 4px;"
-              >Image URL</label
             >
-            <input type="url" id="imageUrl" class="form-input" />
+              Key Results (one per line)
+            </label>
+            <textarea
+              id="results"
+              rows="4"
+              placeholder="75% improvement in page load times
+40% increase in conversion rates"
+              class="form-input"></textarea>
           </div>
 
           <div style="margin-bottom: 24px;">
@@ -398,7 +504,7 @@ const email = session.data.user?.email;
                 style="accent-color: var(--rp-pine);"
               />
               <span style="font-size: 14px; font-weight: 500;"
-                >Featured Project</span
+                >Featured Case Study</span
               >
             </label>
           </div>
@@ -408,59 +514,62 @@ const email = session.data.user?.email;
               type="button"
               onclick="closeModal()"
               style="background: none; border: 1px solid var(--rp-muted); color: var(--rp-subtle); padding: 8px 16px; border-radius: 4px; cursor: pointer;"
-              >Cancel</button
             >
-            <button type="submit" class="btn-primary">Save Project</button>
+              Cancel
+            </button>
+            <button type="submit" class="btn-primary">Save Case Study</button>
           </div>
         </form>
       </div>
     </div>
 
     <script is:inline>
-      let currentProjectId = null;
+      let currentCaseStudyId = null;
 
-      // Make functions globally accessible
       window.showCreateForm = function () {
-        document.getElementById('modalTitle').textContent = 'Add Project';
-        document.getElementById('projectForm').reset();
-        document.getElementById('projectId').value = '';
-        currentProjectId = null;
-        document.getElementById('projectModal').classList.remove('hidden');
+        document.getElementById('modalTitle').textContent = 'Add Case Study';
+        document.getElementById('caseStudyForm').reset();
+        document.getElementById('caseStudyId').value = '';
+        currentCaseStudyId = null;
+        document.getElementById('caseStudyModal').classList.remove('hidden');
       };
 
-      window.editProject = async function (id) {
+      window.editCaseStudy = async function (id) {
         try {
-          const response = await fetch(`/api/project/${id}`);
-          const project = await response.json();
+          const response = await fetch(`/api/case-study/${id}`);
+          const caseStudy = await response.json();
 
-          document.getElementById('modalTitle').textContent = 'Edit Project';
-          document.getElementById('projectId').value = project.id;
-          document.getElementById('title').value = project.title;
-          document.getElementById('description').value =
-            project.description || '';
-          document.getElementById('technologies').value = project.technologies
-            ? project.technologies.join(', ')
+          document.getElementById('modalTitle').textContent = 'Edit Case Study';
+          document.getElementById('caseStudyId').value = caseStudy.id;
+          document.getElementById('title').value = caseStudy.title;
+          document.getElementById('client').value = caseStudy.client || '';
+          document.getElementById('duration').value = caseStudy.duration || '';
+          document.getElementById('technologies').value = caseStudy.technologies
+            ? caseStudy.technologies.join(', ')
             : '';
-          document.getElementById('githubUrl').value = project.github_url || '';
-          document.getElementById('liveUrl').value = project.live_url || '';
-          document.getElementById('imageUrl').value = project.image_url || '';
+          document.getElementById('challenge').value =
+            caseStudy.challenge || '';
+          document.getElementById('solution').value = caseStudy.solution || '';
+          document.getElementById('results').value = caseStudy.results
+            ? caseStudy.results.join('\n')
+            : '';
           document.getElementById('featured').checked =
-            project.is_featured || false;
+            caseStudy.is_featured || false;
 
-          currentProjectId = id;
-          document.getElementById('projectModal').classList.remove('hidden');
+          currentCaseStudyId = id;
+          document.getElementById('caseStudyModal').classList.remove('hidden');
         } catch (error) {
-          alert('Error loading project: ' + error.message);
+          alert('Error loading case study: ' + error.message);
         }
       };
 
-      window.deleteProject = async function (id) {
-        if (!confirm('Are you sure you want to delete this project?')) {
+      window.deleteCaseStudy = async function (id) {
+        if (!confirm('Are you sure you want to delete this case study?')) {
           return;
         }
 
         try {
-          const response = await fetch(`/api/project/${id}`, {
+          const response = await fetch(`/api/case-study/${id}`, {
             method: 'DELETE',
           });
 
@@ -468,25 +577,26 @@ const email = session.data.user?.email;
             window.location.reload();
           } else {
             const error = await response.json();
-            alert('Error deleting project: ' + error.error);
+            alert('Error deleting case study: ' + error.error);
           }
         } catch (error) {
-          alert('Error deleting project: ' + error.message);
+          alert('Error deleting case study: ' + error.message);
         }
       };
 
       window.closeModal = function () {
-        document.getElementById('projectModal').classList.add('hidden');
+        document.getElementById('caseStudyModal').classList.add('hidden');
       };
 
       document
-        .getElementById('projectForm')
+        .getElementById('caseStudyForm')
         .addEventListener('submit', async e => {
           e.preventDefault();
 
           const formData = {
             title: document.getElementById('title').value,
-            description: document.getElementById('description').value || null,
+            client: document.getElementById('client').value || null,
+            duration: document.getElementById('duration').value || null,
             technologies: document.getElementById('technologies').value
               ? document
                   .getElementById('technologies')
@@ -494,43 +604,48 @@ const email = session.data.user?.email;
                   .map(t => t.trim())
                   .filter(t => t)
               : [],
-            github_url: document.getElementById('githubUrl').value || null,
-            live_url: document.getElementById('liveUrl').value || null,
-            image_url: document.getElementById('imageUrl').value || null,
+            challenge: document.getElementById('challenge').value || null,
+            solution: document.getElementById('solution').value || null,
+            results: document.getElementById('results').value
+              ? document
+                  .getElementById('results')
+                  .value.split('\n')
+                  .map(r => r.trim())
+                  .filter(r => r)
+              : [],
             is_featured: document.getElementById('featured').checked,
           };
 
           try {
-            const url = currentProjectId
-              ? `/api/project/${currentProjectId}`
-              : '/api/project/';
-            const method = currentProjectId ? 'PUT' : 'POST';
-
-            const response = await fetch(url, {
-              method: method,
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(formData),
-            });
+            let response;
+            if (currentCaseStudyId) {
+              response = await fetch(`/api/case-study/${currentCaseStudyId}`, {
+                method: 'PUT',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+              });
+            } else {
+              response = await fetch('/api/case-study', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+              });
+            }
 
             if (response.ok) {
               window.location.reload();
             } else {
               const error = await response.json();
-              alert('Error saving project: ' + error.error);
+              alert('Error saving case study: ' + error.error);
             }
           } catch (error) {
-            alert('Error saving project: ' + error.message);
+            alert('Error saving case study: ' + error.message);
           }
         });
-
-      // Close modal when clicking outside
-      document.getElementById('projectModal').addEventListener('click', e => {
-        if (e.target === e.currentTarget) {
-          window.closeModal();
-        }
-      });
     </script>
   </body>
 </html>

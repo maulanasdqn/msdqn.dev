@@ -25,6 +25,7 @@ try {
 const { data: experiences, error } = await supabase
   .from('experiences')
   .select('*')
+  .order('end_date', { ascending: false, nullsFirst: true })
   .order('start_date', { ascending: false });
 
 const email = session.data.user?.email;
@@ -206,6 +207,8 @@ const email = session.data.user?.email;
               <a href="/cms" class="nav-link">Dashboard</a>
               <a href="/cms/experience" class="nav-link active">Experience</a>
               <a href="/cms/projects" class="nav-link">Projects</a>
+              <a href="/cms/case-studies" class="nav-link">Case Studies</a>
+              <a href="/cms/testimonials" class="nav-link">Testimonials</a>
               <a href="/cms/about" class="nav-link">About</a>
               <a href="/cms/home" class="nav-link">Home</a>
             </div>

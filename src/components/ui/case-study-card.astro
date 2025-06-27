@@ -1,0 +1,143 @@
+---
+export interface Props {
+  title: string;
+  client?: string;
+  duration?: string;
+  technologies?: string[];
+  challenge?: string;
+  solution?: string;
+  results?: string[];
+}
+
+const { title, client, duration, technologies, challenge, solution, results } =
+  Astro.props;
+---
+
+<article
+  class="bg-rose-pine-surface/50 backdrop-blur-sm p-8 rounded-xl border border-rose-pine-highlight-med"
+>
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div class="lg:col-span-2">
+      <h3 class="text-2xl font-bold text-rose-pine-text mb-4">
+        {title}
+      </h3>
+
+      {
+        (client || duration) && (
+          <div class="flex flex-wrap gap-4 mb-6 text-sm text-rose-pine-subtle">
+            {client && (
+              <span class="flex items-center gap-2">
+                <svg
+                  class="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                  />
+                </svg>
+                {client}
+              </span>
+            )}
+            {duration && (
+              <span class="flex items-center gap-2">
+                <svg
+                  class="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                {duration}
+              </span>
+            )}
+          </div>
+        )
+      }
+
+      <div class="space-y-6">
+        {
+          challenge && (
+            <div>
+              <h4 class="text-lg font-semibold text-rose-pine-text mb-3">
+                Challenge
+              </h4>
+              <p class="text-rose-pine-subtle leading-relaxed">{challenge}</p>
+            </div>
+          )
+        }
+
+        {
+          solution && (
+            <div>
+              <h4 class="text-lg font-semibold text-rose-pine-text mb-3">
+                Solution
+              </h4>
+              <p class="text-rose-pine-subtle leading-relaxed">{solution}</p>
+            </div>
+          )
+        }
+      </div>
+    </div>
+
+    <div class="space-y-6">
+      {
+        technologies && technologies.length > 0 && (
+          <div>
+            <h4 class="text-lg font-semibold text-rose-pine-text mb-3">
+              Technologies
+            </h4>
+            <div class="flex flex-wrap gap-2">
+              {technologies.map((tech: string) => (
+                <span class="bg-rose-pine-highlight-low text-rose-pine-text px-3 py-1 rounded-full text-sm">
+                  {tech}
+                </span>
+              ))}
+            </div>
+          </div>
+        )
+      }
+
+      {
+        results && results.length > 0 && (
+          <div>
+            <h4 class="text-lg font-semibold text-rose-pine-text mb-3">
+              Key Results
+            </h4>
+            <ul class="space-y-2">
+              {results.map((result: string) => (
+                <li class="flex items-start gap-2 text-rose-pine-subtle">
+                  <svg
+                    class="w-5 h-5 text-rose-pine-foam mt-0.5 flex-shrink-0"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                  {result}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
+      }
+    </div>
+  </div>
+</article>
+

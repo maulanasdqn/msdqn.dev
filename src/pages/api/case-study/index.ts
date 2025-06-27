@@ -3,10 +3,9 @@ import type { APIRoute } from 'astro';
 
 export const GET: APIRoute = async () => {
   const { data, error } = await supabase
-    .from('experiences')
+    .from('case_studies')
     .select('*')
-    .order('end_date', { ascending: false, nullsFirst: true })
-    .order('start_date', { ascending: false });
+    .order('created_at', { ascending: false });
 
   if (error) {
     return new Response(JSON.stringify({ error: error.message }), {
@@ -28,10 +27,15 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     return new Response('Unauthorized', { status: 401 });
   }
 
+  await supabase.auth.setSession({
+    access_token: accessToken.value,
+    refresh_token: refreshToken.value,
+  });
+
   const body = await request.json();
 
   const { data, error } = await supabase
-    .from('experiences')
+    .from('case_studies')
     .insert([body])
     .select();
 

@@ -6,164 +6,89 @@ interface Props {
 const { currentPath = '' } = Astro.props;
 
 const navItems = [
-  {
-    name: 'Home',
-    href: '#home',
-    icon: 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6',
-  },
-  {
-    name: 'About',
-    href: '#about',
-    icon: 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z',
-  },
-  {
-    name: 'Projects',
-    href: '#projects',
-    icon: 'M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10',
-  },
-  {
-    name: 'Experience',
-    href: '#experience',
-    icon: 'M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 012 2v6a2 2 0 01-2 2H6a2 2 0 01-2-2V8a2 2 0 012-2V6',
-  },
-  {
-    name: 'Blog',
-    href: '/blog',
-    icon: 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253',
-  },
-  {
-    name: 'Contact',
-    href: '#contact',
-    icon: 'M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z',
-  },
-  {
-    name: 'Hire Me',
-    href: '/hire-me',
-    icon: 'M13 10V3L4 14h7v7l9-11h-7z',
-    isSpecial: true,
-  },
+  { name: 'Home', href: '#home' },
+  { name: 'About', href: '#about' },
+  { name: 'Projects', href: '#projects' },
+  { name: 'Experience', href: '#experience' },
+  { name: 'Blog', href: '/blog' },
+  { name: 'Contact', href: '#contact' },
+  { name: 'Hire Me', href: '/hire-me', isSpecial: true },
 ];
 ---
 
-<div class="fixed top-8 left-4 z-50">
-  <button
-    id="nav-toggle"
-    class="flex items-center justify-center w-12 h-12 bg-rose-pine-base/30 backdrop-blur-2xl hover:bg-rose-pine-iris/20 transition-all duration-300 rounded-2xl hover:rounded-xl shadow-2xl group border border-rose-pine-highlight-med/10"
-  >
-    <span
-      class="text-rose-pine-text group-hover:text-rose-pine-iris font-bold text-lg transition-colors duration-300"
-      >M</span
-    >
-  </button>
-</div>
-
 <nav
-  id="sidebar-nav"
-  class="hidden md:flex fixed left-0 top-0 h-full w-20 bg-rose-pine-base/30 backdrop-blur-2xl border-r border-rose-pine-highlight-med/10 z-40 flex-col items-center py-6 animate-nav shadow-2xl hover:w-52 transition-all duration-300 group -translate-x-full opacity-0"
+  class="fixed top-0 left-0 right-0 z-50 bg-rose-pine-base/20 backdrop-blur-xl border-b border-rose-pine-highlight-med/20 shadow-lg"
 >
-  <div class="flex flex-col space-y-1 w-full px-2">
-    {
-      navItems.map(item => (
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-16">
+      <div class="flex-shrink-0">
         <a
-          href={item.href}
-          class={`flex items-center w-full px-2 py-2 transition-all duration-300 rounded-xl group relative ${
-            item.isSpecial
-              ? 'bg-rose-pine-love/30 hover:bg-rose-pine-love/40 text-rose-pine-love border border-rose-pine-love/50'
-              : currentPath === item.href
-                ? 'bg-rose-pine-iris/30 text-rose-pine-iris'
-                : 'hover:bg-rose-pine-iris/20 text-rose-pine-text hover:text-rose-pine-iris'
-          }`}
+          href="/"
+          class="text-2xl font-bold text-rose-pine-text hover:text-rose-pine-iris transition-colors duration-300"
         >
-          <div
-            class={`flex items-center justify-center w-12 h-12 transition-all duration-300 rounded-2xl hover:rounded-xl flex-shrink-0 ${
-              item.isSpecial
-                ? 'bg-rose-pine-love text-rose-pine-base hover:bg-rose-pine-love/80'
-                : currentPath === item.href
-                  ? 'bg-rose-pine-iris text-rose-pine-base'
-                  : 'bg-rose-pine-surface hover:bg-rose-pine-iris text-rose-pine-text hover:text-rose-pine-base'
-            }`}
-          >
-            <svg
-              class="w-5 h-5 transition-colors duration-300"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d={item.icon}
-              />
-            </svg>
-          </div>
-          <span class="ml-3 font-medium opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap overflow-hidden">
-            {item.name}
-          </span>
-
-          {currentPath === item.href && (
-            <div class="absolute -left-1 w-1 h-8 bg-rose-pine-iris rounded-r-full" />
-          )}
+          Portfolio
         </a>
-      ))
-    }
+      </div>
+
+      <div class="hidden md:flex items-center space-x-2">
+        {
+          navItems.map(item => (
+            <a
+              href={item.href}
+              class={`px-4 py-2 text-sm font-medium transition-all duration-300 rounded-lg backdrop-blur-sm ${
+                item.isSpecial
+                  ? 'bg-rose-pine-love/30 text-rose-pine-love hover:bg-rose-pine-love/40 border border-rose-pine-love/50 shadow-lg'
+                  : currentPath === item.href
+                    ? 'bg-rose-pine-iris/30 text-rose-pine-iris border border-rose-pine-iris/30 shadow-md'
+                    : 'text-rose-pine-text hover:text-rose-pine-iris hover:bg-rose-pine-surface/30 border border-transparent hover:border-rose-pine-highlight-med/20'
+              }`}
+            >
+              {item.name}
+            </a>
+          ))
+        }
+      </div>
+
+      <div class="md:hidden">
+        <button
+          id="mobile-menu-button"
+          class="inline-flex items-center justify-center p-2 rounded-lg text-rose-pine-text hover:text-rose-pine-iris hover:bg-rose-pine-surface/30 transition-all duration-300 backdrop-blur-sm border border-rose-pine-highlight-med/20"
+          aria-expanded="false"
+        >
+          <svg
+            class="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
   </div>
-</nav>
 
-<div class="fixed top-6 left-6 z-50 md:hidden">
-  <button
-    id="mobile-nav-toggle"
-    class="flex items-center justify-center w-12 h-12 bg-rose-pine-base/30 backdrop-blur-2xl hover:bg-rose-pine-iris/20 transition-all duration-300 rounded-2xl hover:rounded-xl shadow-2xl group border border-rose-pine-highlight-med/10"
-  >
-    <span
-      class="text-rose-pine-text group-hover:text-rose-pine-iris font-bold text-lg transition-colors duration-300"
-      >M</span
+  <div id="mobile-menu" class="md:hidden hidden">
+    <div
+      class="px-4 pt-2 pb-3 space-y-2 bg-rose-pine-base/30 backdrop-blur-xl border-t border-rose-pine-highlight-med/20"
     >
-  </button>
-</div>
-
-<nav
-  id="mobile-nav"
-  class="fixed inset-0 bg-rose-pine-base/95 backdrop-blur-2xl z-40 md:hidden transform translate-y-full transition-transform duration-300"
->
-  <div class="flex flex-col h-full pt-20 px-6">
-    <div class="flex flex-col space-y-4">
       {
         navItems.map(item => (
           <a
             href={item.href}
-            class={`flex items-center space-x-4 py-4 px-4 transition-all duration-300 rounded-xl ${
+            class={`block px-4 py-3 text-base font-medium transition-all duration-300 rounded-lg backdrop-blur-sm ${
               item.isSpecial
-                ? 'bg-rose-pine-love/30 hover:bg-rose-pine-love/40 text-rose-pine-love border border-rose-pine-love/50'
+                ? 'bg-rose-pine-love/30 text-rose-pine-love hover:bg-rose-pine-love/40 border border-rose-pine-love/50 shadow-lg'
                 : currentPath === item.href
-                  ? 'bg-rose-pine-iris/30 text-rose-pine-iris'
-                  : 'hover:bg-rose-pine-iris/20 text-rose-pine-text hover:text-rose-pine-iris'
+                  ? 'bg-rose-pine-iris/30 text-rose-pine-iris border border-rose-pine-iris/30 shadow-md'
+                  : 'text-rose-pine-text hover:text-rose-pine-iris hover:bg-rose-pine-surface/30 border border-transparent hover:border-rose-pine-highlight-med/20'
             }`}
           >
-            <div
-              class={`flex items-center justify-center w-12 h-12 transition-all duration-300 rounded-2xl ${
-                item.isSpecial
-                  ? 'bg-rose-pine-love text-rose-pine-base hover:bg-rose-pine-love/80'
-                  : currentPath === item.href
-                    ? 'bg-rose-pine-iris text-rose-pine-base'
-                    : 'bg-rose-pine-surface hover:bg-rose-pine-iris text-rose-pine-text hover:text-rose-pine-base'
-              }`}
-            >
-              <svg
-                class="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d={item.icon}
-                />
-              </svg>
-            </div>
-            <span class="text-lg font-medium">{item.name}</span>
+            {item.name}
           </a>
         ))
       }
@@ -172,185 +97,87 @@ const navItems = [
 </nav>
 
 <style>
-  @keyframes slideInFromLeft {
-    from {
-      opacity: 0;
-      transform: translateX(-100px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
-  .animate-nav {
-    animation: slideInFromLeft 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  #sidebar-nav {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    overflow: hidden;
-  }
-
-  nav a.active {
-    background-color: rgba(196, 167, 231, 0.3) !important;
-    color: #c4a7e7 !important;
-  }
-
-  #sidebar-nav.show {
-    transform: translateX(0);
-    opacity: 1;
-  }
-
-  #sidebar-nav:hover {
-    width: 13rem;
-  }
-
-  #mobile-nav.show {
-    transform: translateY(0);
-  }
-
-  #sidebar-nav a span {
-    max-width: 0;
-    overflow: hidden;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    white-space: nowrap;
-  }
-
-  #sidebar-nav:hover a span {
-    max-width: 200px;
-    opacity: 1 !important;
-  }
-
-  #sidebar-nav a:first-child span {
-    font-weight: 600;
-    letter-spacing: -0.025em;
-  }
-
-  #sidebar-nav:hover a[class*='bg-rose-pine-iris/30'] {
-    background: rgba(196, 167, 231, 0.4);
-  }
-
-  #nav-toggle:hover,
-  #mobile-nav-toggle:hover {
-    transform: scale(1.05);
-  }
-
-  #sidebar-nav a,
-  #mobile-nav a {
-    position: relative;
-    overflow: hidden;
-    user-select: none;
-  }
-
-  #sidebar-nav a::before,
-  #mobile-nav a::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(196, 167, 231, 0.1);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    border-radius: inherit;
-  }
-
-  #sidebar-nav a:hover::before,
-  #mobile-nav a:hover::before {
-    opacity: 1;
-  }
-
-  #sidebar-nav,
-  #mobile-nav {
-    backdrop-filter: blur(40px) saturate(180%);
-    -webkit-backdrop-filter: blur(40px) saturate(180%);
-    background: rgba(35, 33, 54, 0.3);
+  nav {
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
     box-shadow:
-      0 8px 32px rgba(0, 0, 0, 0.3),
+      0 4px 32px rgba(0, 0, 0, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+
+  nav a {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  nav a:hover {
+    transform: translateY(-1px);
+    box-shadow:
+      0 4px 20px rgba(196, 167, 231, 0.2),
       inset 0 1px 0 rgba(255, 255, 255, 0.1);
   }
 
-  #sidebar-nav::before,
-  #mobile-nav::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(
-      135deg,
-      rgba(196, 167, 231, 0.1) 0%,
-      rgba(35, 33, 54, 0.2) 50%,
-      rgba(68, 65, 90, 0.1) 100%
-    );
-    pointer-events: none;
-    z-index: -1;
-  }
-
-  #sidebar-nav a,
-  #mobile-nav a {
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-
-  #sidebar-nav a.bg-rose-pine-iris,
-  #mobile-nav a[class*='bg-rose-pine-iris/30'] {
+  #mobile-menu {
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
     box-shadow:
-      0 0 20px rgba(196, 167, 231, 0.5),
-      0 0 40px rgba(196, 167, 231, 0.3),
-      inset 0 1px 0 rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+      0 8px 32px rgba(0, 0, 0, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
   }
 
-  #sidebar-nav a:hover,
-  #mobile-nav a:hover {
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+  nav a[class*='bg-rose-pine-iris/30'] {
     box-shadow:
-      0 4px 20px rgba(196, 167, 231, 0.2),
+      0 0 20px rgba(196, 167, 231, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  nav a[class*='bg-rose-pine-love/30'] {
+    box-shadow:
+      0 0 20px rgba(235, 111, 146, 0.3),
       inset 0 1px 0 rgba(255, 255, 255, 0.1);
   }
 </style>
 
 <script is:inline>
   document.addEventListener('DOMContentLoaded', function () {
-    const navToggle = document.getElementById('nav-toggle');
-    const mobileNavToggle = document.getElementById('mobile-nav-toggle');
-    const sidebarNav = document.getElementById('sidebar-nav');
-    const mobileNav = document.getElementById('mobile-nav');
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
 
-    function smoothScrollTo(target) {
-      const element = document.querySelector(target);
-      if (element) {
-        const offsetTop = element.offsetTop - 32;
-        window.scrollTo({
-          top: offsetTop,
-          behavior: 'smooth',
-        });
-      }
-    }
+    if (mobileMenuButton && mobileMenu) {
+      mobileMenuButton.addEventListener('click', function () {
+        const isHidden = mobileMenu.classList.contains('hidden');
 
-    function handleAnchorClick(e) {
-      const href = e.currentTarget.getAttribute('href');
-      if (href && href.startsWith('#')) {
-        e.preventDefault();
-        smoothScrollTo(href);
-
-        if (mobileNav && mobileNav.classList.contains('show')) {
-          mobileNav.classList.remove('show');
+        if (isHidden) {
+          mobileMenu.classList.remove('hidden');
+          mobileMenuButton.setAttribute('aria-expanded', 'true');
+        } else {
+          mobileMenu.classList.add('hidden');
+          mobileMenuButton.setAttribute('aria-expanded', 'false');
         }
-
-        if (sidebarNav && sidebarNav.classList.contains('show')) {
-          sidebarNav.classList.remove('show');
-        }
-      }
+      });
     }
 
     document.querySelectorAll('a[href^="#"]').forEach(link => {
-      link.addEventListener('click', handleAnchorClick);
+      link.addEventListener('click', function (e) {
+        const href = this.getAttribute('href');
+        if (href && href.startsWith('#')) {
+          e.preventDefault();
+          const element = document.querySelector(href);
+          if (element) {
+            const offsetTop = element.offsetTop - 80;
+            window.scrollTo({
+              top: offsetTop,
+              behavior: 'smooth',
+            });
+          }
+
+          if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+            mobileMenu.classList.add('hidden');
+            mobileMenuButton.setAttribute('aria-expanded', 'false');
+          }
+        }
+      });
     });
 
     function updateActiveSection() {
@@ -373,52 +200,36 @@ const navItems = [
       });
 
       navLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === currentSection) {
-          link.classList.add('active');
+        const href = link.getAttribute('href');
+        if (href === currentSection) {
+          link.classList.add(
+            'bg-rose-pine-iris/30',
+            'text-rose-pine-iris',
+            'border-rose-pine-iris/30'
+          );
+          link.classList.remove('text-rose-pine-text', 'border-transparent');
+        } else if (href && href.startsWith('#')) {
+          link.classList.remove(
+            'bg-rose-pine-iris/30',
+            'text-rose-pine-iris',
+            'border-rose-pine-iris/30'
+          );
+          link.classList.add('text-rose-pine-text', 'border-transparent');
         }
       });
     }
 
     let ticking = false;
-    function onScroll() {
+    window.addEventListener('scroll', function () {
       if (!ticking) {
-        requestAnimationFrame(() => {
+        requestAnimationFrame(function () {
           updateActiveSection();
           ticking = false;
         });
         ticking = true;
       }
-    }
+    });
 
-    window.addEventListener('scroll', onScroll);
     updateActiveSection();
-
-    if (navToggle && sidebarNav) {
-      navToggle.addEventListener('click', function () {
-        sidebarNav.classList.toggle('show');
-      });
-
-      document.addEventListener('click', function (e) {
-        if (!sidebarNav.contains(e.target) && !navToggle.contains(e.target)) {
-          sidebarNav.classList.remove('show');
-        }
-      });
-    }
-
-    if (mobileNavToggle && mobileNav) {
-      mobileNavToggle.addEventListener('click', function () {
-        mobileNav.classList.toggle('show');
-      });
-
-      document.addEventListener('click', function (e) {
-        if (
-          !mobileNav.contains(e.target) &&
-          !mobileNavToggle.contains(e.target)
-        ) {
-          mobileNav.classList.remove('show');
-        }
-      });
-    }
   });
 </script>

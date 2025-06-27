@@ -4,8 +4,7 @@ const STATIC_CACHE = [
   '/favicon.svg',
   '/manifest.json',
   '/robots.txt',
-  '/sitemap.xml',
-  '/js/analytics.js'
+  '/sitemap.xml'
 ];
 
 // Install event - cache static assets

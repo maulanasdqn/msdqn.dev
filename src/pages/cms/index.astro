@@ -92,6 +92,9 @@ const email = session.data.user?.email;
       .icon-gold {
         background-color: var(--rp-gold);
       }
+      .icon-rose {
+        background-color: var(--rp-rose);
+      }
     </style>
   </head>
   <body class="min-h-screen">
@@ -256,6 +259,48 @@ const email = session.data.user?.email;
               <div class="flex items-center">
                 <div class="flex-shrink-0">
                   <div
+                    class="w-8 h-8 icon-rose rounded-md flex items-center justify-center"
+                  >
+                    <svg
+                      class="w-5 h-5 text-white"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                      ></path>
+                    </svg>
+                  </div>
+                </div>
+                <div class="ml-5 w-0 flex-1">
+                  <dt class="text-sm font-medium text-muted truncate">
+                    Case Studies
+                  </dt>
+                  <dd class="text-lg font-medium">Portfolio Studies</dd>
+                </div>
+              </div>
+              <div class="mt-3">
+                <a
+                  href="/cms/case-studies"
+                  class="text-sm font-medium link-pine transition-colors"
+                >
+                  Manage case studies →
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="card-bg overflow-hidden shadow-lg rounded-lg transition-colors"
+          >
+            <div class="p-5">
+              <div class="flex items-center">
+                <div class="flex-shrink-0">
+                  <div
                     class="w-8 h-8 icon-gold rounded-md flex items-center justify-center"
                   >
                     <svg
@@ -284,6 +329,49 @@ const email = session.data.user?.email;
                   class="text-sm font-medium link-pine transition-colors"
                 >
                   Edit homepage →
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="card-bg overflow-hidden shadow-lg rounded-lg transition-colors"
+          >
+            <div class="p-5">
+              <div class="flex items-center">
+                <div class="flex-shrink-0">
+                  <div
+                    class="w-8 h-8 icon-foam rounded-md flex items-center justify-center"
+                    style="background-color: var(--rp-foam);"
+                  >
+                    <svg
+                      class="w-5 h-5 text-white"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                      ></path>
+                    </svg>
+                  </div>
+                </div>
+                <div class="ml-5 w-0 flex-1">
+                  <dt class="text-sm font-medium text-muted truncate">
+                    Testimonials
+                  </dt>
+                  <dd class="text-lg font-medium">Client Feedback</dd>
+                </div>
+              </div>
+              <div class="mt-3">
+                <a
+                  href="/cms/testimonials"
+                  class="text-sm font-medium link-pine transition-colors"
+                >
+                  Manage testimonials →
                 </a>
               </div>
             </div>

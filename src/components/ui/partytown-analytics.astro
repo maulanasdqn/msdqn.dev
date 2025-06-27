@@ -1,0 +1,34 @@
+---
+const gtmId = import.meta.env.GTM_ID;
+const googleAnalyticsId = import.meta.env.GOOGLE_ANALYTICS_ID;
+---
+
+{
+  gtmId && (
+    <>
+      <script
+        type="text/partytown"
+        src={`https://www.googletagmanager.com/gtm.js?id=${gtmId}`}
+      />
+      <noscript>
+        <iframe
+          src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
+          height="0"
+          width="0"
+          style="display:none;visibility:hidden"
+        />
+      </noscript>
+    </>
+  )
+}
+
+{
+  googleAnalyticsId && !gtmId && (
+    <>
+      <script
+        type="text/partytown"
+        src={`https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsId}`}
+      />
+    </>
+  )
+}

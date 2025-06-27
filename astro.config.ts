@@ -2,8 +2,17 @@ import tailwind from '@astrojs/tailwind';
 import vercel from '@astrojs/vercel';
 import { defineConfig } from 'astro/config';
 
+import partytown from '@astrojs/partytown';
+
 export default defineConfig({
-  integrations: [tailwind()],
+  integrations: [
+    tailwind(),
+    partytown({
+      config: {
+        forward: ['dataLayer.push', 'gtag'],
+      },
+    }),
+  ],
   output: 'server',
   adapter: vercel({
     webAnalytics: {

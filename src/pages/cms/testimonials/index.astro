@@ -1,6 +1,5 @@
 ---
 import { supabase } from '@/libs/supabase';
-import ProjectCard from '@/components/ui/project-card.astro';
 
 const { cookies, redirect } = Astro;
 const accessToken = cookies.get('sb-access-token');
@@ -23,8 +22,8 @@ try {
   return redirect('/login');
 }
 
-const { data: projects, error } = await supabase
-  .from('projects')
+const { data: testimonials, error } = await supabase
+  .from('testimonials')
   .select('*')
   .order('created_at', { ascending: false });
 
@@ -36,8 +35,8 @@ const email = session.data.user?.email;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Projects Management - CMS</title>
-    <meta name="description" content="Manage portfolio projects" />
+    <title>Testimonials Management - CMS</title>
+    <meta name="description" content="Manage client testimonials" />
     <style>
       :root {
         --rp-base: #191724;
@@ -60,8 +59,6 @@ const email = session.data.user?.email;
           system-ui,
           -apple-system,
           sans-serif;
-        margin: 0;
-        padding: 0;
       }
       .nav-bg {
         background-color: var(--rp-surface);
@@ -173,50 +170,19 @@ const email = session.data.user?.email;
         padding: 8px 12px;
         border-radius: 4px;
         width: 100%;
-        box-sizing: border-box;
       }
       .form-input:focus {
         outline: none;
         border-color: var(--rp-pine);
       }
-      .tech-tag {
-        background-color: var(--rp-overlay);
+      .star-rating {
         color: var(--rp-foam);
-        padding: 4px 8px;
-        border-radius: 12px;
-        font-size: 12px;
-        display: inline-block;
-        margin: 2px;
-      }
-
-      .featured-badge {
-        background-color: var(--rp-love);
-        color: white;
-        padding: 4px 8px;
-        border-radius: 12px;
-        font-size: 12px;
-        font-weight: 500;
-      }
-      .project-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 1.5rem;
-        align-items: stretch;
-      }
-      .project-grid > div {
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-      }
-      .project-grid > div > div:first-child {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
+        font-size: 16px;
       }
     </style>
   </head>
-  <body>
-    <nav class="nav-bg">
+  <body class="min-h-screen">
+    <nav class="nav-bg shadow-lg">
       <div style="max-width: 1200px; margin: 0 auto; padding: 0 16px;">
         <div
           style="display: flex; justify-content: space-between; height: 64px;"
@@ -234,9 +200,11 @@ const email = session.data.user?.email;
             >
               <a href="/cms" class="nav-link">Dashboard</a>
               <a href="/cms/experience" class="nav-link">Experience</a>
-              <a href="/cms/projects" class="nav-link active">Projects</a>
+              <a href="/cms/projects" class="nav-link">Projects</a>
               <a href="/cms/case-studies" class="nav-link">Case Studies</a>
-              <a href="/cms/testimonials" class="nav-link">Testimonials</a>
+              <a href="/cms/testimonials" class="nav-link active"
+                >Testimonials</a
+              >
               <a href="/cms/about" class="nav-link">About</a>
               <a href="/cms/home" class="nav-link">Home</a>
             </div>
@@ -256,67 +224,89 @@ const email = session.data.user?.email;
         style="border-bottom: 1px solid var(--rp-overlay); padding-bottom: 20px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;"
       >
         <h1 style="font-size: 24px; font-weight: bold; margin: 0;">
-          Projects Management
+          Testimonials Management
         </h1>
         <button onclick="showCreateForm()" class="btn-primary"
-          >+ Add Project</button
+          >+ Add Testimonial</button
         >
       </div>
 
       {
         error && (
           <div style="background-color: rgba(235, 111, 146, 0.2); border: 1px solid var(--rp-love); color: var(--rp-love); padding: 12px; border-radius: 6px; margin-bottom: 16px;">
-            Error loading projects: {error.message}
+            Error loading testimonials: {error.message}
           </div>
         )
       }
 
       {
-        projects && projects.length === 0 && (
+        testimonials && testimonials.length === 0 && (
           <div style="text-align: center; padding: 48px 0;">
-            <div style="font-size: 48px; margin-bottom: 16px;">🚀</div>
-            <h3 style="margin: 8px 0; font-size: 18px;">No projects</h3>
+            <div style="font-size: 48px; margin-bottom: 16px;">💬</div>
+            <h3 style="margin: 8px 0; font-size: 18px;">No testimonials</h3>
             <p style="margin: 4px 0; font-size: 14px;" class="text-subtle">
-              Get started by adding your first project.
+              Get started by adding your first client testimonial.
             </p>
           </div>
         )
       }
 
       {
-        projects && projects.length > 0 && (
-          <div class="project-grid" id="projectsGrid">
-            {projects.map(project => (
-              <div class="relative group h-full flex flex-col">
-                <div class="flex-1">
-                  <ProjectCard
-                    title={project.title}
-                    description={project.description || ''}
-                    technologies={project.technologies || []}
-                    period={
-                      project.start_date
-                        ? `${project.start_date}${project.end_date ? ` - ${project.end_date}` : ''}`
-                        : undefined
-                    }
-                    category={project.category || undefined}
-                    demoLink={project.live_url || undefined}
-                    githubLink={project.github_url || undefined}
-                    highlights={project.is_featured ? ['Featured'] : []}
-                  />
-                </div>
-                <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex gap-2">
-                  <button
-                    onclick={`editProject('${project.id}')`}
-                    class="btn-edit px-3 py-1 text-xs"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onclick={`deleteProject('${project.id}')`}
-                    class="btn-delete px-3 py-1 text-xs"
-                  >
-                    Delete
-                  </button>
+        testimonials && testimonials.length > 0 && (
+          <div
+            class="card-bg mb-4"
+            style="border-radius: 8px; overflow: hidden;"
+          >
+            {testimonials.map((testimonial: any, index: number) => (
+              <div
+                style={`padding: 20px; ${index !== testimonials.length - 1 ? 'border-bottom: 1px solid var(--rp-overlay);' : ''}`}
+              >
+                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                  <div style="flex: 1; display: flex; gap: 16px;">
+                    <img
+                      src={testimonial.image || '/favicon.svg'}
+                      alt={testimonial.name}
+                      style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; background-color: var(--rp-overlay);"
+                    />
+                    <div style="flex: 1;">
+                      <h3 style="font-size: 18px; font-weight: 600; margin: 0 0 4px 0;">
+                        {testimonial.name}
+                      </h3>
+                      <p
+                        style="font-size: 14px; margin: 0 0 8px 0;"
+                        class="text-subtle"
+                      >
+                        {testimonial.role} at {testimonial.company}
+                      </p>
+                      <div style="margin: 8px 0;">
+                        <div class="star-rating">
+                          {Array.from({ length: testimonial.rating })
+                            .map(() => '★')
+                            .join('')}
+                          {Array.from({ length: 5 - testimonial.rating })
+                            .map(() => '☆')
+                            .join('')}
+                        </div>
+                      </div>
+                      <blockquote style="font-size: 14px; margin: 8px 0; font-style: italic; color: var(--rp-subtle); border-left: 3px solid var(--rp-overlay); padding-left: 12px;">
+                        "{testimonial.content}"
+                      </blockquote>
+                    </div>
+                  </div>
+                  <div style="display: flex; gap: 8px; margin-left: 16px;">
+                    <button
+                      onclick={`editTestimonial('${testimonial.id}')`}
+                      class="btn-edit"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onclick={`deleteTestimonial('${testimonial.id}')`}
+                      class="btn-delete"
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}
@@ -325,61 +315,39 @@ const email = session.data.user?.email;
       }
     </main>
 
-    <!-- Modal -->
-    <div id="projectModal" class="modal hidden">
+    <div id="testimonialModal" class="modal hidden">
       <div class="modal-content">
         <h2
           id="modalTitle"
           style="font-size: 20px; font-weight: bold; margin: 0 0 16px 0;"
         >
-          Add Project
+          Add Testimonial
         </h2>
-        <form id="projectForm">
-          <input type="hidden" id="projectId" />
+        <form id="testimonialForm">
+          <input type="hidden" id="testimonialId" />
 
           <div style="margin-bottom: 16px;">
             <label
               style="display: block; font-size: 14px; font-weight: 500; margin-bottom: 4px;"
-              >Project Title</label
+              >Name</label
             >
-            <input type="text" id="title" required class="form-input" />
+            <input type="text" id="name" required class="form-input" />
           </div>
 
           <div style="margin-bottom: 16px;">
             <label
               style="display: block; font-size: 14px; font-weight: 500; margin-bottom: 4px;"
-              >Description</label
+              >Role</label
             >
-            <textarea id="description" rows="4" class="form-input"></textarea>
+            <input type="text" id="role" required class="form-input" />
           </div>
 
           <div style="margin-bottom: 16px;">
             <label
               style="display: block; font-size: 14px; font-weight: 500; margin-bottom: 4px;"
-              >Technologies (comma-separated)</label
+              >Company</label
             >
-            <input
-              type="text"
-              id="technologies"
-              placeholder="React, TypeScript, Node.js"
-              class="form-input"
-            />
-          </div>
-
-          <div style="margin-bottom: 16px;">
-            <label
-              style="display: block; font-size: 14px; font-weight: 500; margin-bottom: 4px;"
-              >GitHub URL</label
-            >
-            <input type="url" id="githubUrl" class="form-input" />
-          </div>
-
-          <div style="margin-bottom: 16px;">
-            <label
-              style="display: block; font-size: 14px; font-weight: 500; margin-bottom: 4px;"
-              >Live Demo URL</label
-            >
-            <input type="url" id="liveUrl" class="form-input" />
+            <input type="text" id="company" required class="form-input" />
           </div>
 
           <div style="margin-bottom: 16px;">
@@ -387,20 +355,39 @@ const email = session.data.user?.email;
               style="display: block; font-size: 14px; font-weight: 500; margin-bottom: 4px;"
               >Image URL</label
             >
-            <input type="url" id="imageUrl" class="form-input" />
+            <input
+              type="url"
+              id="image"
+              class="form-input"
+              placeholder="/favicon.svg"
+            />
+          </div>
+
+          <div style="margin-bottom: 16px;">
+            <label
+              style="display: block; font-size: 14px; font-weight: 500; margin-bottom: 4px;"
+              >Rating</label
+            >
+            <select id="rating" required class="form-input">
+              <option value="5">5 Stars</option>
+              <option value="4">4 Stars</option>
+              <option value="3">3 Stars</option>
+              <option value="2">2 Stars</option>
+              <option value="1">1 Star</option>
+            </select>
           </div>
 
           <div style="margin-bottom: 24px;">
-            <label style="display: flex; align-items: center; gap: 8px;">
-              <input
-                type="checkbox"
-                id="featured"
-                style="accent-color: var(--rp-pine);"
-              />
-              <span style="font-size: 14px; font-weight: 500;"
-                >Featured Project</span
-              >
-            </label>
+            <label
+              style="display: block; font-size: 14px; font-weight: 500; margin-bottom: 4px;"
+              >Testimonial Content</label
+            >
+            <textarea
+              id="content"
+              rows="4"
+              required
+              class="form-input"
+              placeholder="Write the client's testimonial here..."></textarea>
           </div>
 
           <div style="display: flex; justify-content: flex-end; gap: 12px;">
@@ -410,57 +397,68 @@ const email = session.data.user?.email;
               style="background: none; border: 1px solid var(--rp-muted); color: var(--rp-subtle); padding: 8px 16px; border-radius: 4px; cursor: pointer;"
               >Cancel</button
             >
-            <button type="submit" class="btn-primary">Save Project</button>
+            <button type="submit" class="btn-primary">Save Testimonial</button>
           </div>
         </form>
       </div>
     </div>
 
     <script is:inline>
-      let currentProjectId = null;
+      let currentTestimonialId = null;
 
-      // Make functions globally accessible
-      window.showCreateForm = function () {
-        document.getElementById('modalTitle').textContent = 'Add Project';
-        document.getElementById('projectForm').reset();
-        document.getElementById('projectId').value = '';
-        currentProjectId = null;
-        document.getElementById('projectModal').classList.remove('hidden');
-      };
+      function showCreateForm() {
+        const modalTitle = document.getElementById('modalTitle');
+        const testimonialForm = document.getElementById('testimonialForm');
+        const testimonialId = document.getElementById('testimonialId');
+        const testimonialModal = document.getElementById('testimonialModal');
 
-      window.editProject = async function (id) {
+        if (modalTitle) modalTitle.textContent = 'Add Testimonial';
+        if (testimonialForm) testimonialForm.reset();
+        if (testimonialId) testimonialId.value = '';
+        currentTestimonialId = null;
+        if (testimonialModal) testimonialModal.classList.remove('hidden');
+      }
+
+      async function editTestimonial(id) {
         try {
-          const response = await fetch(`/api/project/${id}`);
-          const project = await response.json();
+          const response = await fetch(`/api/testimonial/${id}`);
+          const testimonial = await response.json();
 
-          document.getElementById('modalTitle').textContent = 'Edit Project';
-          document.getElementById('projectId').value = project.id;
-          document.getElementById('title').value = project.title;
-          document.getElementById('description').value =
-            project.description || '';
-          document.getElementById('technologies').value = project.technologies
-            ? project.technologies.join(', ')
-            : '';
-          document.getElementById('githubUrl').value = project.github_url || '';
-          document.getElementById('liveUrl').value = project.live_url || '';
-          document.getElementById('imageUrl').value = project.image_url || '';
-          document.getElementById('featured').checked =
-            project.is_featured || false;
+          const modalTitle = document.getElementById('modalTitle');
+          const testimonialId = document.getElementById('testimonialId');
+          const name = document.getElementById('name');
+          const role = document.getElementById('role');
+          const company = document.getElementById('company');
+          const image = document.getElementById('image');
+          const rating = document.getElementById('rating');
+          const content = document.getElementById('content');
+          const testimonialModal = document.getElementById('testimonialModal');
 
-          currentProjectId = id;
-          document.getElementById('projectModal').classList.remove('hidden');
+          modalTitle.textContent = 'Edit Testimonial';
+          testimonialId.value = testimonial.id;
+          name.value = testimonial.name;
+          role.value = testimonial.role;
+          company.value = testimonial.company;
+          image.value = testimonial.image || '';
+          rating.value = testimonial.rating;
+          content.value = testimonial.content;
+
+          currentTestimonialId = id;
+          testimonialModal.classList.remove('hidden');
         } catch (error) {
-          alert('Error loading project: ' + error.message);
+          alert(
+            'Error loading testimonial: ' + (error?.message || 'Unknown error')
+          );
         }
-      };
+      }
 
-      window.deleteProject = async function (id) {
-        if (!confirm('Are you sure you want to delete this project?')) {
+      async function deleteTestimonial(id) {
+        if (!confirm('Are you sure you want to delete this testimonial?')) {
           return;
         }
 
         try {
-          const response = await fetch(`/api/project/${id}`, {
+          const response = await fetch(`/api/testimonial/${id}`, {
             method: 'DELETE',
           });
 
@@ -468,43 +466,46 @@ const email = session.data.user?.email;
             window.location.reload();
           } else {
             const error = await response.json();
-            alert('Error deleting project: ' + error.error);
+            alert('Error deleting testimonial: ' + error.error);
           }
         } catch (error) {
-          alert('Error deleting project: ' + error.message);
+          alert(
+            'Error deleting testimonial: ' + (error?.message || 'Unknown error')
+          );
         }
-      };
+      }
 
-      window.closeModal = function () {
-        document.getElementById('projectModal').classList.add('hidden');
-      };
+      function closeModal() {
+        const testimonialModal = document.getElementById('testimonialModal');
+        if (testimonialModal) testimonialModal.classList.add('hidden');
+      }
 
-      document
-        .getElementById('projectForm')
-        .addEventListener('submit', async e => {
+      const testimonialForm = document.getElementById('testimonialForm');
+      if (testimonialForm) {
+        testimonialForm.addEventListener('submit', async e => {
           e.preventDefault();
 
+          const name = document.getElementById('name');
+          const role = document.getElementById('role');
+          const company = document.getElementById('company');
+          const image = document.getElementById('image');
+          const rating = document.getElementById('rating');
+          const content = document.getElementById('content');
+
           const formData = {
-            title: document.getElementById('title').value,
-            description: document.getElementById('description').value || null,
-            technologies: document.getElementById('technologies').value
-              ? document
-                  .getElementById('technologies')
-                  .value.split(',')
-                  .map(t => t.trim())
-                  .filter(t => t)
-              : [],
-            github_url: document.getElementById('githubUrl').value || null,
-            live_url: document.getElementById('liveUrl').value || null,
-            image_url: document.getElementById('imageUrl').value || null,
-            is_featured: document.getElementById('featured').checked,
+            name: name.value,
+            role: role.value,
+            company: company.value,
+            image: image.value || '/favicon.svg',
+            rating: parseInt(rating.value),
+            content: content.value,
           };
 
           try {
-            const url = currentProjectId
-              ? `/api/project/${currentProjectId}`
-              : '/api/project/';
-            const method = currentProjectId ? 'PUT' : 'POST';
+            const url = currentTestimonialId
+              ? `/api/testimonial/${currentTestimonialId}`
+              : '/api/testimonial/';
+            const method = currentTestimonialId ? 'PUT' : 'POST';
 
             const response = await fetch(url, {
               method: method,
@@ -518,19 +519,25 @@ const email = session.data.user?.email;
               window.location.reload();
             } else {
               const error = await response.json();
-              alert('Error saving project: ' + error.error);
+              alert('Error saving testimonial: ' + error.error);
             }
           } catch (error) {
-            alert('Error saving project: ' + error.message);
+            alert(
+              'Error saving testimonial: ' + (error?.message || 'Unknown error')
+            );
           }
         });
+      }
 
-      // Close modal when clicking outside
-      document.getElementById('projectModal').addEventListener('click', e => {
-        if (e.target === e.currentTarget) {
-          window.closeModal();
-        }
-      });
+      const testimonialModal = document.getElementById('testimonialModal');
+      if (testimonialModal) {
+        testimonialModal.addEventListener('click', e => {
+          if (e.target === e.currentTarget) {
+            closeModal();
+          }
+        });
+      }
     </script>
   </body>
 </html>
+

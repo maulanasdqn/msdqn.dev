@@ -42,9 +42,65 @@ const {
   data-duration={duration}
   data-distance={distance}
   data-once={once}
+  style={className?.includes('h-full') ? 'height: 100%;' : ''}
 >
   <slot />
 </div>
+
+<script is:inline>
+  (function () {
+    function initAnimations() {
+      if ('IntersectionObserver' in window) {
+        const observerOptions = {
+          root: null,
+          rootMargin: '0px 0px -50px 0px',
+          threshold: 0.1,
+        };
+
+        const animateObserver = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const element = entry.target;
+              const delay = parseInt(element.dataset.delay) || 0;
+              const duration = parseInt(element.dataset.duration) || 600;
+              const distance = parseInt(element.dataset.distance) || 30;
+              const once = element.dataset.once === 'true';
+
+              element.style.setProperty('--distance', `${distance}px`);
+              element.style.transitionDuration = `${duration}ms`;
+
+              setTimeout(() => {
+                element.classList.add('animate-in');
+              }, delay);
+
+              if (once) {
+                animateObserver.unobserve(element);
+              }
+            } else if (entry.target.dataset.once !== 'true') {
+              entry.target.classList.remove('animate-in');
+            }
+          });
+        }, observerOptions);
+
+        const elementsToAnimate = document.querySelectorAll('.scroll-animate');
+        elementsToAnimate.forEach(el => {
+          animateObserver.observe(el);
+        });
+      } else {
+        const elementsToAnimate = document.querySelectorAll('.scroll-animate');
+        elementsToAnimate.forEach(el => {
+          el.classList.add('animate-in');
+        });
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initAnimations);
+    } else {
+      initAnimations();
+    }
+  })();
+</script>
 
 <style>
   .scroll-animate {
