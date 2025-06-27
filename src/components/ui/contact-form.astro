@@ -1,9 +1,18 @@
-<form class="bg-rose-pine-surface/50 backdrop-blur-sm rounded-2xl p-8 max-w-2xl mx-auto border border-rose-pine-highlight-med">
-  <h2 class="text-2xl font-bold text-rose-pine-text mb-6 text-center">Get In Touch</h2>
-  
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<form
+  class="bg-rose-pine-surface/50 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 max-w-2xl mx-auto border border-rose-pine-highlight-med"
+>
+  <h2
+    class="text-xl sm:text-2xl font-bold text-rose-pine-text mb-4 sm:mb-6 text-center"
+  >
+    Get In Touch
+  </h2>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-4 sm:mb-6">
     <div>
-      <label for="name" class="block text-sm font-medium text-rose-pine-subtle mb-2">
+      <label
+        for="name"
+        class="block text-sm font-medium text-rose-pine-subtle mb-2"
+      >
         Full Name
       </label>
       <input
@@ -11,13 +20,16 @@
         id="name"
         name="name"
         required
-        class="w-full px-4 py-3 bg-rose-pine-overlay/50 border border-rose-pine-highlight-med rounded-xl text-rose-pine-text placeholder-rose-pine-muted focus:ring-2 focus:ring-rose-pine-iris focus:border-transparent transition-all"
+        class="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-rose-pine-overlay/50 border border-rose-pine-highlight-med rounded-lg sm:rounded-xl text-rose-pine-text placeholder-rose-pine-muted focus:ring-2 focus:ring-rose-pine-iris focus:border-transparent transition-all text-sm sm:text-base"
         placeholder="Your full name"
       />
     </div>
-    
+
     <div>
-      <label for="email" class="block text-sm font-medium text-rose-pine-subtle mb-2">
+      <label
+        for="email"
+        class="block text-sm font-medium text-rose-pine-subtle mb-2"
+      >
         Email Address
       </label>
       <input
@@ -25,52 +37,66 @@
         id="email"
         name="email"
         required
-        class="w-full px-4 py-3 bg-rose-pine-overlay/50 border border-rose-pine-highlight-med rounded-xl text-rose-pine-text placeholder-rose-pine-muted focus:ring-2 focus:ring-rose-pine-iris focus:border-transparent transition-all"
+        class="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-rose-pine-overlay/50 border border-rose-pine-highlight-med rounded-lg sm:rounded-xl text-rose-pine-text placeholder-rose-pine-muted focus:ring-2 focus:ring-rose-pine-iris focus:border-transparent transition-all text-sm sm:text-base"
         placeholder="your.email@example.com"
       />
     </div>
   </div>
-  
-  <div class="mb-6">
-    <label for="subject" class="block text-sm font-medium text-rose-pine-subtle mb-2">
+
+  <div class="mb-4 sm:mb-6">
+    <label
+      for="subject"
+      class="block text-sm font-medium text-rose-pine-subtle mb-2"
+    >
       Subject
     </label>
     <input
       type="text"
       id="subject"
       name="subject"
-      class="w-full px-4 py-3 bg-rose-pine-overlay/50 border border-rose-pine-highlight-med rounded-xl text-rose-pine-text placeholder-rose-pine-muted focus:ring-2 focus:ring-rose-pine-iris focus:border-transparent transition-all"
+      class="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-rose-pine-overlay/50 border border-rose-pine-highlight-med rounded-lg sm:rounded-xl text-rose-pine-text placeholder-rose-pine-muted focus:ring-2 focus:ring-rose-pine-iris focus:border-transparent transition-all text-sm sm:text-base"
       placeholder="What's this about?"
     />
   </div>
-  
-  <div class="mb-6">
-    <label for="message" class="block text-sm font-medium text-rose-pine-subtle mb-2">
+
+  <div class="mb-4 sm:mb-6">
+    <label
+      for="message"
+      class="block text-sm font-medium text-rose-pine-subtle mb-2"
+    >
       Message
     </label>
     <textarea
       id="message"
       name="message"
-      rows="5"
+      rows="4"
       required
-      class="w-full px-4 py-3 bg-rose-pine-overlay/50 border border-rose-pine-highlight-med rounded-xl text-rose-pine-text placeholder-rose-pine-muted focus:ring-2 focus:ring-rose-pine-iris focus:border-transparent transition-all resize-vertical"
-      placeholder="Tell me about your project or opportunity..."
-    ></textarea>
+      class="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-rose-pine-overlay/50 border border-rose-pine-highlight-med rounded-lg sm:rounded-xl text-rose-pine-text placeholder-rose-pine-muted focus:ring-2 focus:ring-rose-pine-iris focus:border-transparent transition-all resize-vertical text-sm sm:text-base"
+      placeholder="Tell me about your project or opportunity..."></textarea>
   </div>
-  
+
   <div class="text-center">
     <button
       type="submit"
-      class="bg-rose-pine-iris hover:bg-rose-pine-iris/80 text-rose-pine-base px-8 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 inline-flex items-center gap-2"
+      class="w-full sm:w-auto bg-rose-pine-iris hover:bg-rose-pine-iris/80 text-rose-pine-base px-6 sm:px-8 py-3 rounded-lg sm:rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 inline-flex items-center justify-center gap-2 text-sm sm:text-base"
     >
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+      <svg
+        class="w-4 h-4 sm:w-5 sm:h-5"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
       </svg>
       Send Message
     </button>
   </div>
-  
-  <p class="text-sm text-rose-pine-muted mt-4 text-center">
+
+  <p class="text-xs sm:text-sm text-rose-pine-muted mt-3 sm:mt-4 text-center">
     I'll get back to you within 24 hours.
   </p>
-</form> 
+</form>

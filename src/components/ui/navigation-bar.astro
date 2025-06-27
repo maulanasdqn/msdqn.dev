@@ -6,102 +6,400 @@ interface Props {
 const { currentPath = '' } = Astro.props;
 
 const navItems = [
-  { name: 'Home', href: '/' },
-  { name: 'About', href: '/about' },
-  { name: 'Projects', href: '/projects' },
-  { name: 'Experience', href: '/experience' },
+  {
+    name: 'Home',
+    href: '#home',
+    icon: 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6',
+  },
+  {
+    name: 'About',
+    href: '#about',
+    icon: 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z',
+  },
+  {
+    name: 'Projects',
+    href: '#projects',
+    icon: 'M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10',
+  },
+  {
+    name: 'Experience',
+    href: '#experience',
+    icon: 'M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 012 2v6a2 2 0 01-2 2H6a2 2 0 01-2-2V8a2 2 0 012-2V6',
+  },
+  {
+    name: 'Contact',
+    href: '#contact',
+    icon: 'M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z',
+  },
 ];
 ---
 
-<nav class="fixed top-0 left-0 right-0 bg-rose-pine-base/95 backdrop-blur-sm z-50">
-  <div class="max-w-7xl mx-auto px-6 lg:px-8">
-    <div class="flex justify-between items-center h-20">
-      <!-- Logo/Brand -->
-      <div class="flex-shrink-0">
-        <a href="/" class="text-2xl font-bold text-rose-pine-text hover:text-rose-pine-iris transition-colors duration-200">
-          MSDQN.
-        </a>
-      </div>
+<div class="fixed top-8 left-4 z-50">
+  <button
+    id="nav-toggle"
+    class="flex items-center justify-center w-12 h-12 bg-rose-pine-base/30 backdrop-blur-2xl hover:bg-rose-pine-iris/20 transition-all duration-300 rounded-2xl hover:rounded-xl shadow-2xl group border border-rose-pine-highlight-med/10"
+  >
+    <span
+      class="text-rose-pine-text group-hover:text-rose-pine-iris font-bold text-lg transition-colors duration-300"
+      >M</span
+    >
+  </button>
+</div>
 
-      <!-- Desktop Navigation -->
-      <div class="hidden md:flex items-center space-x-8">
-        {navItems.map((item) => (
-          <a
-            href={item.href}
-            class={`text-rose-pine-subtle hover:text-rose-pine-text transition-colors duration-200 font-medium ${
-              currentPath === item.href ? 'text-rose-pine-text' : ''
-            }`}
-          >
-            {item.name}
-          </a>
-        ))}
-        <a
-          href="/contact"
-          class="bg-rose-pine-iris hover:bg-rose-pine-iris/80 text-rose-pine-base px-6 py-2.5 rounded-full font-medium transition-all duration-200 transform hover:scale-105"
-        >
-          Contacts →
-        </a>
-      </div>
-
-      <!-- Mobile menu button -->
-      <div class="md:hidden">
-        <button 
-          type="button" 
-          class="mobile-menu-button bg-rose-pine-overlay hover:bg-rose-pine-highlight-med text-rose-pine-text inline-flex items-center justify-center p-2 rounded-lg transition-colors duration-200"
-          aria-controls="mobile-menu" 
-          aria-expanded="false"
-        >
-          <span class="sr-only">Open main menu</span>
-          <svg class="menu-icon block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-          <svg class="close-icon hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Mobile menu -->
-  <div class="mobile-menu hidden md:hidden">
-    <div class="px-6 pt-4 pb-6 space-y-4 bg-rose-pine-surface border-t border-rose-pine-highlight-med">
-      {navItems.map((item) => (
+<nav
+  id="sidebar-nav"
+  class="hidden md:flex fixed left-0 top-0 h-full w-20 bg-rose-pine-base/30 backdrop-blur-2xl border-r border-rose-pine-highlight-med/10 z-40 flex-col items-center py-6 animate-nav shadow-2xl hover:w-52 transition-all duration-300 group -translate-x-full opacity-0"
+>
+  <div class="flex flex-col space-y-1 w-full px-2">
+    {
+      navItems.map(item => (
         <a
           href={item.href}
-          class={`block text-rose-pine-subtle hover:text-rose-pine-text transition-colors duration-200 font-medium ${
-            currentPath === item.href ? 'text-rose-pine-text' : ''
+          class={`flex items-center w-full px-2 py-2 transition-all duration-300 rounded-xl group relative ${
+            currentPath === item.href
+              ? 'bg-rose-pine-iris/30 text-rose-pine-iris'
+              : 'hover:bg-rose-pine-iris/20 text-rose-pine-text hover:text-rose-pine-iris'
           }`}
         >
-          {item.name}
+          <div
+            class={`flex items-center justify-center w-12 h-12 transition-all duration-300 rounded-2xl hover:rounded-xl flex-shrink-0 ${
+              currentPath === item.href
+                ? 'bg-rose-pine-iris text-rose-pine-base'
+                : 'bg-rose-pine-surface hover:bg-rose-pine-iris text-rose-pine-text hover:text-rose-pine-base'
+            }`}
+          >
+            <svg
+              class="w-5 h-5 transition-colors duration-300"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d={item.icon}
+              />
+            </svg>
+          </div>
+          <span class="ml-3 font-medium opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap overflow-hidden">
+            {item.name}
+          </span>
+
+          {currentPath === item.href && (
+            <div class="absolute -left-1 w-1 h-8 bg-rose-pine-iris rounded-r-full" />
+          )}
         </a>
-      ))}
-      <a
-        href="/contact"
-        class="inline-block bg-rose-pine-iris hover:bg-rose-pine-iris/80 text-rose-pine-base px-6 py-2.5 rounded-full font-medium transition-all duration-200"
-      >
-        Contacts →
-      </a>
+      ))
+    }
+  </div>
+</nav>
+
+<div class="fixed top-6 left-6 z-50 md:hidden">
+  <button
+    id="mobile-nav-toggle"
+    class="flex items-center justify-center w-12 h-12 bg-rose-pine-base/30 backdrop-blur-2xl hover:bg-rose-pine-iris/20 transition-all duration-300 rounded-2xl hover:rounded-xl shadow-2xl group border border-rose-pine-highlight-med/10"
+  >
+    <span
+      class="text-rose-pine-text group-hover:text-rose-pine-iris font-bold text-lg transition-colors duration-300"
+      >M</span
+    >
+  </button>
+</div>
+
+<nav
+  id="mobile-nav"
+  class="fixed inset-0 bg-rose-pine-base/95 backdrop-blur-2xl z-40 md:hidden transform translate-y-full transition-transform duration-300"
+>
+  <div class="flex flex-col h-full pt-20 px-6">
+    <div class="flex flex-col space-y-4">
+      {
+        navItems.map(item => (
+          <a
+            href={item.href}
+            class={`flex items-center space-x-4 py-4 px-4 transition-all duration-300 rounded-xl ${
+              currentPath === item.href
+                ? 'bg-rose-pine-iris/30 text-rose-pine-iris'
+                : 'hover:bg-rose-pine-iris/20 text-rose-pine-text hover:text-rose-pine-iris'
+            }`}
+          >
+            <div
+              class={`flex items-center justify-center w-12 h-12 transition-all duration-300 rounded-2xl ${
+                currentPath === item.href
+                  ? 'bg-rose-pine-iris text-rose-pine-base'
+                  : 'bg-rose-pine-surface hover:bg-rose-pine-iris text-rose-pine-text hover:text-rose-pine-base'
+              }`}
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d={item.icon}
+                />
+              </svg>
+            </div>
+            <span class="text-lg font-medium">{item.name}</span>
+          </a>
+        ))
+      }
     </div>
   </div>
 </nav>
 
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const mobileMenuButton = document.querySelector('.mobile-menu-button');
-    const mobileMenu = document.querySelector('.mobile-menu');
-    const menuIcon = document.querySelector('.menu-icon');
-    const closeIcon = document.querySelector('.close-icon');
+<style>
+  @keyframes slideInFromLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-100px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
 
-    if (mobileMenuButton && mobileMenu && menuIcon && closeIcon) {
-      mobileMenuButton.addEventListener('click', function() {
-        const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
-        
-        mobileMenuButton.setAttribute('aria-expanded', String(!isExpanded));
-        mobileMenu.classList.toggle('hidden');
-        menuIcon.classList.toggle('hidden');
-        closeIcon.classList.toggle('hidden');
+  .animate-nav {
+    animation: slideInFromLeft 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  #sidebar-nav {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+  }
+
+  nav a.active {
+    background-color: rgba(196, 167, 231, 0.3) !important;
+    color: #c4a7e7 !important;
+  }
+
+  #sidebar-nav.show {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
+  #sidebar-nav:hover {
+    width: 13rem;
+  }
+
+  #mobile-nav.show {
+    transform: translateY(0);
+  }
+
+  #sidebar-nav a span {
+    max-width: 0;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
+  }
+
+  #sidebar-nav:hover a span {
+    max-width: 200px;
+    opacity: 1 !important;
+  }
+
+  #sidebar-nav a:first-child span {
+    font-weight: 600;
+    letter-spacing: -0.025em;
+  }
+
+  #sidebar-nav:hover a[class*='bg-rose-pine-iris/30'] {
+    background: rgba(196, 167, 231, 0.4);
+  }
+
+  #nav-toggle:hover,
+  #mobile-nav-toggle:hover {
+    transform: scale(1.05);
+  }
+
+  #sidebar-nav a,
+  #mobile-nav a {
+    position: relative;
+    overflow: hidden;
+    user-select: none;
+  }
+
+  #sidebar-nav a::before,
+  #mobile-nav a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(196, 167, 231, 0.1);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: inherit;
+  }
+
+  #sidebar-nav a:hover::before,
+  #mobile-nav a:hover::before {
+    opacity: 1;
+  }
+
+  #sidebar-nav,
+  #mobile-nav {
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    background: rgba(35, 33, 54, 0.3);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  #sidebar-nav::before,
+  #mobile-nav::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(196, 167, 231, 0.1) 0%,
+      rgba(35, 33, 54, 0.2) 50%,
+      rgba(68, 65, 90, 0.1) 100%
+    );
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  #sidebar-nav a,
+  #mobile-nav a {
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  #sidebar-nav a.bg-rose-pine-iris,
+  #mobile-nav a[class*='bg-rose-pine-iris/30'] {
+    box-shadow:
+      0 0 20px rgba(196, 167, 231, 0.5),
+      0 0 40px rgba(196, 167, 231, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  #sidebar-nav a:hover,
+  #mobile-nav a:hover {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow:
+      0 4px 20px rgba(196, 167, 231, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+</style>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', function () {
+    const navToggle = document.getElementById('nav-toggle');
+    const mobileNavToggle = document.getElementById('mobile-nav-toggle');
+    const sidebarNav = document.getElementById('sidebar-nav');
+    const mobileNav = document.getElementById('mobile-nav');
+
+    function smoothScrollTo(target) {
+      const element = document.querySelector(target);
+      if (element) {
+        const offsetTop = element.offsetTop - 32;
+        window.scrollTo({
+          top: offsetTop,
+          behavior: 'smooth',
+        });
+      }
+    }
+
+    function handleAnchorClick(e) {
+      const href = e.currentTarget.getAttribute('href');
+      if (href && href.startsWith('#')) {
+        e.preventDefault();
+        smoothScrollTo(href);
+
+        if (mobileNav && mobileNav.classList.contains('show')) {
+          mobileNav.classList.remove('show');
+        }
+
+        if (sidebarNav && sidebarNav.classList.contains('show')) {
+          sidebarNav.classList.remove('show');
+        }
+      }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+      link.addEventListener('click', handleAnchorClick);
+    });
+
+    function updateActiveSection() {
+      const sections = document.querySelectorAll('section[id]');
+      const navLinks = document.querySelectorAll('nav a[href^="#"]');
+
+      let currentSection = '';
+      const scrollPosition = window.scrollY + 100;
+
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.offsetHeight;
+
+        if (
+          scrollPosition >= sectionTop &&
+          scrollPosition < sectionTop + sectionHeight
+        ) {
+          currentSection = '#' + section.id;
+        }
+      });
+
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === currentSection) {
+          link.classList.add('active');
+        }
+      });
+    }
+
+    let ticking = false;
+    function onScroll() {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          updateActiveSection();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }
+
+    window.addEventListener('scroll', onScroll);
+    updateActiveSection();
+
+    if (navToggle && sidebarNav) {
+      navToggle.addEventListener('click', function () {
+        sidebarNav.classList.toggle('show');
+      });
+
+      document.addEventListener('click', function (e) {
+        if (!sidebarNav.contains(e.target) && !navToggle.contains(e.target)) {
+          sidebarNav.classList.remove('show');
+        }
+      });
+    }
+
+    if (mobileNavToggle && mobileNav) {
+      mobileNavToggle.addEventListener('click', function () {
+        mobileNav.classList.toggle('show');
+      });
+
+      document.addEventListener('click', function (e) {
+        if (
+          !mobileNav.contains(e.target) &&
+          !mobileNavToggle.contains(e.target)
+        ) {
+          mobileNav.classList.remove('show');
+        }
       });
     }
   });
-</script> 
+</script>

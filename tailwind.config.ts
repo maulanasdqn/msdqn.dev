@@ -1,13 +1,10 @@
-import type { Config } from 'tailwindcss'
+import type { Config } from 'tailwindcss';
 
 const config: Config = {
-  content: [
-    './src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}',
-  ],
+  content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
   theme: {
     extend: {
       colors: {
-        // Rose Pine Main (default dark theme)
         'rose-pine': {
           base: '#191724',
           surface: '#1f1d2e',
@@ -25,7 +22,6 @@ const config: Config = {
           'highlight-med': '#403d52',
           'highlight-high': '#524f67',
         },
-        // Rose Pine Moon (alternative dark theme)
         'rose-pine-moon': {
           base: '#232136',
           surface: '#2a273f',
@@ -43,7 +39,6 @@ const config: Config = {
           'highlight-med': '#44415a',
           'highlight-high': '#56526e',
         },
-        // Rose Pine Dawn (light theme)
         'rose-pine-dawn': {
           base: '#faf4ed',
           surface: '#fffaf3',
@@ -65,6 +60,6 @@ const config: Config = {
     },
   },
   plugins: [],
-}
+};
 
-export default config 
+export default config;

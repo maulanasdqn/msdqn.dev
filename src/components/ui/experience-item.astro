@@ -8,35 +8,66 @@ interface Props {
   type?: 'work' | 'education';
 }
 
-const { title, company, duration, description, responsibilities, type = 'work' } = Astro.props;
+const {
+  title,
+  company,
+  duration,
+  description,
+  responsibilities,
+  type = 'work',
+} = Astro.props;
 ---
 
-<div class="bg-rose-pine-surface/50 backdrop-blur-sm rounded-2xl p-6 mb-6 hover:bg-rose-pine-surface/70 transition-all duration-300 border border-rose-pine-highlight-med">
-  <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
-    <div class="mb-2 md:mb-0">
-      <h3 class="text-xl font-bold text-rose-pine-text">{title}</h3>
-      <h4 class="text-lg text-rose-pine-iris font-semibold">{company}</h4>
+<div
+  class="bg-rose-pine-surface/50 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 mb-4 sm:mb-6 hover:bg-rose-pine-surface/70 hover:scale-[1.02] hover:shadow-lg hover:shadow-rose-pine-overlay/20 transition-all duration-300 border border-rose-pine-highlight-med"
+>
+  <div
+    class="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-3 sm:mb-4"
+  >
+    <div class="mb-3 lg:mb-0">
+      <h3 class="text-lg sm:text-xl font-bold text-rose-pine-text mb-1">
+        {title}
+      </h3>
+      <h4 class="text-base sm:text-lg text-rose-pine-iris font-semibold">
+        {company}
+      </h4>
     </div>
-    <div class="flex items-center text-rose-pine-muted">
-      <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 002 2z"></path>
+    <div class="flex items-center text-rose-pine-muted lg:flex-shrink-0">
+      <svg
+        class="w-3 h-3 sm:w-4 sm:h-4 mr-2"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 002 2z"
+        ></path>
       </svg>
-      <span class="font-medium">{duration}</span>
+      <span class="font-medium text-sm sm:text-base">{duration}</span>
     </div>
   </div>
-  
-  <p class="text-rose-pine-subtle mb-4 leading-relaxed">{description}</p>
-  
-  {responsibilities && responsibilities.length > 0 && (
-    <div>
-      <h5 class="font-semibold text-rose-pine-text mb-2">
-        {type === 'work' ? 'Key Responsibilities:' : 'Key Achievements:'}
-      </h5>
-      <ul class="list-disc list-inside text-rose-pine-subtle space-y-1">
-        {responsibilities.map((item) => (
-          <li class="leading-relaxed">{item}</li>
-        ))}
-      </ul>
-    </div>
-  )}
-</div> 
+
+  <p
+    class="text-rose-pine-subtle mb-3 sm:mb-4 leading-relaxed text-sm sm:text-base"
+  >
+    {description}
+  </p>
+
+  {
+    responsibilities && responsibilities.length > 0 && (
+      <div>
+        <h5 class="font-semibold text-rose-pine-text mb-2 text-sm sm:text-base">
+          {type === 'work' ? 'Key Responsibilities:' : 'Key Achievements:'}
+        </h5>
+        <ul class="list-disc list-inside text-rose-pine-subtle space-y-1 sm:space-y-2">
+          {responsibilities.map(item => (
+            <li class="leading-relaxed text-sm sm:text-base pl-1">{item}</li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
+</div>
