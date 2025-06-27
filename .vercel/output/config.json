@@ -1,0 +1,75 @@
+{
+	"version": 3,
+	"routes": [
+		{
+			"handle": "filesystem"
+		},
+		{
+			"src": "^/_astro/(.*)$",
+			"headers": {
+				"cache-control": "public, max-age=31536000, immutable"
+			},
+			"continue": true
+		},
+		{
+			"src": "^/_server-islands/([^/]+?)/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/_image/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/api/about/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/api/auth/signin/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/api/auth/signout/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/api/experience/([^/]+?)/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/api/experience/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/api/home/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/api/project/([^/]+?)/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/api/project/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/cms/experience/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/cms/projects/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/cms/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/login/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/$",
+			"dest": "_render"
+		}
+	]
+}

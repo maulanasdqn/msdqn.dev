@@ -16,8 +16,8 @@
     "check": "npm run format:check && npm run lint:check"
   },
   "dependencies": {
-    "@astrojs/node": "^9.2.2",
     "@astrojs/tailwind": "^6.0.2",
+    "@astrojs/vercel": "^8.2.0",
     "@supabase/supabase-js": "^2.50.2",
     "astro": "^5.10.1",
     "astro-icon": "^1.1.1"
