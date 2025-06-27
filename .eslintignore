@@ -1,0 +1,7 @@
+dist/
+.vercel/
+.astro/
+node_modules/
+*.d.ts
+public/js/
+.env* 

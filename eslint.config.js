@@ -9,6 +9,7 @@ export default [
     ignores: [
       'dist/',
       '.astro/',
+      '.vercel/',
       'node_modules/',
       '*.config.js',
       '*.config.ts',
@@ -53,6 +54,12 @@ export default [
       '@typescript-eslint/no-unused-vars': 'warn',
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/no-non-null-assertion': 'warn',
+    },
+  },
+  {
+    files: ['src/libs/analytics.ts', 'src/libs/performance-monitor.ts'],
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'off',
     },
   },
   ...astroPlugin.configs.recommended,

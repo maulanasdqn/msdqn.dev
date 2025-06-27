@@ -1,0 +1,90 @@
+---
+// Critical CSS for above-the-fold content
+---
+
+<style is:global>
+  /* Critical styles for immediate rendering */
+  html {
+    scroll-behavior: smooth;
+    font-family:
+      system-ui,
+      -apple-system,
+      BlinkMacSystemFont,
+      'Segoe UI',
+      Roboto,
+      sans-serif;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: #191724;
+    color: #e0def4;
+    line-height: 1.6;
+    font-display: swap;
+  }
+
+  /* Navigation critical styles */
+  nav {
+    background-color: #1f1d2e;
+    border-bottom: 1px solid #26233a;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  /* Hero section critical styles */
+  .hero {
+    min-height: 50vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Performance optimizations */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+
+  /* Accessibility improvements */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* Focus management for keyboard navigation */
+  :focus-visible {
+    outline: 2px solid #31748f;
+    outline-offset: 2px;
+  }
+
+  /* High contrast mode support */
+  @media (prefers-contrast: high) {
+    :root {
+      --text-color: #ffffff;
+      --bg-color: #000000;
+    }
+  }
+
+  /* Container query support */
+  .container {
+    container-type: inline-size;
+  }
+
+  /* Optimize font loading */
+  @font-face {
+    font-family: 'system-ui-optimized';
+    src:
+      local('system-ui'), local('-apple-system'), local('BlinkMacSystemFont');
+    font-display: swap;
+    unicode-range: U+0020-007F;
+  }
+</style>

@@ -444,6 +444,7 @@ Collaborated with backend teams using Agile practices"
     <script is:inline>
       let currentExperienceId = null;
 
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       function showCreateForm() {
         const modalTitle = document.getElementById('modalTitle');
         const experienceForm = document.getElementById('experienceForm');
@@ -457,6 +458,7 @@ Collaborated with backend teams using Agile practices"
         if (experienceModal) experienceModal.classList.remove('hidden');
       }
 
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       async function editExperience(id) {
         try {
           const response = await fetch(`/api/experience/${id}`);
@@ -498,6 +500,7 @@ Collaborated with backend teams using Agile practices"
         }
       }
 
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       async function deleteExperience(id) {
         if (!confirm('Are you sure you want to delete this experience?')) {
           return;

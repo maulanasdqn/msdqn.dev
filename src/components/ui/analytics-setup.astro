@@ -1,0 +1,18 @@
+---
+const googleAnalyticsId = import.meta.env.GOOGLE_ANALYTICS_ID;
+---
+
+{
+  googleAnalyticsId && (
+    <>
+      <script
+        async
+        src={`https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsId}`}
+      />
+      <script is:inline src="/js/analytics.js" />
+      <script is:inline define:vars={{ googleAnalyticsId }}>
+        window.initAnalytics(googleAnalyticsId);
+      </script>
+    </>
+  )
+}

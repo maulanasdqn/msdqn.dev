@@ -8,7 +8,11 @@ import FooterSection from '@/components/ui/footer-section.astro';
 import AnimationWrapper from '@/components/ui/animation-wrapper.astro';
 import TestimonialsSection from '@/components/ui/testimonials-section.astro';
 import CaseStudiesSection from '@/components/ui/case-studies-section.astro';
-import PerformanceMonitor from '@/components/ui/performance-monitor.astro';
+import AnalyticsSetup from '@/components/ui/analytics-setup.astro';
+import LighthouseOptimizations from '@/components/ui/lighthouse-optimizations.astro';
+import CriticalCSS from '@/components/ui/critical-css.astro';
+import AccessibilityImprovements from '@/components/ui/accessibility-improvements.astro';
+import PerformanceOptimizations from '@/components/ui/performance-optimizations.astro';
 
 const homeResponse = await fetch(`${Astro.url.origin}/api/home`);
 const homeData = homeResponse.ok ? await homeResponse.json() : null;
@@ -33,210 +37,231 @@ const siteName = 'Maulana Sodiqin - Fullstack Developer';
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
+
     <title>
       {
         homeData?.title ||
           'Hire Maulana Sodiqin - Senior Fullstack Developer | React, TypeScript, Rust Expert'
       }
     </title>
-    
+
     <meta
       name="description"
       content={homeData?.meta_description ||
         'Hire experienced Fullstack Developer Maulana Sodiqin. 5+ years React, TypeScript, Rust expertise. Available for full-time positions, freelance projects. Based in Malang, Indonesia. Open to remote work.'}
     />
-    
+
     <meta
       name="keywords"
       content={homeData?.meta_keywords ||
         'hire fullstack developer, react developer for hire, typescript expert, rust developer, frontend developer job, software engineer hire, maulana sodiqin, fullstack developer malang, remote developer indonesia, react typescript developer, senior frontend developer, javascript developer hire, software engineer portfolio, web developer for hire, full stack engineer, react specialist, modern web developer'}
     />
-    
+
     <meta name="author" content="Maulana Sodiqin" />
-    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta
+      name="robots"
+      content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+    />
     <meta name="language" content="English" />
     <meta name="revisit-after" content="7 days" />
     <meta name="classification" content="Professional Portfolio" />
     <meta name="rating" content="General" />
     <meta name="distribution" content="Global" />
     <meta name="theme-color" content="#191724" />
-    
+
     <link rel="canonical" href={siteUrl} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="manifest" href="/manifest.json" />
-    
-    <meta property="og:title" content="Hire Maulana Sodiqin - Senior Fullstack Developer | React, TypeScript, Rust Expert" />
-    <meta property="og:description" content="Experienced Fullstack Developer available for hire. 5+ years expertise in React, TypeScript, Rust. Open to full-time positions and freelance projects." />
+
+    <meta
+      property="og:title"
+      content="Hire Maulana Sodiqin - Senior Fullstack Developer | React, TypeScript, Rust Expert"
+    />
+    <meta
+      property="og:description"
+      content="Experienced Fullstack Developer available for hire. 5+ years expertise in React, TypeScript, Rust. Open to full-time positions and freelance projects."
+    />
     <meta property="og:type" content="profile" />
     <meta property="og:url" content={siteUrl} />
     <meta property="og:site_name" content={siteName} />
     <meta property="og:image" content={`${siteUrl}/favicon.svg`} />
     <meta property="og:image:width" content="512" />
     <meta property="og:image:height" content="512" />
-    <meta property="og:image:alt" content="Maulana Sodiqin - Fullstack Developer Portfolio" />
+    <meta
+      property="og:image:alt"
+      content="Maulana Sodiqin - Fullstack Developer Portfolio"
+    />
     <meta property="og:locale" content="en_US" />
     <meta property="profile:first_name" content="Maulana" />
     <meta property="profile:last_name" content="Sodiqin" />
     <meta property="profile:username" content="maulanasdqn" />
-    
+
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Hire Maulana Sodiqin - Senior Fullstack Developer" />
-    <meta name="twitter:description" content="Experienced Fullstack Developer available for hire. 5+ years expertise in React, TypeScript, Rust." />
+    <meta
+      name="twitter:title"
+      content="Hire Maulana Sodiqin - Senior Fullstack Developer"
+    />
+    <meta
+      name="twitter:description"
+      content="Experienced Fullstack Developer available for hire. 5+ years expertise in React, TypeScript, Rust."
+    />
     <meta name="twitter:image" content={`${siteUrl}/favicon.svg`} />
-    <meta name="twitter:image:alt" content="Maulana Sodiqin - Fullstack Developer Portfolio" />
+    <meta
+      name="twitter:image:alt"
+      content="Maulana Sodiqin - Fullstack Developer Portfolio"
+    />
     <meta name="twitter:creator" content="@maulanasdqn" />
     <meta name="twitter:site" content="@maulanasdqn" />
-    
-    <meta name="linkedin:owner" content="maulana-sodiqin" />
-    
-    <script type="application/ld+json">
-      {
-        JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "Person",
-          "name": "Maulana Sodiqin",
-          "givenName": "Maulana",
-          "familyName": "Sodiqin",
-          "url": siteUrl,
-          "image": `${siteUrl}/favicon.svg`,
-          "sameAs": [
-            "https://www.linkedin.com/in/maulana-sodiqin/",
-            "https://github.com/maulanasdqn",
-            "mailto:maulanasdqn@gmail.com"
-          ],
-          "jobTitle": "Senior Fullstack Developer",
-          "description": "Experienced Fullstack Developer with 5+ years of expertise in React, TypeScript, and Rust. Available for full-time positions and freelance projects.",
-          "knowsAbout": [
-            "React",
-            "TypeScript",
-            "JavaScript",
-            "Rust",
-            "Next.js",
-            "Node.js",
-            "Frontend Development",
-            "Backend Development",
-            "Full Stack Development",
-            "Web Development",
-            "Software Engineering",
-            "UI/UX Development",
-            "Modern Web Technologies"
-          ],
-          "alumniOf": {
-            "@type": "EducationalOrganization",
-            "name": "Education Institution"
-          },
-          "address": {
-            "@type": "PostalAddress",
-            "addressLocality": "Malang",
-            "addressRegion": "East Java",
-            "addressCountry": "Indonesia"
-          },
-          "email": "maulanasdqn@gmail.com",
-          "telephone": "+6285156085579",
-          "worksFor": {
-            "@type": "Organization",
-            "name": "Freelance Developer"
-          },
-          "hasOccupation": {
-            "@type": "Occupation",
-            "name": "Fullstack Developer",
-            "occupationLocation": {
-              "@type": "Place",
-              "name": "Remote/Malang, Indonesia"
-            },
-            "skills": [
-              "React Development",
-              "TypeScript Programming",
-              "JavaScript Development",
-              "Rust Programming",
-              "Frontend Architecture",
-              "Backend Development",
-              "Full Stack Development",
-              "Web Application Development",
-              "Software Engineering",
-              "UI/UX Implementation"
-            ]
-          },
-          "seeks": {
-            "@type": "JobPosting",
-            "title": "Senior Fullstack Developer Position",
-            "description": "Seeking full-time or freelance opportunities as a Senior Fullstack Developer",
-            "employmentType": ["FULL_TIME", "CONTRACTOR", "TEMPORARY"],
-            "experienceRequirements": "5+ years",
-            "skills": ["React", "TypeScript", "Rust", "JavaScript", "Node.js", "Next.js"]
-          }
-        })
-      }
-    </script>
-    
-    <script type="application/ld+json">
-      {
-        JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "WebSite",
-          "name": siteName,
-          "url": siteUrl,
-          "description": "Professional portfolio of Maulana Sodiqin, Senior Fullstack Developer specializing in React, TypeScript, and Rust development.",
-          "author": {
-            "@type": "Person",
-            "name": "Maulana Sodiqin"
-          },
-          "inLanguage": "en-US",
-          "potentialAction": {
-            "@type": "SearchAction",
-            "target": {
-              "@type": "EntryPoint",
-              "urlTemplate": `${siteUrl}/?q={search_term_string}`
-            },
-            "query-input": "required name=search_term_string"
-          }
-        })
-      }
-    </script>
-    
-    <script type="application/ld+json">
-      {
-        JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "ProfessionalService",
-          "name": "Maulana Sodiqin - Fullstack Development Services",
-          "description": "Professional fullstack development services specializing in React, TypeScript, and Rust applications",
-          "provider": {
-            "@type": "Person",
-            "name": "Maulana Sodiqin"
-          },
-          "areaServed": "Worldwide",
-          "availableLanguage": "English",
-          "priceRange": "$$",
-          "serviceType": [
-            "Fullstack Development",
-            "Frontend Development",
-            "Backend Development",
-            "Web Application Development",
-            "React Development",
-            "TypeScript Development",
-            "Rust Development"
-          ]
-        })
-      }
-    </script>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preload" href="/favicon.svg" as="image" />
-    <link rel="dns-prefetch" href="//www.google-analytics.com" />
-    
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-    <script is:inline>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){window.dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-XXXXXXXXXX');
-    </script>
+    <meta name="linkedin:owner" content="maulana-sodiqin" />
+
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Person',
+        name: 'Maulana Sodiqin',
+        givenName: 'Maulana',
+        familyName: 'Sodiqin',
+        url: siteUrl,
+        image: `${siteUrl}/favicon.svg`,
+        sameAs: [
+          'https://www.linkedin.com/in/maulana-sodiqin/',
+          'https://github.com/maulanasdqn',
+          'mailto:maulanasdqn@gmail.com',
+        ],
+        jobTitle: 'Senior Fullstack Developer',
+        description:
+          'Experienced Fullstack Developer with 5+ years of expertise in React, TypeScript, and Rust. Available for full-time positions and freelance projects.',
+        knowsAbout: [
+          'React',
+          'TypeScript',
+          'JavaScript',
+          'Rust',
+          'Next.js',
+          'Node.js',
+          'Frontend Development',
+          'Backend Development',
+          'Full Stack Development',
+          'Web Development',
+          'Software Engineering',
+          'UI/UX Development',
+          'Modern Web Technologies',
+        ],
+        alumniOf: {
+          '@type': 'EducationalOrganization',
+          name: 'Education Institution',
+        },
+        address: {
+          '@type': 'PostalAddress',
+          addressLocality: 'Malang',
+          addressRegion: 'East Java',
+          addressCountry: 'Indonesia',
+        },
+        email: 'maulanasdqn@gmail.com',
+        telephone: '+6285156085579',
+        worksFor: {
+          '@type': 'Organization',
+          name: 'Freelance Developer',
+        },
+        hasOccupation: {
+          '@type': 'Occupation',
+          name: 'Fullstack Developer',
+          occupationLocation: {
+            '@type': 'Place',
+            name: 'Remote/Malang, Indonesia',
+          },
+          skills: [
+            'React Development',
+            'TypeScript Programming',
+            'JavaScript Development',
+            'Rust Programming',
+            'Frontend Architecture',
+            'Backend Development',
+            'Full Stack Development',
+            'Web Application Development',
+            'Software Engineering',
+            'UI/UX Implementation',
+          ],
+        },
+        seeks: {
+          '@type': 'JobPosting',
+          title: 'Senior Fullstack Developer Position',
+          description:
+            'Seeking full-time or freelance opportunities as a Senior Fullstack Developer',
+          employmentType: ['FULL_TIME', 'CONTRACTOR', 'TEMPORARY'],
+          experienceRequirements: '5+ years',
+          skills: [
+            'React',
+            'TypeScript',
+            'Rust',
+            'JavaScript',
+            'Node.js',
+            'Next.js',
+          ],
+        },
+      })}
+    />
+
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'WebSite',
+        name: siteName,
+        url: siteUrl,
+        description:
+          'Professional portfolio of Maulana Sodiqin, Senior Fullstack Developer specializing in React, TypeScript, and Rust development.',
+        author: {
+          '@type': 'Person',
+          name: 'Maulana Sodiqin',
+        },
+        inLanguage: 'en-US',
+        potentialAction: {
+          '@type': 'SearchAction',
+          target: {
+            '@type': 'EntryPoint',
+            urlTemplate: `${siteUrl}/?q={search_term_string}`,
+          },
+          'query-input': 'required name=search_term_string',
+        },
+      })}
+    />
+
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'ProfessionalService',
+        name: 'Maulana Sodiqin - Fullstack Development Services',
+        description:
+          'Professional fullstack development services specializing in React, TypeScript, and Rust applications',
+        provider: {
+          '@type': 'Person',
+          name: 'Maulana Sodiqin',
+        },
+        areaServed: 'Worldwide',
+        availableLanguage: 'English',
+        priceRange: '$$',
+        serviceType: [
+          'Fullstack Development',
+          'Frontend Development',
+          'Backend Development',
+          'Web Application Development',
+          'React Development',
+          'TypeScript Development',
+          'Rust Development',
+        ],
+      })}
+    />
+
+    <LighthouseOptimizations />
+    <CriticalCSS />
+    <PerformanceOptimizations />
   </head>
   <body class="bg-rose-pine-base text-rose-pine-text">
-    <PerformanceMonitor />
+    <AccessibilityImprovements />
+    <AnalyticsSetup />
     <NavigationBar />
 
     <main>

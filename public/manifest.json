@@ -7,14 +7,53 @@
   "background_color": "#191724",
   "theme_color": "#191724",
   "orientation": "portrait-primary",
-  "categories": ["business", "productivity", "developer", "portfolio"],
-  "lang": "en-US",
+  "categories": ["business", "productivity", "developer"],
+  "lang": "en",
+  "scope": "/",
   "icons": [
     {
       "src": "/favicon.svg",
-      "sizes": "512x512",
+      "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Hire Me",
+      "short_name": "Hire",
+      "description": "View hiring information and contact details",
+      "url": "/hire-me",
+      "icons": [
+        {
+          "src": "/favicon.svg",
+          "sizes": "96x96",
+          "type": "image/svg+xml"
+        }
+      ]
+    },
+    {
+      "name": "Blog",
+      "short_name": "Blog",
+      "description": "Read latest blog posts and articles",
+      "url": "/blog",
+      "icons": [
+        {
+          "src": "/favicon.svg",
+          "sizes": "96x96",
+          "type": "image/svg+xml"
+        }
+      ]
     }
   ]
 } 

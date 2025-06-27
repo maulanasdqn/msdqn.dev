@@ -1,0 +1,73 @@
+---
+// Lighthouse Performance & Best Practices Optimizations
+---
+
+<!-- Critical Performance Optimizations -->
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
+<link rel="dns-prefetch" href="//www.google-analytics.com" />
+
+<!-- Resource Hints for Better Performance -->
+<link rel="preload" href="/favicon.svg" as="image" type="image/svg+xml" />
+<link rel="prefetch" href="/resume.pdf" />
+
+<!-- Security Headers -->
+<meta http-equiv="X-Content-Type-Options" content="nosniff" />
+<meta http-equiv="X-Frame-Options" content="DENY" />
+<meta http-equiv="X-XSS-Protection" content="1; mode=block" />
+<meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
+
+<!-- Performance and Accessibility Improvements -->
+<meta name="theme-color" content="#191724" />
+<meta name="color-scheme" content="dark light" />
+
+<!-- Reduce Layout Shift -->
+<style>
+  /* Critical CSS for Above-the-fold Content */
+  .performance-optimized {
+    contain: layout style paint;
+  }
+
+  /* Prevent Flash of Unstyled Content */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Optimize font loading */
+  @font-face {
+    font-family: 'system-ui-fallback';
+    src:
+      local('system-ui'), local('-apple-system'), local('BlinkMacSystemFont');
+    font-display: swap;
+  }
+
+  /* Reduce CLS for images */
+  img {
+    height: auto;
+    max-width: 100%;
+  }
+
+  /* Optimize animations */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+</style>
+
+<!-- Service Worker for Caching (if needed) -->
+<script is:inline>
+  // Register service worker for better caching
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js').catch(() => {
+        // Fail silently if service worker is not available
+      });
+    });
+  }
+</script>

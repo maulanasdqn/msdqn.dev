@@ -1,6 +1,26 @@
 User-agent: *
 Allow: /
 
+# Sitemaps
+Sitemap: https://msdqn.dev/sitemap.xml
+
+# Crawl-delay
+Crawl-delay: 1
+
+# Specific directives for better SEO
+Allow: /api/
+Allow: /blog/
+Allow: /hire-me
+Allow: /resume.pdf
+
+# Security
+Disallow: /cms/
+Disallow: /api/auth/
+Disallow: /.well-known/
+
+# Additional files
+Sitemap: https://msdqn.dev/sitemap.xml
+
 User-agent: Googlebot
 Allow: /
 Crawl-delay: 1
@@ -18,10 +38,6 @@ Allow: /
 User-agent: Twitterbot
 Allow: /
 
-Disallow: /api/
-Disallow: /cms/
 Disallow: /*.json
 Disallow: /admin/
-Disallow: /private/
-
-Sitemap: https://msdqn.dev/sitemap.xml 
+Disallow: /private/ 

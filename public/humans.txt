@@ -1,0 +1,16 @@
+/* TEAM */
+Developer: Maulana Sodiqin
+Contact: maulanasdqn@gmail.com
+From: Malang, Indonesia
+LinkedIn: https://www.linkedin.com/in/maulana-sodiqin/
+GitHub: https://github.com/maulanasdqn
+
+/* SITE */
+Last update: 2024/12/23
+Language: English
+Standards: HTML5, CSS3, JavaScript ES2022, TypeScript
+Components: Astro, React, Tailwind CSS
+Software: VS Code, Cursor
+Technology: Vercel, Supabase
+Performance: Optimized for Core Web Vitals
+Accessibility: WCAG 2.1 AA compliant 
