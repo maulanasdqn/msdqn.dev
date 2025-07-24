@@ -1,0 +1,698 @@
+---
+import { supabase } from '@/libs/supabase';
+
+const { cookies, redirect } = Astro;
+const accessToken = cookies.get('sb-access-token');
+const refreshToken = cookies.get('sb-refresh-token');
+
+if (!accessToken || !refreshToken) {
+  return redirect('/login');
+}
+
+let session;
+try {
+  session = await supabase.auth.setSession({
+    refresh_token: refreshToken.value,
+    access_token: accessToken.value,
+  });
+  if (session.error) {
+    return redirect('/login');
+  }
+} catch {
+  return redirect('/login');
+}
+
+const { data: blogPosts, error } = await supabase
+  .from('blog_posts')
+  .select('*')
+  .order('created_at', { ascending: false });
+
+const email = session.data.user?.email;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blog Management - CMS</title>
+    <meta name="description" content="Manage blog posts" />
+    <style>
+      :root {
+        --rp-base: #191724;
+        --rp-surface: #1f1d2e;
+        --rp-overlay: #26233a;
+        --rp-muted: #6e6a86;
+        --rp-subtle: #908caa;
+        --rp-text: #e0def4;
+        --rp-love: #eb6f92;
+        --rp-gold: #f6c177;
+        --rp-rose: #ebbcba;
+        --rp-pine: #31748f;
+        --rp-foam: #9ccfd8;
+        --rp-iris: #c4a7e7;
+      }
+      body {
+        background-color: var(--rp-base);
+        color: var(--rp-text);
+        font-family: system-ui, -apple-system, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+      .nav-bg {
+        background-color: var(--rp-surface);
+        border-bottom: 1px solid var(--rp-overlay);
+      }
+      .card-bg {
+        background-color: var(--rp-surface);
+        border: 1px solid var(--rp-overlay);
+      }
+      .btn-primary {
+        background-color: var(--rp-pine);
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .btn-primary:hover {
+        background-color: var(--rp-foam);
+        color: var(--rp-base);
+      }
+      .btn-edit {
+        background-color: var(--rp-iris);
+        color: white;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .btn-edit:hover {
+        background-color: var(--rp-rose);
+      }
+      .btn-delete {
+        background-color: var(--rp-love);
+        color: white;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .btn-delete:hover {
+        background-color: #d4556a;
+      }
+      .btn-signout {
+        background-color: var(--rp-love);
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+      .btn-signout:hover {
+        background-color: #d4556a;
+      }
+      .text-muted {
+        color: var(--rp-muted);
+      }
+      .text-subtle {
+        color: var(--rp-subtle);
+      }
+      .nav-link {
+        color: var(--rp-subtle);
+        border-bottom: 2px solid transparent;
+        text-decoration: none;
+        padding: 8px 4px;
+        transition: all 0.2s;
+      }
+      .nav-link:hover {
+        color: var(--rp-text);
+        border-bottom-color: var(--rp-overlay);
+      }
+      .nav-link.active {
+        color: var(--rp-pine);
+        border-bottom-color: var(--rp-pine);
+      }
+      .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+      }
+      .modal.hidden {
+        display: none;
+      }
+      .modal-content {
+        background-color: var(--rp-surface);
+        border: 1px solid var(--rp-overlay);
+        border-radius: 8px;
+        padding: 24px;
+        width: 100%;
+        max-width: 600px;
+        margin: 16px;
+        max-height: 90vh;
+        overflow-y: auto;
+      }
+      .form-input {
+        background-color: var(--rp-overlay);
+        border: 1px solid var(--rp-muted);
+        color: var(--rp-text);
+        padding: 8px 12px;
+        border-radius: 4px;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .form-input:focus {
+        outline: none;
+        border-color: var(--rp-pine);
+      }
+      .status-badge {
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 500;
+      }
+      .status-published {
+        background-color: var(--rp-pine);
+        color: white;
+      }
+      .status-draft {
+        background-color: var(--rp-overlay);
+        color: var(--rp-subtle);
+      }
+      .featured-badge {
+        background-color: var(--rp-love);
+        color: white;
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 500;
+      }
+      .tag {
+        background-color: var(--rp-overlay);
+        color: var(--rp-foam);
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 12px;
+        display: inline-block;
+        margin: 2px;
+      }
+
+      /* Mobile responsive styles */
+      @media (max-width: 768px) {
+        .desktop-nav {
+          display: none !important;
+        }
+        
+        .mobile-nav {
+          display: flex !important;
+          gap: 8px;
+        }
+        
+        .modal-content {
+          margin: 8px;
+          padding: 16px;
+          max-height: 95vh;
+        }
+
+        .blog-card {
+          flex-direction: column !important;
+          gap: 12px;
+        }
+
+        .blog-card .blog-actions {
+          align-self: flex-end;
+        }
+      }
+
+      @media (min-width: 769px) {
+        .desktop-nav {
+          display: flex !important;
+        }
+        
+        .mobile-nav {
+          display: none !important;
+        }
+      }
+
+      /* Mobile navigation */
+      .mobile-nav {
+        display: none;
+        position: relative;
+      }
+
+      .mobile-menu-btn {
+        background: none;
+        border: none;
+        color: var(--rp-text);
+        font-size: 18px;
+        cursor: pointer;
+        padding: 8px;
+      }
+
+      .mobile-dropdown {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: var(--rp-surface);
+        border: 1px solid var(--rp-overlay);
+        border-radius: 8px;
+        min-width: 200px;
+        z-index: 1000;
+        display: none;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      }
+
+      .mobile-dropdown.show {
+        display: block;
+      }
+
+      .mobile-dropdown a {
+        display: block;
+        padding: 12px 16px;
+        color: var(--rp-text);
+        text-decoration: none;
+        border-bottom: 1px solid var(--rp-overlay);
+        transition: background-color 0.2s;
+      }
+
+      .mobile-dropdown a:hover {
+        background-color: var(--rp-overlay);
+      }
+
+      .mobile-dropdown a:last-child {
+        border-bottom: none;
+      }
+
+      .mobile-dropdown a.active {
+        background-color: var(--rp-pine);
+        color: white;
+      }
+    </style>
+  </head>
+  
+  <body>
+    <nav class="nav-bg">
+      <div style="max-width: 1200px; margin: 0 auto; padding: 0 8px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; height: 64px;">
+          <div style="display: flex; align-items: center;">
+            <a
+              href="/cms"
+              style="text-decoration: none; color: var(--rp-text); font-size: 18px; font-weight: bold;"
+              >🌹 CMS</a
+            >
+          </div>
+          
+          <div style="display: flex; margin-left: 24px; gap: 20px; align-items: center;" class="desktop-nav">
+            <a href="/cms" class="nav-link">Dashboard</a>
+            <a href="/cms/experience" class="nav-link">Experience</a>
+            <a href="/cms/projects" class="nav-link">Projects</a>
+            <a href="/cms/case-studies" class="nav-link">Case Studies</a>
+            <a href="/cms/testimonials" class="nav-link">Testimonials</a>
+            <a href="/cms/about" class="nav-link">About</a>
+            <a href="/cms/home" class="nav-link">Home</a>
+            <a href="/cms/blog" class="nav-link active">Blog</a>
+          </div>
+          
+          <div class="mobile-nav">
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+            <div class="mobile-dropdown" id="mobileDropdown">
+              <a href="/cms">Dashboard</a>
+              <a href="/cms/experience">Experience</a>
+              <a href="/cms/projects">Projects</a>
+              <a href="/cms/case-studies">Case Studies</a>
+              <a href="/cms/testimonials">Testimonials</a>
+              <a href="/cms/about">About</a>
+              <a href="/cms/home">Home</a>
+              <a href="/cms/blog" class="active">Blog</a>
+            </div>
+          </div>
+          
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 12px;" class="text-subtle hidden sm:inline">{email}</span>
+            <form action="/api/auth/signout" method="post">
+              <button type="submit" class="btn-signout" style="padding: 6px 12px; font-size: 12px;">Sign out</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <main style="max-width: 1200px; margin: 0 auto; padding: 24px 16px;">
+      <div style="border-bottom: 1px solid var(--rp-overlay); padding-bottom: 20px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+        <h1 style="font-size: 24px; font-weight: bold; margin: 0;">
+          Blog Management
+        </h1>
+        <button onclick="showCreateForm()" class="btn-primary">+ Add Blog Post</button>
+      </div>
+
+      {error && (
+        <div style="background-color: rgba(235, 111, 146, 0.2); border: 1px solid var(--rp-love); color: var(--rp-love); padding: 12px; border-radius: 6px; margin-bottom: 16px;">
+          Error loading blog posts: {error.message}
+        </div>
+      )}
+
+      {blogPosts && blogPosts.length === 0 && (
+        <div style="text-align: center; padding: 48px 0;">
+          <div style="font-size: 48px; margin-bottom: 16px;">📝</div>
+          <h3 style="margin: 8px 0; font-size: 18px;">No blog posts</h3>
+          <p style="margin: 4px 0; font-size: 14px;" class="text-subtle">
+            Get started by adding your first blog post.
+          </p>
+        </div>
+      )}
+
+      {blogPosts && blogPosts.length > 0 && (
+        <div style="display: grid; gap: 16px;">
+          {blogPosts.map(post => (
+            <div class="card-bg blog-card" style="padding: 20px; border-radius: 8px; display: flex; justify-content: space-between; align-items: start;">
+              <div style="flex: 1;">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px; flex-wrap: wrap;">
+                  <h3 style="margin: 0; font-size: 16px; font-weight: 600; flex: 1; min-width: 200px;">
+                    {post.title}
+                  </h3>
+                  <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <span class={`status-badge ${post.published ? 'status-published' : 'status-draft'}`}>
+                      {post.published ? 'Published' : 'Draft'}
+                    </span>
+                    {post.featured && (
+                      <span class="featured-badge">Featured</span>
+                    )}
+                  </div>
+                </div>
+                
+                <p style="margin: 8px 0; color: var(--rp-subtle); line-height: 1.5; font-size: 14px;">
+                  {post.excerpt}
+                </p>
+                
+                <div style="display: flex; flex-wrap: gap: 4px; margin: 12px 0;">
+                  {post.tags && post.tags.map(tag => (
+                    <span class="tag">{tag}</span>
+                  ))}
+                </div>
+                
+                <div style="display: flex; flex-wrap: gap: 12px; font-size: 12px;" class="text-muted">
+                  <span>Created: {new Date(post.created_at).toLocaleDateString()}</span>
+                  {post.published_at && (
+                    <span>Published: {new Date(post.published_at).toLocaleDateString()}</span>
+                  )}
+                  <span>{post.read_time}</span>
+                </div>
+              </div>
+              
+              <div class="blog-actions" style="display: flex; gap: 8px; margin-left: 16px;">
+                <button
+                  onclick={`editPost('${post.id}')`}
+                  class="btn-edit"
+                  style="padding: 4px 8px; font-size: 12px;"
+                >
+                  Edit
+                </button>
+                <button
+                  onclick={`deletePost('${post.id}')`}
+                  class="btn-delete"
+                  style="padding: 4px 8px; font-size: 12px;"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </main>
+
+    <!-- Modal -->
+    <div id="postModal" class="modal hidden">
+      <div class="modal-content">
+        <h2 id="modalTitle" style="font-size: 20px; font-weight: bold; margin: 0 0 16px 0;">
+          Add Blog Post
+        </h2>
+        <form id="postForm">
+          <input type="hidden" id="postId" />
+
+          <div style="margin-bottom: 16px;">
+            <label style="display: block; font-size: 14px; font-weight: 500; margin-bottom: 4px;">
+              Title
+            </label>
+            <input type="text" id="title" required class="form-input" />
+          </div>
+
+          <div style="margin-bottom: 16px;">
+            <label style="display: block; font-size: 14px; font-weight: 500; margin-bottom: 4px;">
+              Slug
+            </label>
+            <input type="text" id="slug" required class="form-input" />
+          </div>
+
+          <div style="margin-bottom: 16px;">
+            <label style="display: block; font-size: 14px; font-weight: 500; margin-bottom: 4px;">
+              Excerpt
+            </label>
+            <textarea id="excerpt" rows="3" required class="form-input"></textarea>
+          </div>
+
+          <div style="margin-bottom: 16px;">
+            <label style="display: block; font-size: 14px; font-weight: 500; margin-bottom: 4px;">
+              Content (Markdown)
+            </label>
+            <div style="margin-bottom: 4px; font-size: 12px;" class="text-subtle">
+              Supports GitHub Flavored Markdown with syntax highlighting for code blocks
+            </div>
+            <textarea id="content" rows="12" required class="form-input" placeholder="# Your Blog Post Title
+
+## Introduction
+
+Your content here with **bold** and *italic* text.
+
+```typescript
+// Code blocks with syntax highlighting
+interface User {
+  name: string;
+  age: number;
+}
+
+const user: User = { name: 'John', age: 25 };
+```
+
+```javascript
+// JavaScript example
+function greet(name) {
+  console.log(`Hello, ${name}!`);
+}
+```
+
+```rust
+// Rust example  
+fn main() {
+    println!(&quot;Hello, world!&quot;);
+}
+```
+
+- Bullet points work
+- Links: [example](https://example.com)
+- Tables are supported too!
+
+| Feature | Status |
+|---------|--------|
+| Syntax highlighting | ✅ |
+| Copy buttons | ✅ |"></textarea>
+          </div>
+
+          <div style="margin-bottom: 16px;">
+            <label style="display: block; font-size: 14px; font-weight: 500; margin-bottom: 4px;">
+              Tags (comma-separated)
+            </label>
+            <input type="text" id="tags" placeholder="React, TypeScript, Web Development" class="form-input" />
+          </div>
+
+          <div style="margin-bottom: 16px;">
+            <label style="display: block; font-size: 14px; font-weight: 500; margin-bottom: 4px;">
+              Read Time
+            </label>
+            <input type="text" id="readTime" placeholder="5 min read" class="form-input" />
+          </div>
+
+          <div style="margin-bottom: 16px;">
+            <label style="display: block; font-size: 14px; font-weight: 500; margin-bottom: 4px;">
+              Meta Title (SEO)
+            </label>
+            <input type="text" id="metaTitle" class="form-input" />
+          </div>
+
+          <div style="margin-bottom: 16px;">
+            <label style="display: block; font-size: 14px; font-weight: 500; margin-bottom: 4px;">
+              Meta Description (SEO)
+            </label>
+            <textarea id="metaDescription" rows="2" class="form-input"></textarea>
+          </div>
+
+          <div style="margin-bottom: 16px; display: flex; gap: 16px;">
+            <label style="display: flex; align-items: center; gap: 8px;">
+              <input type="checkbox" id="published" style="accent-color: var(--rp-pine);" />
+              <span style="font-size: 14px; font-weight: 500;">Published</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 8px;">
+              <input type="checkbox" id="featured" style="accent-color: var(--rp-pine);" />
+              <span style="font-size: 14px; font-weight: 500;">Featured</span>
+            </label>
+          </div>
+
+          <div style="display: flex; justify-content: flex-end; gap: 12px;">
+            <button
+              type="button"
+              onclick="closeModal()"
+              style="background: none; border: 1px solid var(--rp-muted); color: var(--rp-subtle); padding: 8px 16px; border-radius: 4px; cursor: pointer;"
+            >Cancel</button>
+            <button type="submit" class="btn-primary">Save Post</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script is:inline>
+      let currentPostId = null;
+
+      // Mobile menu functionality
+      window.toggleMobileMenu = function() {
+        const dropdown = document.getElementById('mobileDropdown');
+        dropdown.classList.toggle('show');
+      };
+
+      // Close mobile menu when clicking outside
+      document.addEventListener('click', function(event) {
+        const dropdown = document.getElementById('mobileDropdown');
+        const menuBtn = document.querySelector('.mobile-menu-btn');
+        
+        if (!dropdown.contains(event.target) && !menuBtn.contains(event.target)) {
+          dropdown.classList.remove('show');
+        }
+      });
+
+      window.showCreateForm = function () {
+        document.getElementById('modalTitle').textContent = 'Add Blog Post';
+        document.getElementById('postForm').reset();
+        document.getElementById('postId').value = '';
+        currentPostId = null;
+        document.getElementById('postModal').classList.remove('hidden');
+      };
+
+      window.editPost = async function (id) {
+        try {
+          const response = await fetch(`/api/blog/${id}`);
+          const post = await response.json();
+
+          document.getElementById('modalTitle').textContent = 'Edit Blog Post';
+          document.getElementById('postId').value = post.id;
+          document.getElementById('title').value = post.title;
+          document.getElementById('slug').value = post.slug;
+          document.getElementById('excerpt').value = post.excerpt;
+          document.getElementById('content').value = post.content;
+          document.getElementById('tags').value = post.tags ? post.tags.join(', ') : '';
+          document.getElementById('readTime').value = post.read_time || '';
+          document.getElementById('metaTitle').value = post.meta_title || '';
+          document.getElementById('metaDescription').value = post.meta_description || '';
+          document.getElementById('published').checked = post.published || false;
+          document.getElementById('featured').checked = post.featured || false;
+
+          currentPostId = id;
+          document.getElementById('postModal').classList.remove('hidden');
+        } catch (error) {
+          alert('Error loading blog post: ' + error.message);
+        }
+      };
+
+      window.deletePost = async function (id) {
+        if (!confirm('Are you sure you want to delete this blog post?')) {
+          return;
+        }
+
+        try {
+          const response = await fetch(`/api/blog/${id}`, {
+            method: 'DELETE',
+          });
+
+          if (response.ok) {
+            window.location.reload();
+          } else {
+            const error = await response.json();
+            alert('Error deleting blog post: ' + error.error);
+          }
+        } catch (error) {
+          alert('Error deleting blog post: ' + error.message);
+        }
+      };
+
+      window.closeModal = function () {
+        document.getElementById('postModal').classList.add('hidden');
+      };
+
+      document.getElementById('title').addEventListener('input', function() {
+        const title = this.value;
+        const slug = title
+          .toLowerCase()
+          .replace(/[^a-z0-9\s-]/g, '')
+          .replace(/\s+/g, '-')
+          .replace(/-+/g, '-')
+          .trim();
+        document.getElementById('slug').value = slug;
+      });
+
+      document.getElementById('postForm').addEventListener('submit', async e => {
+        e.preventDefault();
+
+        const formData = {
+          title: document.getElementById('title').value,
+          slug: document.getElementById('slug').value,
+          excerpt: document.getElementById('excerpt').value,
+          content: document.getElementById('content').value,
+          tags: document.getElementById('tags').value
+            ? document.getElementById('tags').value.split(',').map(t => t.trim()).filter(t => t)
+            : [],
+          read_time: document.getElementById('readTime').value || '5 min read',
+          meta_title: document.getElementById('metaTitle').value || null,
+          meta_description: document.getElementById('metaDescription').value || null,
+          published: document.getElementById('published').checked,
+          featured: document.getElementById('featured').checked,
+        };
+
+        try {
+          const url = currentPostId ? `/api/blog/${currentPostId}` : '/api/blog/';
+          const method = currentPostId ? 'PUT' : 'POST';
+
+          const response = await fetch(url, {
+            method: method,
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+          });
+
+          if (response.ok) {
+            window.location.reload();
+          } else {
+            const error = await response.json();
+            alert('Error saving blog post: ' + error.error);
+          }
+        } catch (error) {
+          alert('Error saving blog post: ' + error.message);
+        }
+      });
+
+      document.getElementById('postModal').addEventListener('click', e => {
+        if (e.target === e.currentTarget) {
+          window.closeModal();
+        }
+      });
+    </script>
+  </body>
+</html>

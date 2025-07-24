@@ -2,10 +2,8 @@
 // Accessibility enhancements for better Lighthouse scores
 ---
 
-<!-- Skip to main content link for screen readers -->
 <a href="#main-content" class="skip-link">Skip to main content</a>
 
-<!-- Accessibility improvements -->
 <style>
   .skip-link {
     position: absolute;
@@ -24,21 +22,18 @@
     top: 6px;
   }
 
-  /* Improve focus indicators */
   *:focus-visible {
     outline: 2px solid #31748f;
     outline-offset: 2px;
     border-radius: 2px;
   }
 
-  /* Better button focus states */
   button:focus-visible {
     box-shadow:
       0 0 0 2px #191724,
       0 0 0 4px #31748f;
   }
 
-  /* Improve link accessibility */
   a {
     color: #9ccfd8;
     text-decoration-skip-ink: auto;
@@ -51,13 +46,11 @@
     text-underline-offset: 2px;
   }
 
-  /* Better contrast for text */
   .high-contrast {
     color: #ffffff;
     background-color: #000000;
   }
 
-  /* Screen reader only content */
   .sr-only {
     position: absolute;
     width: 1px;
@@ -70,7 +63,6 @@
     border: 0;
   }
 
-  /* Reduced motion preferences */
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -82,7 +74,6 @@
     }
   }
 
-  /* High contrast mode support */
   @media (prefers-contrast: high) {
     * {
       border-color: currentColor !important;
@@ -94,7 +85,6 @@
     }
   }
 
-  /* Dark mode improvements */
   @media (prefers-color-scheme: dark) {
     :root {
       color-scheme: dark;

@@ -47,17 +47,21 @@ const {
   <slot />
 </div>
 
-<script is:inline>
-  (function () {
-    function initAnimations() {
-      if ('IntersectionObserver' in window) {
-        const observerOptions = {
-          root: null,
-          rootMargin: '0px 0px -50px 0px',
-          threshold: 0.1,
-        };
+<script>
+  // Optimized animation initialization with reduced blocking
+  document.addEventListener('DOMContentLoaded', () => {
+    // Use requestIdleCallback for non-critical animations
+    const initAnimations = () => {
+      if (!('IntersectionObserver' in window)) {
+        // Fallback for older browsers
+        document.querySelectorAll('.scroll-animate').forEach(el => {
+          el.classList.add('animate-in');
+        });
+        return;
+      }
 
-        const animateObserver = new IntersectionObserver(entries => {
+      const observer = new IntersectionObserver(
+        (entries) => {
           entries.forEach(entry => {
             if (entry.isIntersecting) {
               const element = entry.target;
@@ -66,40 +70,51 @@ const {
               const distance = parseInt(element.dataset.distance) || 30;
               const once = element.dataset.once === 'true';
 
+              // Use CSS custom properties for better performance
               element.style.setProperty('--distance', `${distance}px`);
               element.style.transitionDuration = `${duration}ms`;
 
-              setTimeout(() => {
-                element.classList.add('animate-in');
-              }, delay);
+              // Use requestAnimationFrame for smooth animations
+              if (delay > 0) {
+                setTimeout(() => {
+                  requestAnimationFrame(() => {
+                    element.classList.add('animate-in');
+                  });
+                }, delay);
+              } else {
+                requestAnimationFrame(() => {
+                  element.classList.add('animate-in');
+                });
+              }
 
               if (once) {
-                animateObserver.unobserve(element);
+                observer.unobserve(element);
               }
             } else if (entry.target.dataset.once !== 'true') {
               entry.target.classList.remove('animate-in');
             }
           });
-        }, observerOptions);
+        },
+        {
+          root: null,
+          rootMargin: '0px 0px -50px 0px',
+          threshold: 0.1,
+        }
+      );
 
-        const elementsToAnimate = document.querySelectorAll('.scroll-animate');
-        elementsToAnimate.forEach(el => {
-          animateObserver.observe(el);
-        });
-      } else {
-        const elementsToAnimate = document.querySelectorAll('.scroll-animate');
-        elementsToAnimate.forEach(el => {
-          el.classList.add('animate-in');
-        });
-      }
-    }
+      // Observe elements
+      document.querySelectorAll('.scroll-animate').forEach(el => {
+        observer.observe(el);
+      });
+    };
 
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initAnimations);
+    // Use requestIdleCallback when available for better performance
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(initAnimations, { timeout: 2000 });
     } else {
-      initAnimations();
+      setTimeout(initAnimations, 100);
     }
-  })();
+  });
 </script>
 
 <style>

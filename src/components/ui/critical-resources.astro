@@ -1,0 +1,193 @@
+---
+// Critical resource preloading for optimal PageSpeed performance
+interface Props {
+  priorityImage?: string;
+  heroImage?: string;
+  critical?: boolean;
+}
+
+const { priorityImage, heroImage, critical = true } = Astro.props;
+---
+
+<!-- Critical DNS and Connection Setup -->
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
+
+<!-- DNS Prefetch for External Resources -->
+<link rel="dns-prefetch" href="//www.google-analytics.com" />
+<link rel="dns-prefetch" href="//googletagmanager.com" />
+<link rel="dns-prefetch" href="//vercel-insights.com" />
+
+<!-- Critical Font Preloading -->
+<link 
+  rel="preload" 
+  href="https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2" 
+  as="font" 
+  type="font/woff2" 
+  crossorigin 
+/>
+
+<!-- Critical Asset Preloading -->
+<link rel="preload" href="/favicon.svg" as="image" type="image/svg+xml" />
+
+{priorityImage && (
+  <link rel="preload" href={priorityImage} as="image" fetchpriority="high" />
+)}
+
+{heroImage && (
+  <link rel="preload" href={heroImage} as="image" fetchpriority="high" />
+)}
+
+<!-- Prefetch Important Resources -->
+<link rel="prefetch" href="/resume.pdf" />
+<link rel="prefetch" href="/sitemap.xml" />
+
+<!-- Module Preloading for Critical JavaScript -->
+{critical && (
+  <>
+    <link rel="modulepreload" href="/src/components/ui/navigation-bar.astro" />
+    <link rel="modulepreload" href="/src/libs/analytics.ts" />
+  </>
+)}
+
+<!-- Resource Hints for Better Performance -->
+<link rel="prefetch" href="/api/home" />
+<link rel="prefetch" href="/api/about" />
+
+<!-- Critical CSS Inline -->
+<style>
+  /* Critical above-the-fold styles */
+  html {
+    font-family: 
+      -apple-system, 
+      BlinkMacSystemFont, 
+      'Segoe UI', 
+      Roboto, 
+      Oxygen, 
+      Ubuntu, 
+      Cantarell, 
+      sans-serif;
+    line-height: 1.6;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: #191724;
+    color: #e0def4;
+    font-display: swap;
+  }
+
+  /* Critical navigation styles */
+  nav {
+    background-color: #1f1d2e;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    contain: layout style paint;
+  }
+
+  /* Critical hero section styles */
+  .hero {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    contain: layout style;
+  }
+
+  /* Image optimization */
+  img {
+    max-width: 100%;
+    height: auto;
+    content-visibility: auto;
+    contain-intrinsic-size: 300px 200px;
+  }
+
+  /* Performance optimizations */
+  .will-change-transform {
+    will-change: transform;
+  }
+
+  .will-change-opacity {
+    will-change: opacity;
+  }
+
+  /* Layout containment */
+  .contain-layout {
+    contain: layout;
+  }
+
+  .contain-paint {
+    contain: paint;
+  }
+
+  .contain-style {
+    contain: style;
+  }
+
+  /* Critical responsive design */
+  @media (max-width: 768px) {
+    .hero {
+      min-height: 50vh;
+      padding: 1rem;
+    }
+  }
+
+  /* Reduced motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* High contrast mode */
+  @media (prefers-contrast: high) {
+    :root {
+      --text-contrast: #ffffff;
+      --bg-contrast: #000000;
+    }
+  }
+</style>
+
+<!-- Critical Performance Script -->
+<script is:inline>
+  // Critical performance optimizations
+  (function() {
+    // Early performance marker
+    performance.mark('critical-resources-start');
+    
+    // Optimize font loading
+    if ('fonts' in document) {
+      document.fonts.load('400 16px system-ui, -apple-system, sans-serif');
+    }
+    
+    // Early connection warming
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').catch(() => {});
+    }
+    
+    // Early viewport optimization
+    const viewport = document.querySelector('meta[name="viewport"]');
+    if (!viewport) {
+      const meta = document.createElement('meta');
+      meta.name = 'viewport';
+      meta.content = 'width=device-width, initial-scale=1.0';
+      document.head.appendChild(meta);
+    }
+    
+    // Critical resource loaded marker
+    document.addEventListener('DOMContentLoaded', () => {
+      performance.mark('critical-resources-end');
+      performance.measure('critical-resources-duration', 'critical-resources-start', 'critical-resources-end');
+    });
+  })();
+</script>

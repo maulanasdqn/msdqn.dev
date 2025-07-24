@@ -2,14 +2,17 @@ declare global {
   interface Window {
     dataLayer: any[];
     gtag: (...args: any[]) => void;
+    trackAnalyticsEvent: (
+      eventName: string,
+      parameters?: Record<string, any>
+    ) => void;
+    trackPageView: (pagePath: string, pageTitle?: string) => void;
   }
 }
 
 export function initializeGoogleTagManager(gtmId: string): void {
   if (typeof window === 'undefined' || !gtmId) return;
-
   window.dataLayer = window.dataLayer || [];
-
   (function (w: any, d: Document, s: string, l: string, i: string) {
     w[l] = w[l] || [];
     w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
@@ -41,6 +44,10 @@ export function trackEvent(
   parameters: Record<string, any> = {}
 ): void {
   if (typeof window !== 'undefined') {
+    if (window.trackAnalyticsEvent) {
+      window.trackAnalyticsEvent(eventName, parameters);
+      return;
+    }
     if (window.dataLayer) {
       window.dataLayer.push({
         event: eventName,
@@ -55,6 +62,10 @@ export function trackEvent(
 
 export function trackPageView(pagePath: string, pageTitle?: string): void {
   if (typeof window !== 'undefined') {
+    if (window.trackPageView) {
+      window.trackPageView(pagePath, pageTitle);
+      return;
+    }
     if (window.dataLayer) {
       window.dataLayer.push({
         event: 'page_view',
@@ -63,10 +74,37 @@ export function trackPageView(pagePath: string, pageTitle?: string): void {
       });
     }
     if (window.gtag) {
-      window.gtag('config', window.gtag, {
+      window.gtag('config', 'GA_MEASUREMENT_ID', {
         page_path: pagePath,
         page_title: pageTitle,
       });
     }
   }
+}
+
+export function trackWebVital(name: string, value: number, id: string): void {
+  trackEvent(name, {
+    event_category: 'Web Vitals',
+    value: Math.round(name === 'CLS' ? value * 1000 : value),
+    event_label: id,
+    non_interaction: true,
+    transport_type: 'beacon',
+  });
+}
+
+export function trackError(error: Error, context?: string): void {
+  trackEvent('exception', {
+    description: error.message || 'Unknown error',
+    fatal: false,
+    event_category: 'JavaScript Error',
+    context: context,
+  });
+}
+
+export function trackPerformance(metric: string, value: number): void {
+  trackEvent('timing_complete', {
+    name: metric,
+    value: Math.round(value),
+    event_category: 'Performance',
+  });
 }

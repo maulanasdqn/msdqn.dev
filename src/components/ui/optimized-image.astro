@@ -1,0 +1,183 @@
+---
+interface Props {
+  src: string;
+  alt: string;
+  width?: number;
+  height?: number;
+  sizes?: string;
+  priority?: boolean;
+  class?: string;
+  placeholder?: 'blur' | 'empty';
+  quality?: number;
+}
+
+const {
+  src,
+  alt,
+  width = 800,
+  height = 600,
+  sizes = '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw',
+  priority = false,
+  class: className = '',
+  placeholder = 'empty',
+  quality = 80,
+} = Astro.props;
+
+const responsiveSizes = [400, 800, 1200, 1600];
+
+const webpSources = responsiveSizes
+  .map(size => `${src}?w=${size}&f=webp&q=${quality} ${size}w`)
+  .join(', ');
+
+const avifSources = responsiveSizes
+  .map(size => `${src}?w=${size}&f=avif&q=${quality} ${size}w`)
+  .join(', ');
+
+const jpegSources = responsiveSizes
+  .map(size => `${src}?w=${size}&f=jpg&q=${quality} ${size}w`)
+  .join(', ');
+
+const blurDataUrl =
+  placeholder === 'blur'
+    ? `data:image/svg+xml;base64,${btoa(`
+    <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#191724;stop-opacity:0.8" />
+          <stop offset="100%" style="stop-color:#26233a;stop-opacity:0.4" />
+        </linearGradient>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#gradient)" />
+    </svg>
+  `)}`
+    : undefined;
+---
+
+<div
+  class={`optimized-image-container ${className}`}
+  style={`aspect-ratio: ${width}/${height}; position: relative; overflow: hidden;`}
+>
+  {
+    placeholder === 'blur' && (
+      <img
+        src={blurDataUrl}
+        alt=""
+        class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 blur-sm"
+        style="z-index: 1;"
+        aria-hidden="true"
+      />
+    )
+  }
+
+  <picture class="absolute inset-0 w-full h-full">
+    <source type="image/avif" srcset={avifSources} sizes={sizes} />
+
+    <source type="image/webp" srcset={webpSources} sizes={sizes} />
+
+    <source type="image/jpeg" srcset={jpegSources} sizes={sizes} />
+
+    <img
+      src={`${src}?w=${width}&f=jpg&q=${quality}`}
+      alt={alt}
+      width={width}
+      height={height}
+      loading={priority ? 'eager' : 'lazy'}
+      decoding={priority ? 'sync' : 'async'}
+      fetchpriority={priority ? 'high' : 'low'}
+      class="w-full h-full object-cover transition-opacity duration-300"
+      style={`z-index: 2; ${placeholder === 'blur' ? 'opacity: 0;' : ''}`}
+      onload={placeholder === 'blur'
+        ? 'this.style.opacity=1; this.previousElementSibling?.remove?.()'
+        : undefined}
+      onerror="this.style.display='none'; this.nextElementSibling?.style.setProperty('display', 'flex');"
+    />
+  </picture>
+
+  <div
+    class="absolute inset-0 bg-rose-pine-surface flex items-center justify-center text-rose-pine-muted"
+    style="display: none; z-index: 3;"
+  >
+    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+      <path
+        fill-rule="evenodd"
+        d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
+        clip-rule="evenodd"></path>
+    </svg>
+  </div>
+</div>
+
+<style>
+  .optimized-image-container {
+    background-color: var(--image-bg, #1f1d2e);
+    border-radius: 0.5rem;
+  }
+
+  .optimized-image-container img {
+    contain: layout style paint;
+  }
+
+  .optimized-image-container picture img {
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .optimized-image-container::before {
+    content: '';
+    display: block;
+    padding-bottom: calc(var(--aspect-ratio, 0.75) * 100%);
+  }
+
+  @media (max-width: 640px) {
+    .optimized-image-container {
+      border-radius: 0.25rem;
+    }
+  }
+
+  @media (prefers-contrast: high) {
+    .optimized-image-container {
+      border: 1px solid currentColor;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .optimized-image-container * {
+      transition: none !important;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const images = document.querySelectorAll(
+      '.optimized-image-container img[loading="lazy"]'
+    );
+
+    if ('IntersectionObserver' in window) {
+      const imageObserver = new IntersectionObserver(
+        entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const img = entry.target as HTMLImageElement;
+
+              if (!img.src.includes('data:image')) {
+                const link = document.createElement('link');
+                link.rel = 'preload';
+                link.as = 'image';
+                link.href = img.src;
+                document.head.appendChild(link);
+              }
+
+              imageObserver.unobserve(img);
+            }
+          });
+        },
+        {
+          rootMargin: '50px 0px',
+          threshold: 0.01,
+        }
+      );
+
+      images.forEach(img => imageObserver.observe(img));
+    }
+  });
+</script>
+

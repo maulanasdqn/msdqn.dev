@@ -2,6 +2,19 @@ import type { Config } from 'tailwindcss';
 
 const config: Config = {
   content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
+  safelist: [
+    'animate-in',
+    'scroll-animate',
+    'fade-up',
+    'fade-down',
+    'fade-left',
+    'fade-right',
+    'scale-up',
+    'zoom-in',
+    'bounce-in',
+    'loaded',
+    'error'
+  ],
   theme: {
     extend: {
       colors: {

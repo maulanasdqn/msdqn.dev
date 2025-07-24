@@ -1,14 +1,15 @@
 ---
 import AccessibilityImprovements from '@/components/ui/accessibility-improvements.astro';
+import AnalyticsPartytown from '@/components/ui/analytics-partytown.astro';
 import AnimationWrapper from '@/components/ui/animation-wrapper.astro';
 import CaseStudiesSection from '@/components/ui/case-studies-section.astro';
 import CriticalCSS from '@/components/ui/critical-css.astro';
+import CriticalResources from '@/components/ui/critical-resources.astro';
 import ExperienceItem from '@/components/ui/experience-item.astro';
 import FooterSection from '@/components/ui/footer-section.astro';
 import HeroSection from '@/components/ui/hero-section.astro';
 import LighthouseOptimizations from '@/components/ui/lighthouse-optimizations.astro';
 import NavigationBar from '@/components/ui/navigation-bar.astro';
-import PartytownAnalytics from '@/components/ui/partytown-analytics.astro';
 import PerformanceOptimizations from '@/components/ui/performance-optimizations.astro';
 import ProjectCard from '@/components/ui/project-card.astro';
 import TestimonialsSection from '@/components/ui/testimonials-section.astro';
@@ -36,6 +37,8 @@ const siteName = 'Maulana Sodiqin - Fullstack Developer';
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <CriticalResources critical={true} />
+    <AnalyticsPartytown />
 
     <title>
       {
@@ -270,7 +273,6 @@ const siteName = 'Maulana Sodiqin - Fullstack Developer';
   </head>
   <body class="bg-rose-pine-base text-rose-pine-text">
     <AccessibilityImprovements />
-    <PartytownAnalytics />
     <NavigationBar />
 
     <main>

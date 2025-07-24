@@ -1,0 +1,140 @@
+---
+interface Props {
+  src: string;
+  alt: string;
+  width?: number;
+  height?: number;
+  sizes?: string;
+  priority?: boolean;
+  class?: string;
+  placeholder?: boolean;
+  quality?: number;
+}
+
+const {
+  src,
+  alt,
+  width = 800,
+  height = 600,
+  priority = false,
+  class: className = '',
+  placeholder = true,
+} = Astro.props;
+
+const aspectRatio = (height / width) * 100;
+---
+
+<div
+  class={`responsive-image-wrapper ${className}`}
+  style={`--aspect-ratio: ${aspectRatio}%;`}
+>
+  {
+    placeholder && (
+      <div class="image-placeholder" aria-hidden="true">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z" />
+        </svg>
+      </div>
+    )
+  }
+
+  <img
+    src={src}
+    alt={alt}
+    width={width}
+    height={height}
+    loading={priority ? 'eager' : 'lazy'}
+    decoding={priority ? 'sync' : 'async'}
+    fetchpriority={priority ? 'high' : 'auto'}
+    class="responsive-image"
+    onload="this.classList.add('loaded')"
+    onerror="this.classList.add('error')"
+  />
+</div>
+
+<style>
+  .responsive-image-wrapper {
+    position: relative;
+    overflow: hidden;
+    border-radius: 0.5rem;
+    background-color: #1f1d2e;
+  }
+
+  .responsive-image-wrapper::before {
+    content: '';
+    display: block;
+    padding-bottom: var(--aspect-ratio, 75%);
+  }
+
+  .image-placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6e6a86;
+    background: linear-gradient(135deg, #191724 0%, #26233a 100%);
+    transition: opacity 0.3s ease;
+    z-index: 1;
+  }
+
+  .responsive-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    opacity: 0;
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 2;
+  }
+
+  .responsive-image.loaded {
+    opacity: 1;
+  }
+
+  .responsive-image.loaded + .image-placeholder,
+  .responsive-image.loaded ~ .image-placeholder {
+    opacity: 0;
+  }
+
+  .responsive-image.error {
+    opacity: 0;
+  }
+
+  .responsive-image {
+    contain: layout style paint;
+    content-visibility: auto;
+    contain-intrinsic-size: 300px 200px;
+  }
+
+  @media (prefers-contrast: high) {
+    .responsive-image-wrapper {
+      border: 1px solid currentColor;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .responsive-image,
+    .image-placeholder {
+      transition: none !important;
+    }
+  }
+
+  @media (prefers-color-scheme: light) {
+    .responsive-image-wrapper {
+      background-color: #f2e9e1;
+    }
+
+    .image-placeholder {
+      background: linear-gradient(135deg, #faf4ed 0%, #f2e9e1 100%);
+      color: #9893a5;
+    }
+  }
+</style>
+

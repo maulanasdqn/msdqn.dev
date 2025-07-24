@@ -5,16 +5,42 @@ interface Metric {
 }
 
 export class PerformanceMonitor {
+  private static metrics: Metric[] = [];
+  private static batchTimeout: number | null = null;
+
   private static sendToAnalytics(metric: Metric): void {
-    if (typeof window !== 'undefined' && window.gtag) {
-      window.gtag('event', metric.name, {
-        value: Math.round(
-          metric.name === 'CLS' ? metric.value * 1000 : metric.value
-        ),
-        event_category: 'Web Vitals',
-        event_label: metric.id,
-        non_interaction: true,
+    this.metrics.push(metric);
+    if (this.batchTimeout) return;
+    this.batchTimeout = window.setTimeout(() => {
+      this.flushMetrics();
+      this.batchTimeout = null;
+    }, 1000);
+  }
+
+  private static flushMetrics(): void {
+    if (typeof window !== 'undefined' && this.metrics.length > 0) {
+      this.metrics.forEach(metric => {
+        if (window.gtag) {
+          window.gtag('event', metric.name, {
+            value: Math.round(
+              metric.name === 'CLS' ? metric.value * 1000 : metric.value
+            ),
+            event_category: 'Web Vitals',
+            event_label: metric.id,
+            non_interaction: true,
+            transport_type: 'beacon',
+          });
+        }
+        if (window.dataLayer) {
+          window.dataLayer.push({
+            event: 'web_vitals',
+            metric_name: metric.name,
+            metric_value: metric.value,
+            metric_id: metric.id,
+          });
+        }
       });
+      this.metrics = [];
     }
   }
 
@@ -30,7 +56,6 @@ export class PerformanceMonitor {
         if (!(entry as any).hadRecentInput) {
           const firstSessionEntry = sessionEntries[0];
           const lastSessionEntry = sessionEntries[sessionEntries.length - 1];
-
           if (
             sessionValue &&
             entry.startTime - lastSessionEntry.startTime < 1000 &&
@@ -42,7 +67,6 @@ export class PerformanceMonitor {
             sessionValue = (entry as any).value;
             sessionEntries = [entry];
           }
-
           if (sessionValue > clsValue) {
             clsValue = sessionValue;
             onReport({

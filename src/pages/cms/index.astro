@@ -100,15 +100,15 @@ const email = session.data.user?.email;
   <body class="min-h-screen">
     <nav class="nav-bg shadow-lg">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
+        <div class="flex justify-between items-center h-16">
           <div class="flex items-center">
-            <h1 class="text-xl font-bold">🌹 CMS Dashboard</h1>
+            <h1 class="text-lg sm:text-xl font-bold">🌹 CMS</h1>
           </div>
-          <div class="flex items-center space-x-4">
-            <span class="text-sm text-subtle">{email}</span>
+          <div class="flex items-center space-x-2 sm:space-x-4">
+            <span class="text-xs sm:text-sm text-subtle hidden sm:inline">{email}</span>
             <form action="/api/auth/signout" method="post">
               <button
-                class="btn-signout text-white px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                class="btn-signout text-white px-2 py-1 sm:px-3 sm:py-2 rounded-md text-xs sm:text-sm font-medium transition-colors"
               >
                 Sign Out
               </button>
@@ -127,7 +127,7 @@ const email = session.data.user?.email;
           </p>
         </div>
 
-        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           <div
             class="card-bg overflow-hidden shadow-lg rounded-lg transition-colors"
           >
@@ -372,6 +372,49 @@ const email = session.data.user?.email;
                   class="text-sm font-medium link-pine transition-colors"
                 >
                   Manage testimonials →
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="card-bg overflow-hidden shadow-lg rounded-lg transition-colors"
+          >
+            <div class="p-5">
+              <div class="flex items-center">
+                <div class="flex-shrink-0">
+                  <div
+                    class="w-8 h-8 rounded-md flex items-center justify-center"
+                    style="background-color: var(--rp-pine);"
+                  >
+                    <svg
+                      class="w-5 h-5 text-white"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                      ></path>
+                    </svg>
+                  </div>
+                </div>
+                <div class="ml-5 w-0 flex-1">
+                  <dt class="text-sm font-medium text-muted truncate">
+                    Blog Posts
+                  </dt>
+                  <dd class="text-lg font-medium">Tech Articles</dd>
+                </div>
+              </div>
+              <div class="mt-3">
+                <a
+                  href="/cms/blog"
+                  class="text-sm font-medium link-pine transition-colors"
+                >
+                  Manage blog posts →
                 </a>
               </div>
             </div>

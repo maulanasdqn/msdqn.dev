@@ -1,5 +1,7 @@
 ---
 import AnimationWrapper from './animation-wrapper.astro';
+
+const year = new Date().getFullYear();
 ---
 
 <footer
@@ -123,7 +125,7 @@ import AnimationWrapper from './animation-wrapper.astro';
 
       <div class="mt-8 pt-8 border-t border-rose-pine-highlight-med">
         <p class="text-center text-rose-pine-muted text-sm">
-          © 2024 Maulana Sodiqin. All rights reserved.
+          © {year} Maulana Sodiqin. All rights reserved.
         </p>
       </div>
     </AnimationWrapper>

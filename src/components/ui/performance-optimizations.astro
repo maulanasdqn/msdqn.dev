@@ -2,27 +2,19 @@
 // Advanced performance optimizations
 ---
 
-<!-- Resource hints for critical resources -->
 <link rel="modulepreload" href="/src/components/ui/navigation-bar.astro" />
-
-<!-- Optimize external resources -->
 <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
-
-<!-- DNS prefetch for analytics -->
 <link rel="dns-prefetch" href="//www.google-analytics.com" />
 <link rel="dns-prefetch" href="//googletagmanager.com" />
 
-<!-- Performance optimizations -->
 <style>
-  /* Optimize rendering */
   html {
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
   }
 
-  /* Optimize font loading */
   @font-face {
     font-family: 'fallback';
     font-display: swap;
@@ -30,13 +22,11 @@
     unicode-range: U+0020-007F;
   }
 
-  /* Optimize images */
   img {
     content-visibility: auto;
     contain-intrinsic-size: 200px 150px;
   }
 
-  /* Optimize animations */
   .fade-in {
     animation: fadeIn 0.3s ease-in-out;
   }
@@ -52,7 +42,6 @@
     }
   }
 
-  /* Container queries for better responsive design */
   .container {
     container-type: inline-size;
   }
@@ -65,18 +54,15 @@
     }
   }
 
-  /* Optimize scrolling */
   .scroll-smooth {
     scroll-behavior: smooth;
     scroll-padding-top: 2rem;
   }
 
-  /* Optimize layout shifts */
   .aspect-ratio {
     aspect-ratio: var(--aspect-ratio, 16/9);
   }
 
-  /* GPU acceleration for animations */
   .will-change-transform {
     will-change: transform;
   }
@@ -85,7 +71,6 @@
     will-change: opacity;
   }
 
-  /* Optimize paint containment */
   .contain-paint {
     contain: paint;
   }
@@ -99,9 +84,7 @@
   }
 </style>
 
-<!-- Intersection Observer for lazy loading -->
 <script is:inline>
-  // Optimize image loading with Intersection Observer
   if ('IntersectionObserver' in window) {
     const imageObserver = new IntersectionObserver(
       (entries, observer) => {
@@ -122,16 +105,13 @@
       }
     );
 
-    // Observe all lazy images
     document.querySelectorAll('img[data-src]').forEach(img => {
       imageObserver.observe(img);
     });
   }
 
-  // Optimize scroll performance
   let ticking = false;
   function updateScrollPosition() {
-    // Handle scroll-based optimizations
     ticking = false;
   }
 
