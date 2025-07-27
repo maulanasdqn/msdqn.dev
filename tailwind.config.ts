@@ -13,7 +13,7 @@ const config: Config = {
     'zoom-in',
     'bounce-in',
     'loaded',
-    'error'
+    'error',
   ],
   theme: {
     extend: {
@@ -22,13 +22,13 @@ const config: Config = {
           base: '#191724',
           surface: '#1f1d2e',
           overlay: '#26233a',
-          muted: '#6e6a86',
-          subtle: '#908caa',
+          muted: '#7c7c9a',
+          subtle: '#9c97b8',
           text: '#e0def4',
           love: '#eb6f92',
           gold: '#f6c177',
           rose: '#ebbcba',
-          pine: '#31748f',
+          pine: '#3e8fb0',
           foam: '#9ccfd8',
           iris: '#c4a7e7',
           'highlight-low': '#21202e',

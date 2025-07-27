@@ -6,17 +6,20 @@ export interface Props {
 
 const { tags, variant = 'default' } = Astro.props;
 
-const sizeClasses = variant === 'large' 
-  ? 'px-4 py-2 text-base' 
-  : 'px-3 py-1 text-sm';
+const sizeClasses =
+  variant === 'large' ? 'px-4 py-2 text-base' : 'px-3 py-1 text-sm';
 ---
 
-{tags.length > 0 && (
-  <div class="flex flex-wrap gap-2">
-    {tags.map(tag => (
-      <span class={`bg-rose-pine-highlight-low text-rose-pine-text rounded-full ${sizeClasses}`}>
-        {tag}
-      </span>
-    ))}
-  </div>
-)}
+{
+  tags.length > 0 && (
+    <div class="flex flex-wrap gap-2">
+      {tags.map(tag => (
+        <span
+          class={`bg-rose-pine-highlight-low text-rose-pine-text rounded-full ${sizeClasses}`}
+        >
+          {tag}
+        </span>
+      ))}
+    </div>
+  )
+}

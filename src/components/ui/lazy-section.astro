@@ -1,0 +1,150 @@
+---
+interface Props {
+  class?: string;
+  'data-section'?: string;
+  threshold?: number;
+  rootMargin?: string;
+}
+
+const {
+  class: className = '',
+  'data-section': dataSection,
+  threshold = 0.1,
+  rootMargin = '50px 0px 50px 0px',
+} = Astro.props;
+---
+
+<div
+  class={`lazy-section ${className}`}
+  data-section={dataSection}
+  data-threshold={threshold}
+  data-root-margin={rootMargin}
+>
+  <div class="lazy-placeholder" aria-hidden="true">
+    <div class="lazy-skeleton"></div>
+  </div>
+  <div class="lazy-content" style="display: none;">
+    <slot />
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    if (!('IntersectionObserver' in window)) {
+      // Fallback for older browsers - show all content immediately
+      document.querySelectorAll('.lazy-section').forEach(section => {
+        const content = section.querySelector('.lazy-content');
+        const placeholder = section.querySelector('.lazy-placeholder');
+        if (content && placeholder) {
+          content.style.display = '';
+          placeholder.style.display = 'none';
+        }
+      });
+      return;
+    }
+
+    const lazyObserver = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const section = entry.target;
+            const content = section.querySelector('.lazy-content');
+            const placeholder = section.querySelector('.lazy-placeholder');
+
+            if (content && placeholder) {
+              // Fade out placeholder and fade in content
+              placeholder.style.opacity = '0';
+              placeholder.style.transition = 'opacity 0.3s ease';
+
+              setTimeout(() => {
+                content.style.display = '';
+                content.style.opacity = '0';
+                content.style.transition = 'opacity 0.3s ease';
+                placeholder.style.display = 'none';
+
+                // Use requestAnimationFrame for smooth transition
+                requestAnimationFrame(() => {
+                  content.style.opacity = '1';
+                });
+              }, 300);
+            }
+
+            lazyObserver.unobserve(section);
+          }
+        });
+      },
+      {
+        root: null,
+        rootMargin: rootMargin,
+        threshold: threshold,
+      }
+    );
+
+    // Observe all lazy sections
+    document.querySelectorAll('.lazy-section').forEach(section => {
+      lazyObserver.observe(section);
+    });
+  });
+</script>
+
+<style>
+  .lazy-section {
+    position: relative;
+    min-height: 100px;
+  }
+
+  .lazy-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+    background-color: rgba(25, 23, 36, 0.5);
+    border-radius: 12px;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+  }
+
+  .lazy-skeleton {
+    width: 100%;
+    height: 100px;
+    background: linear-gradient(
+      90deg,
+      rgba(31, 29, 46, 0.8) 25%,
+      rgba(38, 35, 58, 0.8) 50%,
+      rgba(31, 29, 46, 0.8) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+    border-radius: 8px;
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+
+  .lazy-content {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .lazy-content[style*='display: '] {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lazy-skeleton {
+      animation: none;
+      background: rgba(31, 29, 46, 0.8);
+    }
+
+    .lazy-placeholder,
+    .lazy-content {
+      transition: none;
+    }
+  }
+</style>

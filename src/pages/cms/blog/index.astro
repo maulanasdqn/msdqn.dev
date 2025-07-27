@@ -55,7 +55,10 @@ const email = session.data.user?.email;
       body {
         background-color: var(--rp-base);
         color: var(--rp-text);
-        font-family: system-ui, -apple-system, sans-serif;
+        font-family:
+          system-ui,
+          -apple-system,
+          sans-serif;
         margin: 0;
         padding: 0;
       }
@@ -212,12 +215,12 @@ const email = session.data.user?.email;
         .desktop-nav {
           display: none !important;
         }
-        
+
         .mobile-nav {
           display: flex !important;
           gap: 8px;
         }
-        
+
         .modal-content {
           margin: 8px;
           padding: 16px;
@@ -238,7 +241,7 @@ const email = session.data.user?.email;
         .desktop-nav {
           display: flex !important;
         }
-        
+
         .mobile-nav {
           display: none !important;
         }
@@ -299,11 +302,13 @@ const email = session.data.user?.email;
       }
     </style>
   </head>
-  
+
   <body>
     <nav class="nav-bg">
       <div style="max-width: 1200px; margin: 0 auto; padding: 0 8px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; height: 64px;">
+        <div
+          style="display: flex; justify-content: space-between; align-items: center; height: 64px;"
+        >
           <div style="display: flex; align-items: center;">
             <a
               href="/cms"
@@ -311,8 +316,11 @@ const email = session.data.user?.email;
               >🌹 CMS</a
             >
           </div>
-          
-          <div style="display: flex; margin-left: 24px; gap: 20px; align-items: center;" class="desktop-nav">
+
+          <div
+            style="display: flex; margin-left: 24px; gap: 20px; align-items: center;"
+            class="desktop-nav"
+          >
             <a href="/cms" class="nav-link">Dashboard</a>
             <a href="/cms/experience" class="nav-link">Experience</a>
             <a href="/cms/projects" class="nav-link">Projects</a>
@@ -322,9 +330,11 @@ const email = session.data.user?.email;
             <a href="/cms/home" class="nav-link">Home</a>
             <a href="/cms/blog" class="nav-link active">Blog</a>
           </div>
-          
+
           <div class="mobile-nav">
-            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()"
+              >☰</button
+            >
             <div class="mobile-dropdown" id="mobileDropdown">
               <a href="/cms">Dashboard</a>
               <a href="/cms/experience">Experience</a>
@@ -336,11 +346,17 @@ const email = session.data.user?.email;
               <a href="/cms/blog" class="active">Blog</a>
             </div>
           </div>
-          
+
           <div style="display: flex; align-items: center; gap: 8px;">
-            <span style="font-size: 12px;" class="text-subtle hidden sm:inline">{email}</span>
+            <span style="font-size: 12px;" class="text-subtle hidden sm:inline"
+              >{email}</span
+            >
             <form action="/api/auth/signout" method="post">
-              <button type="submit" class="btn-signout" style="padding: 6px 12px; font-size: 12px;">Sign out</button>
+              <button
+                type="submit"
+                class="btn-signout"
+                style="padding: 6px 12px; font-size: 12px;">Sign out</button
+              >
             </form>
           </div>
         </div>
@@ -348,127 +364,173 @@ const email = session.data.user?.email;
     </nav>
 
     <main style="max-width: 1200px; margin: 0 auto; padding: 24px 16px;">
-      <div style="border-bottom: 1px solid var(--rp-overlay); padding-bottom: 20px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+      <div
+        style="border-bottom: 1px solid var(--rp-overlay); padding-bottom: 20px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;"
+      >
         <h1 style="font-size: 24px; font-weight: bold; margin: 0;">
           Blog Management
         </h1>
-        <button onclick="showCreateForm()" class="btn-primary">+ Add Blog Post</button>
+        <button onclick="showCreateForm()" class="btn-primary"
+          >+ Add Blog Post</button
+        >
       </div>
 
-      {error && (
-        <div style="background-color: rgba(235, 111, 146, 0.2); border: 1px solid var(--rp-love); color: var(--rp-love); padding: 12px; border-radius: 6px; margin-bottom: 16px;">
-          Error loading blog posts: {error.message}
-        </div>
-      )}
+      {
+        error && (
+          <div style="background-color: rgba(235, 111, 146, 0.2); border: 1px solid var(--rp-love); color: var(--rp-love); padding: 12px; border-radius: 6px; margin-bottom: 16px;">
+            Error loading blog posts: {error.message}
+          </div>
+        )
+      }
 
-      {blogPosts && blogPosts.length === 0 && (
-        <div style="text-align: center; padding: 48px 0;">
-          <div style="font-size: 48px; margin-bottom: 16px;">📝</div>
-          <h3 style="margin: 8px 0; font-size: 18px;">No blog posts</h3>
-          <p style="margin: 4px 0; font-size: 14px;" class="text-subtle">
-            Get started by adding your first blog post.
-          </p>
-        </div>
-      )}
+      {
+        blogPosts && blogPosts.length === 0 && (
+          <div style="text-align: center; padding: 48px 0;">
+            <div style="font-size: 48px; margin-bottom: 16px;">📝</div>
+            <h3 style="margin: 8px 0; font-size: 18px;">No blog posts</h3>
+            <p style="margin: 4px 0; font-size: 14px;" class="text-subtle">
+              Get started by adding your first blog post.
+            </p>
+          </div>
+        )
+      }
 
-      {blogPosts && blogPosts.length > 0 && (
-        <div style="display: grid; gap: 16px;">
-          {blogPosts.map(post => (
-            <div class="card-bg blog-card" style="padding: 20px; border-radius: 8px; display: flex; justify-content: space-between; align-items: start;">
-              <div style="flex: 1;">
-                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px; flex-wrap: wrap;">
-                  <h3 style="margin: 0; font-size: 16px; font-weight: 600; flex: 1; min-width: 200px;">
-                    {post.title}
-                  </h3>
-                  <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                    <span class={`status-badge ${post.published ? 'status-published' : 'status-draft'}`}>
-                      {post.published ? 'Published' : 'Draft'}
+      {
+        blogPosts && blogPosts.length > 0 && (
+          <div style="display: grid; gap: 16px;">
+            {blogPosts.map(post => (
+              <div
+                class="card-bg blog-card"
+                style="padding: 20px; border-radius: 8px; display: flex; justify-content: space-between; align-items: start;"
+              >
+                <div style="flex: 1;">
+                  <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px; flex-wrap: wrap;">
+                    <h3 style="margin: 0; font-size: 16px; font-weight: 600; flex: 1; min-width: 200px;">
+                      {post.title}
+                    </h3>
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                      <span
+                        class={`status-badge ${post.published ? 'status-published' : 'status-draft'}`}
+                      >
+                        {post.published ? 'Published' : 'Draft'}
+                      </span>
+                      {post.featured && (
+                        <span class="featured-badge">Featured</span>
+                      )}
+                    </div>
+                  </div>
+
+                  <p style="margin: 8px 0; color: var(--rp-subtle); line-height: 1.5; font-size: 14px;">
+                    {post.excerpt}
+                  </p>
+
+                  <div style="display: flex; flex-wrap: gap: 4px; margin: 12px 0;">
+                    {post.tags &&
+                      post.tags.map(tag => <span class="tag">{tag}</span>)}
+                  </div>
+
+                  <div
+                    style="display: flex; flex-wrap: gap: 12px; font-size: 12px;"
+                    class="text-muted"
+                  >
+                    <span>
+                      Created: {new Date(post.created_at).toLocaleDateString()}
                     </span>
-                    {post.featured && (
-                      <span class="featured-badge">Featured</span>
+                    {post.published_at && (
+                      <span>
+                        Published:{' '}
+                        {new Date(post.published_at).toLocaleDateString()}
+                      </span>
                     )}
+                    <span>{post.read_time}</span>
                   </div>
                 </div>
-                
-                <p style="margin: 8px 0; color: var(--rp-subtle); line-height: 1.5; font-size: 14px;">
-                  {post.excerpt}
-                </p>
-                
-                <div style="display: flex; flex-wrap: gap: 4px; margin: 12px 0;">
-                  {post.tags && post.tags.map(tag => (
-                    <span class="tag">{tag}</span>
-                  ))}
-                </div>
-                
-                <div style="display: flex; flex-wrap: gap: 12px; font-size: 12px;" class="text-muted">
-                  <span>Created: {new Date(post.created_at).toLocaleDateString()}</span>
-                  {post.published_at && (
-                    <span>Published: {new Date(post.published_at).toLocaleDateString()}</span>
-                  )}
-                  <span>{post.read_time}</span>
+
+                <div
+                  class="blog-actions"
+                  style="display: flex; gap: 8px; margin-left: 16px;"
+                >
+                  <button
+                    onclick={`editPost('${post.id}')`}
+                    class="btn-edit"
+                    style="padding: 4px 8px; font-size: 12px;"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onclick={`deletePost('${post.id}')`}
+                    class="btn-delete"
+                    style="padding: 4px 8px; font-size: 12px;"
+                  >
+                    Delete
+                  </button>
                 </div>
               </div>
-              
-              <div class="blog-actions" style="display: flex; gap: 8px; margin-left: 16px;">
-                <button
-                  onclick={`editPost('${post.id}')`}
-                  class="btn-edit"
-                  style="padding: 4px 8px; font-size: 12px;"
-                >
-                  Edit
-                </button>
-                <button
-                  onclick={`deletePost('${post.id}')`}
-                  class="btn-delete"
-                  style="padding: 4px 8px; font-size: 12px;"
-                >
-                  Delete
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+            ))}
+          </div>
+        )
+      }
     </main>
 
     <!-- Modal -->
     <div id="postModal" class="modal hidden">
       <div class="modal-content">
-        <h2 id="modalTitle" style="font-size: 20px; font-weight: bold; margin: 0 0 16px 0;">
+        <h2
+          id="modalTitle"
+          style="font-size: 20px; font-weight: bold; margin: 0 0 16px 0;"
+        >
           Add Blog Post
         </h2>
         <form id="postForm">
           <input type="hidden" id="postId" />
 
           <div style="margin-bottom: 16px;">
-            <label style="display: block; font-size: 14px; font-weight: 500; margin-bottom: 4px;">
+            <label
+              style="display: block; font-size: 14px; font-weight: 500; margin-bottom: 4px;"
+            >
               Title
             </label>
             <input type="text" id="title" required class="form-input" />
           </div>
 
           <div style="margin-bottom: 16px;">
-            <label style="display: block; font-size: 14px; font-weight: 500; margin-bottom: 4px;">
+            <label
+              style="display: block; font-size: 14px; font-weight: 500; margin-bottom: 4px;"
+            >
               Slug
             </label>
             <input type="text" id="slug" required class="form-input" />
           </div>
 
           <div style="margin-bottom: 16px;">
-            <label style="display: block; font-size: 14px; font-weight: 500; margin-bottom: 4px;">
+            <label
+              style="display: block; font-size: 14px; font-weight: 500; margin-bottom: 4px;"
+            >
               Excerpt
             </label>
-            <textarea id="excerpt" rows="3" required class="form-input"></textarea>
+            <textarea id="excerpt" rows="3" required class="form-input"
+            ></textarea>
           </div>
 
           <div style="margin-bottom: 16px;">
-            <label style="display: block; font-size: 14px; font-weight: 500; margin-bottom: 4px;">
+            <label
+              style="display: block; font-size: 14px; font-weight: 500; margin-bottom: 4px;"
+            >
               Content (Markdown)
             </label>
-            <div style="margin-bottom: 4px; font-size: 12px;" class="text-subtle">
-              Supports GitHub Flavored Markdown with syntax highlighting for code blocks
+            <div
+              style="margin-bottom: 4px; font-size: 12px;"
+              class="text-subtle"
+            >
+              Supports GitHub Flavored Markdown with syntax highlighting for
+              code blocks
             </div>
-            <textarea id="content" rows="12" required class="form-input" placeholder="# Your Blog Post Title
+            <textarea
+              id="content"
+              rows="12"
+              required
+              class="form-input"
+              placeholder="# Your Blog Post Title
 
 ## Introduction
 
@@ -505,44 +567,72 @@ fn main() {
 | Feature | Status |
 |---------|--------|
 | Syntax highlighting | ✅ |
-| Copy buttons | ✅ |"></textarea>
+| Copy buttons | ✅ |"
+            ></textarea>
           </div>
 
           <div style="margin-bottom: 16px;">
-            <label style="display: block; font-size: 14px; font-weight: 500; margin-bottom: 4px;">
+            <label
+              style="display: block; font-size: 14px; font-weight: 500; margin-bottom: 4px;"
+            >
               Tags (comma-separated)
             </label>
-            <input type="text" id="tags" placeholder="React, TypeScript, Web Development" class="form-input" />
+            <input
+              type="text"
+              id="tags"
+              placeholder="React, TypeScript, Web Development"
+              class="form-input"
+            />
           </div>
 
           <div style="margin-bottom: 16px;">
-            <label style="display: block; font-size: 14px; font-weight: 500; margin-bottom: 4px;">
+            <label
+              style="display: block; font-size: 14px; font-weight: 500; margin-bottom: 4px;"
+            >
               Read Time
             </label>
-            <input type="text" id="readTime" placeholder="5 min read" class="form-input" />
+            <input
+              type="text"
+              id="readTime"
+              placeholder="5 min read"
+              class="form-input"
+            />
           </div>
 
           <div style="margin-bottom: 16px;">
-            <label style="display: block; font-size: 14px; font-weight: 500; margin-bottom: 4px;">
+            <label
+              style="display: block; font-size: 14px; font-weight: 500; margin-bottom: 4px;"
+            >
               Meta Title (SEO)
             </label>
             <input type="text" id="metaTitle" class="form-input" />
           </div>
 
           <div style="margin-bottom: 16px;">
-            <label style="display: block; font-size: 14px; font-weight: 500; margin-bottom: 4px;">
+            <label
+              style="display: block; font-size: 14px; font-weight: 500; margin-bottom: 4px;"
+            >
               Meta Description (SEO)
             </label>
-            <textarea id="metaDescription" rows="2" class="form-input"></textarea>
+            <textarea id="metaDescription" rows="2" class="form-input"
+            ></textarea>
           </div>
 
           <div style="margin-bottom: 16px; display: flex; gap: 16px;">
             <label style="display: flex; align-items: center; gap: 8px;">
-              <input type="checkbox" id="published" style="accent-color: var(--rp-pine);" />
+              <input
+                type="checkbox"
+                id="published"
+                style="accent-color: var(--rp-pine);"
+              />
               <span style="font-size: 14px; font-weight: 500;">Published</span>
             </label>
             <label style="display: flex; align-items: center; gap: 8px;">
-              <input type="checkbox" id="featured" style="accent-color: var(--rp-pine);" />
+              <input
+                type="checkbox"
+                id="featured"
+                style="accent-color: var(--rp-pine);"
+              />
               <span style="font-size: 14px; font-weight: 500;">Featured</span>
             </label>
           </div>
@@ -552,7 +642,8 @@ fn main() {
               type="button"
               onclick="closeModal()"
               style="background: none; border: 1px solid var(--rp-muted); color: var(--rp-subtle); padding: 8px 16px; border-radius: 4px; cursor: pointer;"
-            >Cancel</button>
+              >Cancel</button
+            >
             <button type="submit" class="btn-primary">Save Post</button>
           </div>
         </form>
@@ -563,17 +654,20 @@ fn main() {
       let currentPostId = null;
 
       // Mobile menu functionality
-      window.toggleMobileMenu = function() {
+      window.toggleMobileMenu = function () {
         const dropdown = document.getElementById('mobileDropdown');
         dropdown.classList.toggle('show');
       };
 
       // Close mobile menu when clicking outside
-      document.addEventListener('click', function(event) {
+      document.addEventListener('click', function (event) {
         const dropdown = document.getElementById('mobileDropdown');
         const menuBtn = document.querySelector('.mobile-menu-btn');
-        
-        if (!dropdown.contains(event.target) && !menuBtn.contains(event.target)) {
+
+        if (
+          !dropdown.contains(event.target) &&
+          !menuBtn.contains(event.target)
+        ) {
           dropdown.classList.remove('show');
         }
       });
@@ -597,11 +691,15 @@ fn main() {
           document.getElementById('slug').value = post.slug;
           document.getElementById('excerpt').value = post.excerpt;
           document.getElementById('content').value = post.content;
-          document.getElementById('tags').value = post.tags ? post.tags.join(', ') : '';
+          document.getElementById('tags').value = post.tags
+            ? post.tags.join(', ')
+            : '';
           document.getElementById('readTime').value = post.read_time || '';
           document.getElementById('metaTitle').value = post.meta_title || '';
-          document.getElementById('metaDescription').value = post.meta_description || '';
-          document.getElementById('published').checked = post.published || false;
+          document.getElementById('metaDescription').value =
+            post.meta_description || '';
+          document.getElementById('published').checked =
+            post.published || false;
           document.getElementById('featured').checked = post.featured || false;
 
           currentPostId = id;
@@ -636,7 +734,7 @@ fn main() {
         document.getElementById('postModal').classList.add('hidden');
       };
 
-      document.getElementById('title').addEventListener('input', function() {
+      document.getElementById('title').addEventListener('input', function () {
         const title = this.value;
         const slug = title
           .toLowerCase()
@@ -647,46 +745,56 @@ fn main() {
         document.getElementById('slug').value = slug;
       });
 
-      document.getElementById('postForm').addEventListener('submit', async e => {
-        e.preventDefault();
+      document
+        .getElementById('postForm')
+        .addEventListener('submit', async e => {
+          e.preventDefault();
 
-        const formData = {
-          title: document.getElementById('title').value,
-          slug: document.getElementById('slug').value,
-          excerpt: document.getElementById('excerpt').value,
-          content: document.getElementById('content').value,
-          tags: document.getElementById('tags').value
-            ? document.getElementById('tags').value.split(',').map(t => t.trim()).filter(t => t)
-            : [],
-          read_time: document.getElementById('readTime').value || '5 min read',
-          meta_title: document.getElementById('metaTitle').value || null,
-          meta_description: document.getElementById('metaDescription').value || null,
-          published: document.getElementById('published').checked,
-          featured: document.getElementById('featured').checked,
-        };
+          const formData = {
+            title: document.getElementById('title').value,
+            slug: document.getElementById('slug').value,
+            excerpt: document.getElementById('excerpt').value,
+            content: document.getElementById('content').value,
+            tags: document.getElementById('tags').value
+              ? document
+                  .getElementById('tags')
+                  .value.split(',')
+                  .map(t => t.trim())
+                  .filter(t => t)
+              : [],
+            read_time:
+              document.getElementById('readTime').value || '5 min read',
+            meta_title: document.getElementById('metaTitle').value || null,
+            meta_description:
+              document.getElementById('metaDescription').value || null,
+            published: document.getElementById('published').checked,
+            featured: document.getElementById('featured').checked,
+          };
 
-        try {
-          const url = currentPostId ? `/api/blog/${currentPostId}` : '/api/blog/';
-          const method = currentPostId ? 'PUT' : 'POST';
+          try {
+            const url = currentPostId
+              ? `/api/blog/${currentPostId}`
+              : '/api/blog/';
+            const method = currentPostId ? 'PUT' : 'POST';
 
-          const response = await fetch(url, {
-            method: method,
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData),
-          });
+            const response = await fetch(url, {
+              method: method,
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(formData),
+            });
 
-          if (response.ok) {
-            window.location.reload();
-          } else {
-            const error = await response.json();
-            alert('Error saving blog post: ' + error.error);
+            if (response.ok) {
+              window.location.reload();
+            } else {
+              const error = await response.json();
+              alert('Error saving blog post: ' + error.error);
+            }
+          } catch (error) {
+            alert('Error saving blog post: ' + error.message);
           }
-        } catch (error) {
-          alert('Error saving blog post: ' + error.message);
-        }
-      });
+        });
 
       document.getElementById('postModal').addEventListener('click', e => {
         if (e.target === e.currentTarget) {

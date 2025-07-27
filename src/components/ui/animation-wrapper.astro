@@ -61,7 +61,7 @@ const {
       }
 
       const observer = new IntersectionObserver(
-        (entries) => {
+        entries => {
           entries.forEach(entry => {
             if (entry.isIntersecting) {
               const element = entry.target;
@@ -123,79 +123,81 @@ const {
     transition-property: opacity, transform;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     will-change: opacity, transform;
+    contain: layout style paint;
+    transform: translateZ(0);
   }
 
   .scroll-animate[data-animation='fade-up'] {
-    transform: translateY(var(--distance, 30px));
+    transform: translateY(var(--distance, 30px)) translateZ(0);
   }
 
   .scroll-animate[data-animation='fade-down'] {
-    transform: translateY(calc(-1 * var(--distance, 30px)));
+    transform: translateY(calc(-1 * var(--distance, 30px))) translateZ(0);
   }
 
   .scroll-animate[data-animation='fade-left'] {
-    transform: translateX(var(--distance, 30px));
+    transform: translateX(var(--distance, 30px)) translateZ(0);
   }
 
   .scroll-animate[data-animation='fade-right'] {
-    transform: translateX(calc(-1 * var(--distance, 30px)));
+    transform: translateX(calc(-1 * var(--distance, 30px))) translateZ(0);
   }
 
   .scroll-animate[data-animation='fade-in'] {
-    transform: none;
+    transform: translateZ(0);
   }
 
   .scroll-animate[data-animation='slide-up'] {
-    transform: translateY(var(--distance, 30px));
+    transform: translateY(var(--distance, 30px)) translateZ(0);
   }
 
   .scroll-animate[data-animation='slide-down'] {
-    transform: translateY(calc(-1 * var(--distance, 30px)));
+    transform: translateY(calc(-1 * var(--distance, 30px))) translateZ(0);
   }
 
   .scroll-animate[data-animation='slide-left'] {
-    transform: translateX(var(--distance, 30px));
+    transform: translateX(var(--distance, 30px)) translateZ(0);
   }
 
   .scroll-animate[data-animation='slide-right'] {
-    transform: translateX(calc(-1 * var(--distance, 30px)));
+    transform: translateX(calc(-1 * var(--distance, 30px))) translateZ(0);
   }
 
   .scroll-animate[data-animation='scale-up'] {
-    transform: scale(0.8);
+    transform: scale(0.8) translateZ(0);
   }
 
   .scroll-animate[data-animation='scale-down'] {
-    transform: scale(1.2);
+    transform: scale(1.2) translateZ(0);
   }
 
   .scroll-animate[data-animation='zoom-in'] {
-    transform: scale(0.6);
+    transform: scale(0.6) translateZ(0);
   }
 
   .scroll-animate[data-animation='zoom-out'] {
-    transform: scale(1.4);
+    transform: scale(1.4) translateZ(0);
   }
 
   .scroll-animate[data-animation='flip-up'] {
-    transform: perspective(2500px) rotateX(-100deg);
+    transform: perspective(2500px) rotateX(-100deg) translateZ(0);
   }
 
   .scroll-animate[data-animation='flip-down'] {
-    transform: perspective(2500px) rotateX(100deg);
+    transform: perspective(2500px) rotateX(100deg) translateZ(0);
   }
 
   .scroll-animate[data-animation='bounce-in'] {
-    transform: scale(0.3);
+    transform: scale(0.3) translateZ(0);
   }
 
   .scroll-animate[data-animation='rotate-in'] {
-    transform: rotate(180deg) scale(0);
+    transform: rotate(180deg) scale(0) translateZ(0);
   }
 
   .scroll-animate.animate-in {
     opacity: 1;
-    transform: none;
+    transform: translateZ(0);
   }
 
   .scroll-animate[data-animation='bounce-in'].animate-in {

@@ -8,6 +8,7 @@ import CriticalResources from '@/components/ui/critical-resources.astro';
 import ExperienceItem from '@/components/ui/experience-item.astro';
 import FooterSection from '@/components/ui/footer-section.astro';
 import HeroSection from '@/components/ui/hero-section.astro';
+import LazySection from '@/components/ui/lazy-section.astro';
 import LighthouseOptimizations from '@/components/ui/lighthouse-optimizations.astro';
 import NavigationBar from '@/components/ui/navigation-bar.astro';
 import PerformanceOptimizations from '@/components/ui/performance-optimizations.astro';
@@ -275,8 +276,13 @@ const siteName = 'Maulana Sodiqin - Fullstack Developer';
     <AccessibilityImprovements />
     <NavigationBar />
 
-    <main>
-      <section id="home" class="scrolling-section">
+    <main role="main">
+      <section
+        id="home"
+        class="scrolling-section"
+        role="banner"
+        aria-label="Hero section"
+      >
         <HeroSection
           ctaText={homeData?.hero_cta_text || "Let's talk"}
           ctaLink={homeData?.hero_cta_link || '#contact'}
@@ -286,10 +292,15 @@ const siteName = 'Maulana Sodiqin - Fullstack Developer';
       <section
         id="about"
         class="scrolling-section py-16 px-6 bg-rose-pine-surface"
+        role="region"
+        aria-labelledby="about-heading"
       >
         <div class="max-w-4xl mx-auto">
           <AnimationWrapper animation="fade-in" delay={0}>
-            <h2 class="text-3xl font-bold mb-8 text-rose-pine-text text-center">
+            <h2
+              id="about-heading"
+              class="text-3xl font-bold mb-8 text-rose-pine-text text-center"
+            >
               About Me
             </h2>
           </AnimationWrapper>
@@ -383,34 +394,31 @@ const siteName = 'Maulana Sodiqin - Fullstack Developer';
                     ],
                   },
                 ].map((skillSet, index) => (
-                  <AnimationWrapper
-                    animation="fade-up"
-                    delay={600 + index * 100}
+                  <div
+                    class={`card bg-rose-pine-surface/50 backdrop-blur-sm p-6 rounded-xl border border-rose-pine-highlight-med scroll-animate`}
+                    data-animation="fade-up"
+                    data-delay={600 + index * 100}
                   >
                     <div
-                      class={`card bg-rose-pine-surface/50 backdrop-blur-sm p-6 rounded-xl border border-rose-pine-highlight-med`}
+                      class={`w-12 h-12 bg-rose-pine-${skillSet.color}/20 rounded-lg flex items-center justify-center mb-4`}
                     >
-                      <div
-                        class={`w-12 h-12 bg-rose-pine-${skillSet.color}/20 rounded-lg flex items-center justify-center mb-4`}
+                      <svg
+                        class={`w-6 h-6 text-rose-pine-${skillSet.color}`}
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
                       >
-                        <svg
-                          class={`w-6 h-6 text-rose-pine-${skillSet.color}`}
-                          fill="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path d="M12 0l3.09 6.26L22 7.27l-5 4.87 1.18 6.88L12 15.77l-6.18 3.25L7 12.14 2 7.27l6.91-1.01L12 0z" />
-                        </svg>
-                      </div>
-                      <h4 class="text-xl font-semibold mb-3 text-rose-pine-text">
-                        {skillSet.title}
-                      </h4>
-                      <ul class="text-rose-pine-subtle space-y-1 text-sm">
-                        {skillSet.skills.map(skill => (
-                          <li>• {skill}</li>
-                        ))}
-                      </ul>
+                        <path d="M12 0l3.09 6.26L22 7.27l-5 4.87 1.18 6.88L12 15.77l-6.18 3.25L7 12.14 2 7.27l6.91-1.01L12 0z" />
+                      </svg>
                     </div>
-                  </AnimationWrapper>
+                    <h4 class="text-xl font-semibold mb-3 text-rose-pine-text">
+                      {skillSet.title}
+                    </h4>
+                    <ul class="text-rose-pine-subtle space-y-1 text-sm">
+                      {skillSet.skills.map(skill => (
+                        <li>• {skill}</li>
+                      ))}
+                    </ul>
+                  </div>
                 ))
               }
             </div>
@@ -421,11 +429,16 @@ const siteName = 'Maulana Sodiqin - Fullstack Developer';
       <section
         id="experience"
         class="scrolling-section py-16 bg-rose-pine-base"
+        role="region"
+        aria-labelledby="experience-heading"
       >
         <div class="max-w-4xl mx-auto px-6">
           <AnimationWrapper animation="fade-in" delay={0}>
             <div class="text-center mb-16">
-              <h2 class="text-4xl font-bold text-rose-pine-text mb-6">
+              <h2
+                id="experience-heading"
+                class="text-4xl font-bold text-rose-pine-text mb-6"
+              >
                 Experience & Skills
               </h2>
               <p
@@ -529,83 +542,97 @@ const siteName = 'Maulana Sodiqin - Fullstack Developer';
         </div>
       </section>
 
-      <CaseStudiesSection />
+      <LazySection data-section="case-studies" threshold={0.1}>
+        <CaseStudiesSection />
+      </LazySection>
 
-      <TestimonialsSection />
+      <LazySection data-section="testimonials" threshold={0.1}>
+        <TestimonialsSection />
+      </LazySection>
+
+      <LazySection data-section="projects" threshold={0.1}>
+        <section
+          id="projects"
+          class="scrolling-section py-16 px-6 bg-rose-pine-surface"
+        >
+          <div class="max-w-7xl mx-auto">
+            <AnimationWrapper animation="fade-in" delay={0}>
+              <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-6 text-rose-pine-text">
+                  My Projects
+                </h2>
+                <p
+                  class="text-xl text-rose-pine-subtle max-w-3xl mx-auto leading-relaxed"
+                >
+                  A showcase of innovative software solutions I've built over
+                  the years, from enterprise applications to specialized
+                  platforms serving thousands of users.
+                </p>
+              </div>
+            </AnimationWrapper>
+
+            <div
+              class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8"
+              style="grid-auto-rows: 1fr;"
+            >
+              {
+                projects &&
+                  projects.length > 0 &&
+                  projects.map((project: any, index: number) => {
+                    const animations = [
+                      'fade-up',
+                      'scale-up',
+                      'fade-right',
+                      'zoom-in',
+                      'flip-up',
+                      'bounce-in',
+                    ] as const;
+                    const animation = animations[index % animations.length];
+
+                    return (
+                      <div class="h-full">
+                        <AnimationWrapper
+                          animation={animation}
+                          distance={50}
+                          class="h-full"
+                        >
+                          <ProjectCard
+                            title={project.title}
+                            description={project.description || ''}
+                            technologies={project.technologies || []}
+                            period={
+                              project.start_date
+                                ? `${project.start_date}${project.end_date ? ` – ${project.end_date}` : ''}`
+                                : undefined
+                            }
+                            category={project.category || undefined}
+                            demoLink={project.live_url || undefined}
+                            githubLink={project.github_url || undefined}
+                            highlights={project.is_featured ? ['Featured'] : []}
+                          />
+                        </AnimationWrapper>
+                      </div>
+                    );
+                  })
+              }
+            </div>
+          </div>
+        </section>
+      </LazySection>
 
       <section
-        id="projects"
-        class="scrolling-section py-16 px-6 bg-rose-pine-surface"
+        id="contact"
+        class="scrolling-section py-20 bg-rose-pine-base"
+        role="region"
+        aria-labelledby="contact-heading"
       >
-        <div class="max-w-7xl mx-auto">
-          <AnimationWrapper animation="fade-in" delay={0}>
-            <div class="text-center mb-16">
-              <h2 class="text-4xl font-bold mb-6 text-rose-pine-text">
-                My Projects
-              </h2>
-              <p
-                class="text-xl text-rose-pine-subtle max-w-3xl mx-auto leading-relaxed"
-              >
-                A showcase of innovative software solutions I've built over the
-                years, from enterprise applications to specialized platforms
-                serving thousands of users.
-              </p>
-            </div>
-          </AnimationWrapper>
-
-          <div
-            class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8"
-            style="grid-auto-rows: 1fr;"
-          >
-            {
-              projects &&
-                projects.length > 0 &&
-                projects.map((project: any, index: number) => {
-                  const animations = [
-                    'fade-up',
-                    'scale-up',
-                    'fade-right',
-                    'zoom-in',
-                    'flip-up',
-                    'bounce-in',
-                  ] as const;
-                  const animation = animations[index % animations.length];
-
-                  return (
-                    <div class="h-full">
-                      <AnimationWrapper
-                        animation={animation}
-                        distance={50}
-                        class="h-full"
-                      >
-                        <ProjectCard
-                          title={project.title}
-                          description={project.description || ''}
-                          technologies={project.technologies || []}
-                          period={
-                            project.start_date
-                              ? `${project.start_date}${project.end_date ? ` – ${project.end_date}` : ''}`
-                              : undefined
-                          }
-                          category={project.category || undefined}
-                          demoLink={project.live_url || undefined}
-                          githubLink={project.github_url || undefined}
-                          highlights={project.is_featured ? ['Featured'] : []}
-                        />
-                      </AnimationWrapper>
-                    </div>
-                  );
-                })
-            }
-          </div>
-        </div>
-      </section>
-
-      <section id="contact" class="scrolling-section py-20 bg-rose-pine-base">
         <div class="max-w-6xl mx-auto px-6">
           <AnimationWrapper animation="fade-in" delay={0}>
             <div class="text-center mb-20">
-              <h2 class="text-5xl font-bold text-rose-pine-text mb-8">
+              <h2
+                id="contact-heading"
+                class="text-5xl font-bold text-rose-pine-text mb-8"
+              >
                 Let's Connect
               </h2>
               <p

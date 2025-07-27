@@ -8,9 +8,7 @@ export const GET: APIRoute = async ({ url }) => {
   const offset = parseInt(searchParams.get('offset') || '0');
   const tag = searchParams.get('tag');
 
-  let query = supabase
-    .from('blog_posts')
-    .select('*');
+  let query = supabase.from('blog_posts').select('*');
 
   if (published) {
     query = query.eq('published', true);

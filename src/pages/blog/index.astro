@@ -99,16 +99,20 @@ const posts = blogPosts || [];
             </p>
           </div>
 
-          {posts.length === 0 ? (
-            <div class="text-center py-20">
-              <div class="text-6xl mb-6">📝</div>
-              <h2 class="text-2xl font-bold text-rose-pine-text mb-4">No blog posts yet</h2>
-              <p class="text-rose-pine-subtle">Check back soon for insights and tutorials!</p>
-            </div>
-          ) : (
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {
-                posts.map(post => (
+          {
+            posts.length === 0 ? (
+              <div class="text-center py-20">
+                <div class="text-6xl mb-6">📝</div>
+                <h2 class="text-2xl font-bold text-rose-pine-text mb-4">
+                  No blog posts yet
+                </h2>
+                <p class="text-rose-pine-subtle">
+                  Check back soon for insights and tutorials!
+                </p>
+              </div>
+            ) : (
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {posts.map(post => (
                   <BlogPostCard
                     title={post.title}
                     excerpt={post.excerpt}
@@ -118,10 +122,10 @@ const posts = blogPosts || [];
                     tags={post.tags || []}
                     featured={post.featured || false}
                   />
-                ))
-              }
-            </div>
-          )}
+                ))}
+              </div>
+            )
+          }
 
           <div class="mt-16 text-center">
             <p class="text-rose-pine-subtle">

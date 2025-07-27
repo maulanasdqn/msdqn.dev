@@ -219,22 +219,22 @@ const email = session.data.user?.email;
         .desktop-nav {
           display: none !important;
         }
-        
+
         .mobile-nav {
           display: flex !important;
           gap: 8px;
         }
-        
+
         .project-grid {
           grid-template-columns: 1fr;
         }
-        
+
         .modal-content {
           margin: 8px;
           padding: 16px;
           max-height: 95vh;
         }
-        
+
         .nav-bg > div {
           padding: 0 8px !important;
         }
@@ -244,7 +244,7 @@ const email = session.data.user?.email;
         .desktop-nav {
           display: flex !important;
         }
-        
+
         .mobile-nav {
           display: none !important;
         }
@@ -331,9 +331,11 @@ const email = session.data.user?.email;
             <a href="/cms/home" class="nav-link">Home</a>
             <a href="/cms/blog" class="nav-link">Blog</a>
           </div>
-          
+
           <div class="mobile-nav">
-            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()"
+              >☰</button
+            >
             <div class="mobile-dropdown" id="mobileDropdown">
               <a href="/cms">Dashboard</a>
               <a href="/cms/experience">Experience</a>
@@ -345,11 +347,17 @@ const email = session.data.user?.email;
               <a href="/cms/blog">Blog</a>
             </div>
           </div>
-          
+
           <div style="display: flex; align-items: center; gap: 8px;">
-            <span style="font-size: 12px;" class="text-subtle hidden sm:inline">{email}</span>
+            <span style="font-size: 12px;" class="text-subtle hidden sm:inline"
+              >{email}</span
+            >
             <form action="/api/auth/signout" method="post">
-              <button type="submit" class="btn-signout" style="padding: 6px 12px; font-size: 12px;">Sign out</button>
+              <button
+                type="submit"
+                class="btn-signout"
+                style="padding: 6px 12px; font-size: 12px;">Sign out</button
+              >
             </form>
           </div>
         </div>
@@ -361,11 +369,17 @@ const email = session.data.user?.email;
         style="border-bottom: 1px solid var(--rp-overlay); padding-bottom: 16px; display: flex; flex-direction: column; gap: 16px; margin-bottom: 24px;"
         class="header-section"
       >
-        <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div
+          style="display: flex; justify-content: space-between; align-items: center;"
+        >
           <h1 style="font-size: 20px; font-weight: bold; margin: 0;">
             Projects Management
           </h1>
-          <button onclick="showCreateForm()" class="btn-primary" style="padding: 8px 12px; font-size: 14px;">
+          <button
+            onclick="showCreateForm()"
+            class="btn-primary"
+            style="padding: 8px 12px; font-size: 14px;"
+          >
             + Add Project
           </button>
         </div>
@@ -528,17 +542,20 @@ const email = session.data.user?.email;
       let currentProjectId = null;
 
       // Mobile menu functionality
-      window.toggleMobileMenu = function() {
+      window.toggleMobileMenu = function () {
         const dropdown = document.getElementById('mobileDropdown');
         dropdown.classList.toggle('show');
       };
 
       // Close mobile menu when clicking outside
-      document.addEventListener('click', function(event) {
+      document.addEventListener('click', function (event) {
         const dropdown = document.getElementById('mobileDropdown');
         const menuBtn = document.querySelector('.mobile-menu-btn');
-        
-        if (!dropdown.contains(event.target) && !menuBtn.contains(event.target)) {
+
+        if (
+          !dropdown.contains(event.target) &&
+          !menuBtn.contains(event.target)
+        ) {
           dropdown.classList.remove('show');
         }
       });

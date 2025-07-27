@@ -18,6 +18,8 @@ const navItems = [
 
 <nav
   class="fixed top-0 left-0 right-0 z-50 bg-rose-pine-base/20 backdrop-blur-xl border-b border-rose-pine-highlight-med/20 shadow-lg"
+  role="banner"
+  aria-label="Main navigation"
 >
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between items-center h-16">
@@ -25,6 +27,7 @@ const navItems = [
         <a
           href="/"
           class="text-2xl font-bold text-rose-pine-text hover:text-rose-pine-iris transition-colors duration-300"
+          aria-label="Homepage - Maulana Sodiqin Portfolio"
         >
           msdqn.
         </a>
@@ -54,6 +57,8 @@ const navItems = [
           id="mobile-menu-button"
           class="inline-flex items-center justify-center p-2 rounded-lg text-rose-pine-text hover:text-rose-pine-iris hover:bg-rose-pine-surface/30 transition-all duration-300 backdrop-blur-sm border border-rose-pine-highlight-med/20"
           aria-expanded="false"
+          aria-controls="mobile-menu"
+          aria-label="Toggle mobile menu"
         >
           <svg
             class="h-6 w-6"
@@ -146,6 +151,27 @@ const navItems = [
 
     if (mobileMenuButton && mobileMenu) {
       mobileMenuButton.addEventListener('click', function () {
+        toggleMobileMenu();
+      });
+
+      // Keyboard accessibility for mobile menu
+      mobileMenuButton.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toggleMobileMenu();
+        }
+      });
+
+      // Close mobile menu on Escape key
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && !mobileMenu.classList.contains('hidden')) {
+          mobileMenu.classList.add('hidden');
+          mobileMenuButton.setAttribute('aria-expanded', 'false');
+          mobileMenuButton.focus();
+        }
+      });
+
+      function toggleMobileMenu() {
         const isHidden = mobileMenu.classList.contains('hidden');
 
         if (isHidden) {
@@ -155,7 +181,7 @@ const navItems = [
           mobileMenu.classList.add('hidden');
           mobileMenuButton.setAttribute('aria-expanded', 'false');
         }
-      });
+      }
     }
 
     document.querySelectorAll('a[href^="#"]').forEach(link => {

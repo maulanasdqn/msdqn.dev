@@ -24,7 +24,7 @@ const message = url.searchParams.get('message');
       content="Login to access the content management system"
     />
     <AnalyticsPartytown />
-    
+
     <style>
       :root {
         --rp-base: #191724;
@@ -44,7 +44,10 @@ const message = url.searchParams.get('message');
       body {
         background-color: var(--rp-base);
         color: var(--rp-text);
-        font-family: system-ui, -apple-system, sans-serif;
+        font-family:
+          system-ui,
+          -apple-system,
+          sans-serif;
       }
 
       .login-container {
@@ -164,21 +167,13 @@ const message = url.searchParams.get('message');
   <body class="min-h-screen flex items-center justify-center py-12 px-4">
     <div class="login-container max-w-md w-full p-8">
       <div class="text-center mb-8">
-        <div class="logo-text">
-          🌹 Admin Login
-        </div>
+        <div class="logo-text">🌹 Admin Login</div>
         <p class="subtitle text-center">
           Personal website content management system
         </p>
       </div>
 
-      {
-        message && (
-          <div class="success-message mb-6">
-            {message}
-          </div>
-        )
-      }
+      {message && <div class="success-message mb-6">{message}</div>}
 
       <form action="/api/auth/signin" method="post">
         <div class="form-group">
@@ -193,7 +188,7 @@ const message = url.searchParams.get('message');
             placeholder="Enter your email"
           />
         </div>
-        
+
         <div class="form-group">
           <label for="password" class="form-label">Password</label>
           <input
@@ -214,17 +209,17 @@ const message = url.searchParams.get('message');
     </div>
 
     <script is:inline>
-      document.addEventListener('DOMContentLoaded', function() {
+      document.addEventListener('DOMContentLoaded', function () {
         const form = document.querySelector('form');
         const submitBtn = document.getElementById('submitBtn');
         const originalText = submitBtn.textContent;
 
-        form.addEventListener('submit', function() {
+        form.addEventListener('submit', function () {
           submitBtn.disabled = true;
           submitBtn.textContent = 'Signing in...';
-          
+
           // Re-enable after 10 seconds in case of network issues
-          setTimeout(function() {
+          setTimeout(function () {
             submitBtn.disabled = false;
             submitBtn.textContent = originalText;
           }, 10000);

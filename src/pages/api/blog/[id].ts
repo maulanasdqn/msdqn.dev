@@ -7,15 +7,16 @@ export const GET: APIRoute = async ({ params, url }) => {
   const identifier = params.id;
 
   if (!identifier) {
-    return new Response(JSON.stringify({ error: 'Blog post identifier required' }), {
-      status: 400,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return new Response(
+      JSON.stringify({ error: 'Blog post identifier required' }),
+      {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      }
+    );
   }
 
-  let query = supabase
-    .from('blog_posts')
-    .select('*');
+  let query = supabase.from('blog_posts').select('*');
 
   if (bySlug) {
     query = query.eq('slug', identifier);
@@ -76,10 +77,13 @@ export const PUT: APIRoute = async ({ params, request, cookies }) => {
   }
 
   if (!data.length) {
-    return new Response(JSON.stringify({ error: 'Blog post not found or unauthorized' }), {
-      status: 404,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return new Response(
+      JSON.stringify({ error: 'Blog post not found or unauthorized' }),
+      {
+        status: 404,
+        headers: { 'Content-Type': 'application/json' },
+      }
+    );
   }
 
   return new Response(JSON.stringify(data[0]), {

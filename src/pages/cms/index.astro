@@ -105,7 +105,9 @@ const email = session.data.user?.email;
             <h1 class="text-lg sm:text-xl font-bold">🌹 CMS</h1>
           </div>
           <div class="flex items-center space-x-2 sm:space-x-4">
-            <span class="text-xs sm:text-sm text-subtle hidden sm:inline">{email}</span>
+            <span class="text-xs sm:text-sm text-subtle hidden sm:inline"
+              >{email}</span
+            >
             <form action="/api/auth/signout" method="post">
               <button
                 class="btn-signout text-white px-2 py-1 sm:px-3 sm:py-2 rounded-md text-xs sm:text-sm font-medium transition-colors"
@@ -127,7 +129,9 @@ const email = session.data.user?.email;
           </p>
         </div>
 
-        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div
+          class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+        >
           <div
             class="card-bg overflow-hidden shadow-lg rounded-lg transition-colors"
           >

@@ -20,36 +20,45 @@ const { priorityImage, heroImage, critical = true } = Astro.props;
 <link rel="dns-prefetch" href="//vercel-insights.com" />
 
 <!-- Critical Font Preloading -->
-<link 
-  rel="preload" 
-  href="https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2" 
-  as="font" 
-  type="font/woff2" 
-  crossorigin 
+<link
+  rel="preload"
+  href="https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2"
+  as="font"
+  type="font/woff2"
+  crossorigin
 />
 
 <!-- Critical Asset Preloading -->
 <link rel="preload" href="/favicon.svg" as="image" type="image/svg+xml" />
 
-{priorityImage && (
-  <link rel="preload" href={priorityImage} as="image" fetchpriority="high" />
-)}
+{
+  priorityImage && (
+    <link rel="preload" href={priorityImage} as="image" fetchpriority="high" />
+  )
+}
 
-{heroImage && (
-  <link rel="preload" href={heroImage} as="image" fetchpriority="high" />
-)}
+{
+  heroImage && (
+    <link rel="preload" href={heroImage} as="image" fetchpriority="high" />
+  )
+}
 
 <!-- Prefetch Important Resources -->
 <link rel="prefetch" href="/resume.pdf" />
 <link rel="prefetch" href="/sitemap.xml" />
 
 <!-- Module Preloading for Critical JavaScript -->
-{critical && (
-  <>
-    <link rel="modulepreload" href="/src/components/ui/navigation-bar.astro" />
-    <link rel="modulepreload" href="/src/libs/analytics.ts" />
-  </>
-)}
+{
+  critical && (
+    <>
+      <link
+        rel="modulepreload"
+        href="/src/components/ui/navigation-bar.astro"
+      />
+      <link rel="modulepreload" href="/src/libs/analytics.ts" />
+    </>
+  )
+}
 
 <!-- Resource Hints for Better Performance -->
 <link rel="prefetch" href="/api/home" />
@@ -59,15 +68,9 @@ const { priorityImage, heroImage, critical = true } = Astro.props;
 <style>
   /* Critical above-the-fold styles */
   html {
-    font-family: 
-      -apple-system, 
-      BlinkMacSystemFont, 
-      'Segoe UI', 
-      Roboto, 
-      Oxygen, 
-      Ubuntu, 
-      Cantarell, 
-      sans-serif;
+    font-family:
+      -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+      Cantarell, sans-serif;
     line-height: 1.6;
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
@@ -155,39 +158,113 @@ const { priorityImage, heroImage, critical = true } = Astro.props;
       --text-contrast: #ffffff;
       --bg-contrast: #000000;
     }
+
+    body {
+      background-color: var(--bg-contrast) !important;
+      color: var(--text-contrast) !important;
+    }
+
+    .text-rose-pine-subtle,
+    .text-rose-pine-muted {
+      color: #ffffff !important;
+    }
+
+    .bg-rose-pine-surface,
+    .bg-rose-pine-overlay {
+      background-color: #1a1a1a !important;
+    }
+  }
+
+  /* Improved focus indicators for accessibility */
+  *:focus {
+    outline: 2px solid #c4a7e7;
+    outline-offset: 2px;
+  }
+
+  /* Better link contrast */
+  a {
+    text-decoration-skip-ink: auto;
+  }
+
+  a:focus,
+  a:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
   }
 </style>
 
 <!-- Critical Performance Script -->
 <script is:inline>
   // Critical performance optimizations
-  (function() {
-    // Early performance marker
-    performance.mark('critical-resources-start');
-    
-    // Optimize font loading
-    if ('fonts' in document) {
-      document.fonts.load('400 16px system-ui, -apple-system, sans-serif');
+  (function () {
+    'use strict';
+
+    try {
+      // Early performance marker
+      if (typeof performance !== 'undefined' && performance.mark) {
+        performance.mark('critical-resources-start');
+      }
+
+      // Optimize font loading
+      if (typeof document !== 'undefined' && 'fonts' in document) {
+        try {
+          document.fonts.load('400 16px system-ui, -apple-system, sans-serif');
+        } catch (fontError) {
+          // Font loading failed, continue silently
+        }
+      }
+
+      // Early connection warming
+      if (typeof navigator !== 'undefined' && 'serviceWorker' in navigator) {
+        try {
+          navigator.serviceWorker.register('/sw.js').catch(() => {
+            // Service worker registration failed, continue silently
+          });
+        } catch (swError) {
+          // Service worker not supported, continue silently
+        }
+      }
+
+      // Early viewport optimization
+      if (typeof document !== 'undefined') {
+        try {
+          const viewport = document.querySelector('meta[name="viewport"]');
+          if (!viewport && document.head) {
+            const meta = document.createElement('meta');
+            meta.name = 'viewport';
+            meta.content = 'width=device-width, initial-scale=1.0';
+            document.head.appendChild(meta);
+          }
+        } catch (viewportError) {
+          // Viewport meta creation failed, continue silently
+        }
+      }
+
+      // Critical resource loaded marker
+      if (typeof document !== 'undefined' && document.addEventListener) {
+        document.addEventListener('DOMContentLoaded', function () {
+          try {
+            if (
+              typeof performance !== 'undefined' &&
+              performance.mark &&
+              performance.measure
+            ) {
+              performance.mark('critical-resources-end');
+              performance.measure(
+                'critical-resources-duration',
+                'critical-resources-start',
+                'critical-resources-end'
+              );
+            }
+          } catch (perfError) {
+            // Performance measurement failed, continue silently
+          }
+        });
+      }
+    } catch (error) {
+      // Critical script initialization failed, continue silently
+      // This prevents any console errors from breaking the page
     }
-    
-    // Early connection warming
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js').catch(() => {});
-    }
-    
-    // Early viewport optimization
-    const viewport = document.querySelector('meta[name="viewport"]');
-    if (!viewport) {
-      const meta = document.createElement('meta');
-      meta.name = 'viewport';
-      meta.content = 'width=device-width, initial-scale=1.0';
-      document.head.appendChild(meta);
-    }
-    
-    // Critical resource loaded marker
-    document.addEventListener('DOMContentLoaded', () => {
-      performance.mark('critical-resources-end');
-      performance.measure('critical-resources-duration', 'critical-resources-start', 'critical-resources-end');
-    });
   })();
 </script>

@@ -1,6 +1,7 @@
-const CACHE_NAME = 'personal-website-v2';
-const STATIC_CACHE_NAME = 'static-v2';
-const RUNTIME_CACHE_NAME = 'runtime-v2';
+const CACHE_NAME = 'personal-website-v3';
+const STATIC_CACHE_NAME = 'static-v3';
+const RUNTIME_CACHE_NAME = 'runtime-v3';
+const IMAGES_CACHE_NAME = 'images-v3';
 
 const STATIC_CACHE = [
   '/',
@@ -37,7 +38,7 @@ self.addEventListener('install', (event) => {
 
 // Activate event - clean up old caches
 self.addEventListener('activate', (event) => {
-  const expectedCaches = [STATIC_CACHE_NAME, RUNTIME_CACHE_NAME];
+  const expectedCaches = [STATIC_CACHE_NAME, RUNTIME_CACHE_NAME, IMAGES_CACHE_NAME];
   
   event.waitUntil(
     caches.keys()
@@ -67,9 +68,21 @@ self.addEventListener('fetch', (event) => {
       return;
     }
     
+    // Images - cache first with long expiry
+    if (event.request.destination === 'image') {
+      event.respondWith(cacheFirst(event.request, IMAGES_CACHE_NAME));
+      return;
+    }
+    
     // API requests - stale while revalidate
     if (url.pathname.startsWith('/api/')) {
       event.respondWith(staleWhileRevalidate(event.request, RUNTIME_CACHE_NAME));
+      return;
+    }
+    
+    // CSS and JS assets - cache first
+    if (url.pathname.startsWith('/_astro/') || url.pathname.endsWith('.css') || url.pathname.endsWith('.js')) {
+      event.respondWith(cacheFirst(event.request, STATIC_CACHE_NAME));
       return;
     }
     
