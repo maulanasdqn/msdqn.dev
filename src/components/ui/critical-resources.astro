@@ -19,13 +19,14 @@ const { priorityImage, heroImage, critical = true } = Astro.props;
 <link rel="dns-prefetch" href="//googletagmanager.com" />
 <link rel="dns-prefetch" href="//vercel-insights.com" />
 
-<!-- Critical Font Preloading -->
+<!-- Critical Font Preloading - only if Inter is actually used -->
 <link
   rel="preload"
   href="https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2"
   as="font"
   type="font/woff2"
   crossorigin
+  media="(min-width: 0)"
 />
 
 <!-- Critical Asset Preloading -->
@@ -51,11 +52,7 @@ const { priorityImage, heroImage, critical = true } = Astro.props;
 {
   critical && (
     <>
-      <link
-        rel="modulepreload"
-        href="/src/components/ui/navigation-bar.astro"
-      />
-      <link rel="modulepreload" href="/src/libs/analytics.ts" />
+      <!-- Only preload actual built JS modules, not source files -->
     </>
   )
 }
