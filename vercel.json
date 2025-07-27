@@ -199,7 +199,7 @@
     }
   ],
   "functions": {
-    "src/pages/api/**/*.ts": {
+    "api/**/*.js": {
       "maxDuration": 10
     }
   },
