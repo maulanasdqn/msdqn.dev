@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.13",
+    "@astrojs/node": "^9.5.1",
     "@astrojs/partytown": "^2.1.4",
     "@astrojs/tailwind": "^6.0.2",
     "@astrojs/vercel": "^9.0.2",

@@ -1,4 +1,5 @@
 import mdx from '@astrojs/mdx';
+import node from '@astrojs/node';
 import tailwind from '@astrojs/tailwind';
 import vercel from '@astrojs/vercel';
 import { defineConfig } from 'astro/config';
@@ -7,6 +8,21 @@ import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
 
 import partytown from '@astrojs/partytown';
+
+const isVercel = process.env.VERCEL === 'true';
+
+const getAdapter = () => {
+  if (isVercel) {
+    return vercel({
+      webAnalytics: {
+        enabled: true,
+      },
+    });
+  }
+  return node({
+    mode: 'standalone',
+  });
+};
 
 export default defineConfig({
   integrations: [
@@ -41,11 +57,7 @@ export default defineConfig({
     }),
   ],
   output: 'server',
-  adapter: vercel({
-    webAnalytics: {
-      enabled: true,
-    },
-  }),
+  adapter: getAdapter(),
   vite: {
     build: {
       cssMinify: 'lightningcss',
