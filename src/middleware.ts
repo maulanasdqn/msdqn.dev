@@ -14,7 +14,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
     'Cross-Origin-Resource-Policy': 'same-origin',
     'Content-Security-Policy': [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' 'strict-dynamic' https://www.googletagmanager.com https://www.google-analytics.com",
+      "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com",
       "style-src 'self' 'unsafe-inline'",
       "font-src 'self'",
       "img-src 'self' data: https: blob:",
@@ -26,7 +26,6 @@ export const onRequest = defineMiddleware(async (context, next) => {
       "object-src 'none'",
       "base-uri 'self'",
       "form-action 'self'",
-      "require-trusted-types-for 'script'",
       "upgrade-insecure-requests",
     ].join('; '),
   };
