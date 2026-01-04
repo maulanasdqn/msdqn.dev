@@ -154,7 +154,7 @@ The application uses Supabase PostgreSQL with the following main tables:
 ## 📧 Contact Information
 
 - **Email**: maulanasdqn@gmail.com
-- **Location**: Malang, East Java, Indonesia
+- **Location**: Bandung, West Java, Indonesia
 - **LinkedIn**: [linkedin.com/in/maulana-sodiqin](https://www.linkedin.com/in/maulana-sodiqin/)
 - **GitHub**: [github.com/maulanasdqn](https://github.com/maulanasdqn)
 
