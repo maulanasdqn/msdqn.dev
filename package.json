@@ -24,6 +24,7 @@
     "@astrojs/partytown": "^2.1.4",
     "@astrojs/tailwind": "^6.0.2",
     "@astrojs/vercel": "^9.0.2",
+    "@sentry/astro": "^10.32.1",
     "@supabase/supabase-js": "^2.89.0",
     "astro": "^5.16.6",
     "astro-icon": "^1.1.5",

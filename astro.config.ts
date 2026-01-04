@@ -2,6 +2,7 @@ import mdx from '@astrojs/mdx';
 import node from '@astrojs/node';
 import tailwind from '@astrojs/tailwind';
 import vercel from '@astrojs/vercel';
+import sentry from '@sentry/astro';
 import { defineConfig } from 'astro/config';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeSlug from 'rehype-slug';
@@ -54,6 +55,13 @@ export default defineConfig({
         ],
         debug: false,
       },
+    }),
+    sentry({
+      dsn: process.env.SENTRY_DSN,
+      sourceMapsUploadOptions: {
+        enabled: false,
+      },
+      tracesSampleRate: 1.0,
     }),
   ],
   output: 'server',
