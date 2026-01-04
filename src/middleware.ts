@@ -27,7 +27,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
     "media-src 'self' data: blob:",
     "connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://vercel.live https://va.vercel-scripts.com https://*.supabase.co wss://*.supabase.co",
     "worker-src 'self' blob:",
-    "frame-src 'none'",
+    "frame-src 'self'",
     "frame-ancestors 'none'",
     "object-src 'none'",
     "base-uri 'self'",
