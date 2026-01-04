@@ -12,6 +12,9 @@ export const onRequest = defineMiddleware(async (context, next) => {
     'Strict-Transport-Security': 'max-age=63072000; includeSubDomains; preload',
     'Cross-Origin-Opener-Policy': 'same-origin-allow-popups',
     'Cross-Origin-Resource-Policy': 'same-origin',
+    'Cache-Control': 'no-cache, no-store, must-revalidate',
+    'Pragma': 'no-cache',
+    'Expires': '0',
     'Content-Security-Policy': [
       "default-src 'self'",
       "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com",
