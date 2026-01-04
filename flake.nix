@@ -34,6 +34,7 @@
             mkdir -p $out/lib/personal-website
             cp -r dist/* $out/lib/personal-website/
             cp package.json $out/lib/personal-website/
+            cp -r node_modules $out/lib/personal-website/
 
             mkdir -p $out/bin
             cat > $out/bin/personal-website <<EOF
