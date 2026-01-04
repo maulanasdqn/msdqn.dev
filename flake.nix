@@ -94,7 +94,7 @@
             };
 
             environmentFile = lib.mkOption {
-              type = lib.types.nullOr lib.types.path;
+              type = lib.types.nullOr lib.types.str;
               default = null;
               description = "Path to environment file containing secrets";
             };
