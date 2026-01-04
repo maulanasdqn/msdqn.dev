@@ -208,18 +208,6 @@
                   proxyPass = "http://127.0.0.1:${toString cfg.port}";
                   proxyWebsockets = true;
                 };
-                locations."/_astro/" = {
-                  proxyPass = "http://127.0.0.1:${toString cfg.port}";
-                  extraConfig = ''
-                    add_header Cache-Control "public, max-age=31536000, immutable" always;
-                  '';
-                };
-                locations."/favicon.svg" = {
-                  proxyPass = "http://127.0.0.1:${toString cfg.port}";
-                  extraConfig = ''
-                    add_header Cache-Control "public, max-age=31536000, immutable" always;
-                  '';
-                };
               };
             };
 
