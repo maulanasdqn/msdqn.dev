@@ -202,11 +202,23 @@
                   add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
                   add_header Cross-Origin-Opener-Policy "same-origin-allow-popups" always;
                   add_header Cross-Origin-Resource-Policy "same-origin" always;
-                  add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; media-src 'self' data: blob:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://*.supabase.co wss://*.supabase.co; worker-src 'self' blob:; frame-src 'self'; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests" always;
+                  add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https: blob:; media-src 'self' data: blob:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://*.supabase.co wss://*.supabase.co; worker-src 'self' blob:; frame-src 'self'; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests" always;
                 '';
                 locations."/" = {
                   proxyPass = "http://127.0.0.1:${toString cfg.port}";
                   proxyWebsockets = true;
+                };
+                locations."/_astro/" = {
+                  proxyPass = "http://127.0.0.1:${toString cfg.port}";
+                  extraConfig = ''
+                    add_header Cache-Control "public, max-age=31536000, immutable" always;
+                  '';
+                };
+                locations."/favicon.svg" = {
+                  proxyPass = "http://127.0.0.1:${toString cfg.port}";
+                  extraConfig = ''
+                    add_header Cache-Control "public, max-age=31536000, immutable" always;
+                  '';
                 };
               };
             };

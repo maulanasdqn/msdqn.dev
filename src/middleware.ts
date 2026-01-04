@@ -20,12 +20,12 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   const csp = [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://vercel.live https://va.vercel-scripts.com",
-    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-    "font-src 'self' https://fonts.gstatic.com",
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com",
+    "style-src 'self' 'unsafe-inline'",
+    "font-src 'self'",
     "img-src 'self' data: https: blob:",
     "media-src 'self' data: blob:",
-    "connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://vercel.live https://va.vercel-scripts.com https://*.supabase.co wss://*.supabase.co",
+    "connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://*.supabase.co wss://*.supabase.co",
     "worker-src 'self' blob:",
     "frame-src 'self'",
     "frame-ancestors 'none'",
