@@ -31,7 +31,6 @@ const {
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     if (!('IntersectionObserver' in window)) {
-      // Fallback for older browsers - show all content immediately
       document.querySelectorAll('.lazy-section').forEach(section => {
         const content = section.querySelector('.lazy-content');
         const placeholder = section.querySelector('.lazy-placeholder');
@@ -43,46 +42,45 @@ const {
       return;
     }
 
-    const lazyObserver = new IntersectionObserver(
-      entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const section = entry.target;
-            const content = section.querySelector('.lazy-content');
-            const placeholder = section.querySelector('.lazy-placeholder');
-
-            if (content && placeholder) {
-              // Fade out placeholder and fade in content
-              placeholder.style.opacity = '0';
-              placeholder.style.transition = 'opacity 0.3s ease';
-
-              setTimeout(() => {
-                content.style.display = '';
-                content.style.opacity = '0';
-                content.style.transition = 'opacity 0.3s ease';
-                placeholder.style.display = 'none';
-
-                // Use requestAnimationFrame for smooth transition
-                requestAnimationFrame(() => {
-                  content.style.opacity = '1';
-                });
-              }, 300);
-            }
-
-            lazyObserver.unobserve(section);
-          }
-        });
-      },
-      {
-        root: null,
-        rootMargin: rootMargin,
-        threshold: threshold,
-      }
-    );
-
-    // Observe all lazy sections
     document.querySelectorAll('.lazy-section').forEach(section => {
-      lazyObserver.observe(section);
+      const sectionRootMargin = section.dataset.rootMargin || '50px 0px 50px 0px';
+      const sectionThreshold = parseFloat(section.dataset.threshold) || 0.1;
+
+      const observer = new IntersectionObserver(
+        entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const content = entry.target.querySelector('.lazy-content');
+              const placeholder = entry.target.querySelector('.lazy-placeholder');
+
+              if (content && placeholder) {
+                placeholder.style.opacity = '0';
+                placeholder.style.transition = 'opacity 0.3s ease';
+
+                setTimeout(() => {
+                  content.style.display = '';
+                  content.style.opacity = '0';
+                  content.style.transition = 'opacity 0.3s ease';
+                  placeholder.style.display = 'none';
+
+                  requestAnimationFrame(() => {
+                    content.style.opacity = '1';
+                  });
+                }, 300);
+              }
+
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        {
+          root: null,
+          rootMargin: sectionRootMargin,
+          threshold: sectionThreshold,
+        }
+      );
+
+      observer.observe(section);
     });
   });
 </script>
