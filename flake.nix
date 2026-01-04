@@ -37,7 +37,7 @@
 
             mkdir -p $out/bin
             cat > $out/bin/personal-website <<EOF
-            #!/usr/bin/env bash
+            #!${pkgs.bash}/bin/bash
             cd $out/lib/personal-website
             exec ${nodejs}/bin/node ./server/entry.mjs
             EOF
