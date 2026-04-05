@@ -3,22 +3,32 @@ import AnalyticsPartytown from '@/components/ui/analytics-partytown.astro';
 import BlogPostCard from '@/components/ui/blog-post-card.astro';
 import FooterSection from '@/components/ui/footer-section.astro';
 import NavigationBar from '@/components/ui/navigation-bar.astro';
-import { supabase } from '@/libs/supabase';
 
 const siteUrl = 'https://msdqn.dev';
 
-const { data: blogPosts, error } = await supabase
-  .from('blog_posts')
-  .select('*')
-  .eq('published', true)
-  .order('published_at', { ascending: false })
-  .limit(12);
-
-if (error) {
-  console.error('Error fetching blog posts:', error.message);
+function parseRSS(xml: string) {
+  const items = xml.match(/<item>([\s\S]*?)<\/item>/g) ?? [];
+  return items.map(item => {
+    const get = (tag: string) => {
+      const cdataMatch = item.match(new RegExp(`<${tag}><!\\[CDATA\\[([\\s\\S]*?)\\]\\]><\\/${tag}>`));
+      if (cdataMatch) return cdataMatch[1].trim();
+      const plainMatch = item.match(new RegExp(`<${tag}>([\\s\\S]*?)<\\/${tag}>`));
+      return plainMatch ? plainMatch[1].trim() : '';
+    };
+    const link = get('link');
+    const slug = link.split('/').filter(Boolean).pop() ?? '';
+    return { title: get('title'), description: get('description'), pubDate: get('pubDate'), link, slug };
+  });
 }
 
-const posts = blogPosts || [];
+let posts: ReturnType<typeof parseRSS> = [];
+try {
+  const res = await fetch('https://blog.msdqn.dev/rss.xml');
+  const xml = await res.text();
+  posts = parseRSS(xml);
+} catch (e) {
+  console.error('Failed to fetch blog posts:', e);
+}
 ---
 
 <!doctype html>
@@ -69,13 +79,13 @@ const posts = blogPosts || [];
         blogPost: posts.map(post => ({
           '@type': 'BlogPosting',
           headline: post.title,
-          description: post.excerpt,
-          datePublished: post.published_at || post.created_at,
+          description: post.description,
+          datePublished: post.pubDate,
           author: {
             '@type': 'Person',
             name: 'Maulana Sodiqin',
           },
-          url: `${siteUrl}/blog/${post.slug}`,
+          url: post.link,
         })),
       })}
     />
@@ -115,12 +125,11 @@ const posts = blogPosts || [];
                 {posts.map(post => (
                   <BlogPostCard
                     title={post.title}
-                    excerpt={post.excerpt}
+                    excerpt={post.description}
                     slug={post.slug}
-                    publishedAt={post.published_at || post.created_at}
-                    readTime={post.read_time || '5 min read'}
-                    tags={post.tags || []}
-                    featured={post.featured || false}
+                    publishedAt={post.pubDate}
+                    readTime="5 min read"
+                    tags={[]}
                   />
                 ))}
               </div>
