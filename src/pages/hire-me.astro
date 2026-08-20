@@ -41,46 +41,49 @@ const siteUrl = 'https://msdqn.dev';
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={`${siteUrl}/hire-me`} />
+    <meta property="og:image" content={`${siteUrl}/og-image.png`} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={`${siteUrl}/og-image.png`} />
 
     <script
       type="application/ld+json"
       set:html={JSON.stringify({
         '@context': 'https://schema.org',
-        '@type': 'JobPosting',
-        title: 'Senior Fullstack Developer - Available for Hire',
-        description:
-          'Experienced Senior Fullstack Developer with 5+ years of expertise in React, TypeScript, and Rust. Available for full-time positions, freelance projects, and consulting work.',
-        hiringOrganization: {
+        '@type': 'ProfilePage',
+        name: 'Hire Maulana Sodiqin - Senior Fullstack Developer',
+        url: `${siteUrl}/hire-me`,
+        mainEntity: {
           '@type': 'Person',
           name: 'Maulana Sodiqin',
-          sameAs: 'https://msdqn.dev',
+          url: siteUrl,
+          image: `${siteUrl}/og-image.png`,
+          jobTitle: 'Senior Software Engineer',
+          description:
+            'Experienced Senior Fullstack Developer with 5+ years of expertise in React, TypeScript, and Rust. Available for full-time positions, freelance projects, and consulting work.',
+          sameAs: [
+            'https://www.linkedin.com/in/maulana-sodiqin/',
+            'https://github.com/maulanasdqn',
+          ],
+          knowsAbout: [
+            'React',
+            'TypeScript',
+            'JavaScript',
+            'Rust',
+            'Next.js',
+            'Node.js',
+            'Frontend Development',
+            'Backend Development',
+            'Full Stack Development',
+          ],
+          address: {
+            '@type': 'PostalAddress',
+            addressLocality: 'Bandung',
+            addressRegion: 'West Java',
+            addressCountry: 'Indonesia',
+          },
         },
-        jobLocation: {
-          '@type': 'Place',
-          name: 'Remote/Bandung, Indonesia',
-        },
-        employmentType: ['FULL_TIME', 'CONTRACTOR', 'TEMPORARY'],
-        experienceRequirements: '5+ years',
-        skills: [
-          'React',
-          'TypeScript',
-          'JavaScript',
-          'Rust',
-          'Next.js',
-          'Node.js',
-          'Frontend Development',
-          'Backend Development',
-          'Full Stack Development',
-        ],
-        availabilityStarts: '2024-12-19',
-        workHours: 'Flexible',
-        qualifications: [
-          '5+ years of fullstack development experience',
-          'Expert in React and TypeScript',
-          'Experience with modern web technologies',
-          'Strong problem-solving skills',
-          'Excellent communication skills',
-        ],
       })}
     />
   </head>

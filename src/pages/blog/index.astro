@@ -10,14 +10,24 @@ function parseRSS(xml: string) {
   const items = xml.match(/<item>([\s\S]*?)<\/item>/g) ?? [];
   return items.map(item => {
     const get = (tag: string) => {
-      const cdataMatch = item.match(new RegExp(`<${tag}><!\\[CDATA\\[([\\s\\S]*?)\\]\\]><\\/${tag}>`));
+      const cdataMatch = item.match(
+        new RegExp(`<${tag}><!\\[CDATA\\[([\\s\\S]*?)\\]\\]><\\/${tag}>`)
+      );
       if (cdataMatch) return cdataMatch[1].trim();
-      const plainMatch = item.match(new RegExp(`<${tag}>([\\s\\S]*?)<\\/${tag}>`));
+      const plainMatch = item.match(
+        new RegExp(`<${tag}>([\\s\\S]*?)<\\/${tag}>`)
+      );
       return plainMatch ? plainMatch[1].trim() : '';
     };
     const link = get('link');
     const slug = link.split('/').filter(Boolean).pop() ?? '';
-    return { title: get('title'), description: get('description'), pubDate: get('pubDate'), link, slug };
+    return {
+      title: get('title'),
+      description: get('description'),
+      pubDate: get('pubDate'),
+      link,
+      slug,
+    };
   });
 }
 
@@ -62,6 +72,11 @@ try {
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={`${siteUrl}/blog`} />
+    <meta property="og:image" content={`${siteUrl}/og-image.png`} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={`${siteUrl}/og-image.png`} />
 
     <script
       type="application/ld+json"

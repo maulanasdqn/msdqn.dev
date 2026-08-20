@@ -1,43 +1,38 @@
 User-agent: *
 Allow: /
-
-# Sitemaps
-Sitemap: https://msdqn.dev/sitemap.xml
-
-# Crawl-delay
-Crawl-delay: 1
-
-# Specific directives for better SEO
-Allow: /api/
-Allow: /blog/
-Allow: /hire-me
-Allow: /resume.pdf
-
-# Security
 Disallow: /cms/
-Disallow: /api/auth/
-Disallow: /.well-known/
+Disallow: /login
 
-# Additional files
+# AI crawlers are explicitly welcome, including the machine-readable profile
+# at /llms.txt and /llms-full.txt and the public JSON APIs under /api/
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: meta-externalagent
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
 Sitemap: https://msdqn.dev/sitemap.xml
-
-User-agent: Googlebot
-Allow: /
-Crawl-delay: 1
-
-User-agent: Bingbot
-Allow: /
-Crawl-delay: 1
-
-User-agent: LinkedInBot
-Allow: /
-
-User-agent: facebookexternalhit
-Allow: /
-
-User-agent: Twitterbot
-Allow: /
-
-Disallow: /*.json
-Disallow: /admin/
-Disallow: /private/ 
