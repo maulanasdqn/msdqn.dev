@@ -95,6 +95,7 @@ export const GET: APIRoute = async ({ locals }) => {
     '- Portfolio: https://msdqn.dev',
     '- Hire: https://msdqn.dev/hire-me',
     '- Resume: https://msdqn.dev/resume.pdf',
+    '- Infrastructure: https://infra.msdqn.dev',
     '- GitHub: https://github.com/maulanasdqn',
     '- LinkedIn: https://www.linkedin.com/in/maulana-sodiqin/',
     ''

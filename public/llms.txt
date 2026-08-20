@@ -20,6 +20,7 @@ Senior Software Engineer at MrScraper (Nov 2025 – present): building the scrap
 - [Hire Me](https://msdqn.dev/hire-me): availability and contact
 - [Resume (PDF)](https://msdqn.dev/resume.pdf)
 - [Blog](https://blog.msdqn.dev/)
+- [Infrastructure](https://infra.msdqn.dev/): interactive overview of the Nix-managed fleet (NixOS, macOS, VPS, ARM, WSL, Android from one flake)
 - [GitHub](https://github.com/maulanasdqn)
 - [LinkedIn](https://www.linkedin.com/in/maulana-sodiqin/)
 
