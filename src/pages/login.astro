@@ -3,10 +3,9 @@ import AnalyticsPartytown from '@/components/ui/analytics-partytown.astro';
 
 const { cookies, redirect, url } = Astro;
 
-const accessToken = cookies.get('sb-access-token');
-const refreshToken = cookies.get('sb-refresh-token');
+const session = cookies.get('session');
 
-if (accessToken && refreshToken) {
+if (session) {
   return redirect('/cms');
 }
 

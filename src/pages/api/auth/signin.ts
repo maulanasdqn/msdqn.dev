@@ -1,7 +1,18 @@
-import { supabase } from '@/libs/supabase';
+import {
+  createSession,
+  findUserByEmail,
+  setSessionCookie,
+  verifyPassword,
+} from '@/libs/auth';
+import { getDb } from '@/libs/d1';
 import type { APIRoute } from 'astro';
 
-export const POST: APIRoute = async ({ request, cookies, redirect }) => {
+export const POST: APIRoute = async ({
+  request,
+  cookies,
+  locals,
+  redirect,
+}) => {
   const formData = await request.formData();
   const email = formData.get('email')?.toString();
   const password = formData.get('password')?.toString();
@@ -10,21 +21,14 @@ export const POST: APIRoute = async ({ request, cookies, redirect }) => {
     return new Response('Email and password are required', { status: 400 });
   }
 
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email,
-    password,
-  });
+  const db = getDb(locals);
+  const user = await findUserByEmail(db, email);
 
-  if (error) {
-    return new Response(error.message, { status: 500 });
+  if (!user || !(await verifyPassword(password, user.password_hash))) {
+    return redirect('/login?message=Invalid email or password');
   }
 
-  const { access_token, refresh_token } = data.session;
-  cookies.set('sb-access-token', access_token, {
-    path: '/',
-  });
-  cookies.set('sb-refresh-token', refresh_token, {
-    path: '/',
-  });
+  const token = await createSession(db, user.id);
+  setSessionCookie(cookies, token);
   return redirect('/cms');
 };

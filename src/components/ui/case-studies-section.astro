@@ -1,13 +1,19 @@
 ---
-import { supabase } from '@/libs/supabase';
+import { decodeRows, getDb, tables } from '@/libs/d1';
 import AnimationWrapper from './animation-wrapper.astro';
 import CaseStudyCard from './case-study-card.astro';
 
-const { data: caseStudies } = await supabase
-  .from('case_studies')
-  .select('*')
-  .eq('is_featured', true)
-  .order('created_at', { ascending: false });
+let caseStudies = [];
+try {
+  const { results } = await getDb(Astro.locals)
+    .prepare(
+      'SELECT * FROM case_studies WHERE is_featured = 1 ORDER BY created_at DESC'
+    )
+    .all();
+  caseStudies = decodeRows(tables.case_studies, results);
+} catch {
+  caseStudies = [];
+}
 ---
 
 <section class="py-16 bg-rose-pine-base">

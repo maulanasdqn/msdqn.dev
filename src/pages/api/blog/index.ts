@@ -1,80 +1,59 @@
-import { supabase } from '@/libs/supabase';
+import { getSessionUser } from '@/libs/auth';
+import { json, jsonError } from '@/libs/crud';
+import { decodeRows, getDb, insertRow, tables } from '@/libs/d1';
 import type { APIRoute } from 'astro';
 
-export const GET: APIRoute = async ({ url }) => {
+export const GET: APIRoute = async ({ url, locals }) => {
   const searchParams = new URL(url).searchParams;
   const published = searchParams.get('published') !== 'false';
   const limit = parseInt(searchParams.get('limit') || '10');
   const offset = parseInt(searchParams.get('offset') || '0');
   const tag = searchParams.get('tag');
 
-  let query = supabase.from('blog_posts').select('*');
+  const conditions: string[] = [];
+  const bindings: unknown[] = [];
 
   if (published) {
-    query = query.eq('published', true);
+    conditions.push('published = 1');
   }
 
   if (tag) {
-    query = query.contains('tags', [tag]);
+    conditions.push(
+      'EXISTS (SELECT 1 FROM json_each(blog_posts.tags) WHERE json_each.value = ?)'
+    );
+    bindings.push(tag);
   }
 
-  query = query
-    .order('published_at', { ascending: false, nullsFirst: false })
-    .order('created_at', { ascending: false })
-    .range(offset, offset + limit - 1);
+  const where = conditions.length ? ` WHERE ${conditions.join(' AND ')}` : '';
 
-  const { data, error } = await query;
-
-  if (error) {
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
+  try {
+    const { results } = await getDb(locals)
+      .prepare(
+        `SELECT * FROM blog_posts${where} ORDER BY (published_at IS NULL), published_at DESC, created_at DESC LIMIT ? OFFSET ?`
+      )
+      .bind(...bindings, limit, offset)
+      .all();
+    return json(decodeRows(tables.blog_posts, results));
+  } catch (error) {
+    return jsonError((error as Error).message);
   }
-
-  return new Response(JSON.stringify(data), {
-    headers: { 'Content-Type': 'application/json' },
-  });
 };
 
-export const POST: APIRoute = async ({ request, cookies }) => {
-  const accessToken = cookies.get('sb-access-token');
-  const refreshToken = cookies.get('sb-refresh-token');
-
-  if (!accessToken || !refreshToken) {
+export const POST: APIRoute = async ({ request, locals, cookies }) => {
+  const user = await getSessionUser(locals, cookies);
+  if (!user) {
     return new Response('Unauthorized', { status: 401 });
   }
-
-  const session = await supabase.auth.setSession({
-    access_token: accessToken.value,
-    refresh_token: refreshToken.value,
-  });
-
-  if (session.error) {
-    return new Response('Unauthorized', { status: 401 });
-  }
-
-  const body = await request.json();
-  const userId = session.data.user?.id;
-
-  if (!userId) {
-    return new Response('Unauthorized', { status: 401 });
-  }
-
-  const { data, error } = await supabase
-    .from('blog_posts')
-    .insert([{ ...body, author_id: userId }])
-    .select();
-
-  if (error) {
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
+  try {
+    const body = await request.json();
+    if (body.published && !body.published_at) {
+      body.published_at = new Date().toISOString();
+    }
+    const row = await insertRow(getDb(locals), 'blog_posts', body, {
+      author_id: user.id,
     });
+    return json(row, 201);
+  } catch (error) {
+    return jsonError((error as Error).message);
   }
-
-  return new Response(JSON.stringify(data[0]), {
-    status: 201,
-    headers: { 'Content-Type': 'application/json' },
-  });
 };

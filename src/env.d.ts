@@ -1,9 +1,15 @@
 /// <reference path="../.astro/types.d.ts" />
+/// <reference path="../worker-configuration.d.ts" />
+
+type Runtime = import('@astrojs/cloudflare').Runtime<Env>;
+
+declare namespace App {
+  interface Locals extends Runtime {}
+}
 
 interface ImportMetaEnv {
-  readonly SUPABASE_URL: string;
-  readonly SUPABASE_PUBLISHABLE_KEY: string;
-  readonly SUPABASE_PUBLISHABLE_SECRET: string;
+  readonly GOOGLE_ANALYTICS_ID: string;
+  readonly GTM_ID: string;
 }
 
 interface ImportMeta {

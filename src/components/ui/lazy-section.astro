@@ -43,7 +43,8 @@ const {
     }
 
     document.querySelectorAll('.lazy-section').forEach(section => {
-      const sectionRootMargin = section.dataset.rootMargin || '50px 0px 50px 0px';
+      const sectionRootMargin =
+        section.dataset.rootMargin || '50px 0px 50px 0px';
       const sectionThreshold = parseFloat(section.dataset.threshold) || 0.1;
 
       const observer = new IntersectionObserver(
@@ -51,7 +52,8 @@ const {
           entries.forEach(entry => {
             if (entry.isIntersecting) {
               const content = entry.target.querySelector('.lazy-content');
-              const placeholder = entry.target.querySelector('.lazy-placeholder');
+              const placeholder =
+                entry.target.querySelector('.lazy-placeholder');
 
               if (content && placeholder) {
                 placeholder.style.opacity = '0';

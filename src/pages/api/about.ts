@@ -1,47 +1,29 @@
-import { supabase } from '@/libs/supabase';
+import { getSessionUser } from '@/libs/auth';
+import { json, jsonError } from '@/libs/crud';
+import { getDb, getSingleton, upsertSingleton } from '@/libs/d1';
 import type { APIRoute } from 'astro';
 
-export const GET: APIRoute = async () => {
-  const { data, error } = await supabase
-    .from('about_content')
-    .select('*')
-    .single();
-
-  if (error) {
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
+export const GET: APIRoute = async ({ locals }) => {
+  try {
+    const row = await getSingleton(getDb(locals), 'about_content');
+    if (!row) {
+      return jsonError('Not found', 404);
+    }
+    return json(row);
+  } catch (error) {
+    return jsonError((error as Error).message);
   }
-
-  return new Response(JSON.stringify(data), {
-    headers: { 'Content-Type': 'application/json' },
-  });
 };
 
-export const PUT: APIRoute = async ({ request, cookies }) => {
-  const accessToken = cookies.get('sb-access-token');
-  const refreshToken = cookies.get('sb-refresh-token');
-
-  if (!accessToken || !refreshToken) {
+export const PUT: APIRoute = async ({ request, locals, cookies }) => {
+  const user = await getSessionUser(locals, cookies);
+  if (!user) {
     return new Response('Unauthorized', { status: 401 });
   }
-
-  const body = await request.json();
-
-  const { data, error } = await supabase
-    .from('about_content')
-    .upsert(body)
-    .select();
-
-  if (error) {
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
+  try {
+    const body = await request.json();
+    return json(await upsertSingleton(getDb(locals), 'about_content', body));
+  } catch (error) {
+    return jsonError((error as Error).message);
   }
-
-  return new Response(JSON.stringify(data[0]), {
-    headers: { 'Content-Type': 'application/json' },
-  });
 };

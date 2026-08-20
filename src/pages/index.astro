@@ -15,19 +15,26 @@ import PerformanceOptimizations from '@/components/ui/performance-optimizations.
 import ProjectCard from '@/components/ui/project-card.astro';
 import TestimonialsSection from '@/components/ui/testimonials-section.astro';
 
-const homeResponse = await fetch(`${Astro.url.origin}/api/home`);
-const homeData = homeResponse.ok ? await homeResponse.json() : null;
+import { getDb, getSingleton, listRows } from '@/libs/d1';
 
-const aboutResponse = await fetch(`${Astro.url.origin}/api/about`);
-const aboutData = aboutResponse.ok ? await aboutResponse.json() : null;
+const db = getDb(Astro.locals);
 
-const experienceResponse = await fetch(`${Astro.url.origin}/api/experience`);
-const experiences = experienceResponse.ok
-  ? await experienceResponse.json()
-  : [];
+let homeData = null;
+let aboutData = null;
+let experiences = [];
+let projects = [];
 
-const projectsResponse = await fetch(`${Astro.url.origin}/api/project`);
-const projects = projectsResponse.ok ? await projectsResponse.json() : [];
+try {
+  [homeData, aboutData, experiences, projects] = await Promise.all([
+    getSingleton(db, 'home_content'),
+    getSingleton(db, 'about_content'),
+    listRows(db, 'experiences'),
+    listRows(db, 'projects'),
+  ]);
+} catch {
+  experiences = [];
+  projects = [];
+}
 
 const siteUrl = 'https://msdqn.dev';
 const siteName = 'Maulana Sodiqin - Fullstack Developer';
@@ -87,9 +94,10 @@ const siteName = 'Maulana Sodiqin - Fullstack Developer';
     <meta property="og:type" content="profile" />
     <meta property="og:url" content={siteUrl} />
     <meta property="og:site_name" content={siteName} />
-    <meta property="og:image" content={`${siteUrl}/favicon.svg`} />
-    <meta property="og:image:width" content="512" />
-    <meta property="og:image:height" content="512" />
+    <meta property="og:image" content={`${siteUrl}/og-image.png`} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta
       property="og:image:alt"
       content="Maulana Sodiqin - Fullstack Developer Portfolio"
@@ -108,7 +116,7 @@ const siteName = 'Maulana Sodiqin - Fullstack Developer';
       name="twitter:description"
       content="Experienced Fullstack Developer available for hire. 5+ years expertise in React, TypeScript, Rust."
     />
-    <meta name="twitter:image" content={`${siteUrl}/favicon.svg`} />
+    <meta name="twitter:image" content={`${siteUrl}/og-image.png`} />
     <meta
       name="twitter:image:alt"
       content="Maulana Sodiqin - Fullstack Developer Portfolio"
@@ -128,33 +136,40 @@ const siteName = 'Maulana Sodiqin - Fullstack Developer';
         givenName: 'Maulana',
         familyName: 'Sodiqin',
         url: siteUrl,
-        image: `${siteUrl}/favicon.svg`,
+        image: `${siteUrl}/og-image.png`,
         sameAs: [
           'https://www.linkedin.com/in/maulana-sodiqin/',
           'https://github.com/maulanasdqn',
           'mailto:maulanasdqn@gmail.com',
         ],
-        jobTitle: 'Senior Fullstack Developer',
+        jobTitle: 'Senior Software Engineer',
         description:
           'Experienced Fullstack Developer with 5+ years of expertise in React, TypeScript, and Rust. Available for full-time positions and freelance projects.',
         knowsAbout: [
-          'React',
-          'TypeScript',
-          'JavaScript',
           'Rust',
+          'TypeScript',
+          'React',
+          'Web Scraping',
+          'Browser Automation',
+          'Browser Fingerprinting & Anti-Bot Evasion',
+          'Chromium Internals',
+          'Cloudflare Workers',
+          'Edge Computing',
+          'WebAssembly',
+          'AI Agents',
+          'Model Context Protocol (MCP)',
+          'LLM Tooling',
+          'gRPC Microservices',
           'Next.js',
-          'Node.js',
-          'Frontend Development',
-          'Backend Development',
+          'Nx Monorepo',
+          'Micro Frontends',
+          'Nix & NixOS',
+          'Infrastructure as Code',
           'Full Stack Development',
-          'Web Development',
-          'Software Engineering',
-          'UI/UX Development',
-          'Modern Web Technologies',
         ],
         alumniOf: {
           '@type': 'EducationalOrganization',
-          name: 'Education Institution',
+          name: 'Universitas Islam Nusantara',
         },
         address: {
           '@type': 'PostalAddress',
@@ -166,7 +181,7 @@ const siteName = 'Maulana Sodiqin - Fullstack Developer';
         telephone: '+6285156085579',
         worksFor: {
           '@type': 'Organization',
-          name: 'Freelance Developer',
+          name: 'MrScraper',
         },
         hasOccupation: {
           '@type': 'Occupation',
@@ -188,22 +203,6 @@ const siteName = 'Maulana Sodiqin - Fullstack Developer';
             'UI/UX Implementation',
           ],
         },
-        seeks: {
-          '@type': 'JobPosting',
-          title: 'Senior Fullstack Developer Position',
-          description:
-            'Seeking full-time or freelance opportunities as a Senior Fullstack Developer',
-          employmentType: ['FULL_TIME', 'CONTRACTOR', 'TEMPORARY'],
-          experienceRequirements: '5+ years',
-          skills: [
-            'React',
-            'TypeScript',
-            'Rust',
-            'JavaScript',
-            'Node.js',
-            'Next.js',
-          ],
-        },
       })}
     />
 
@@ -222,14 +221,6 @@ const siteName = 'Maulana Sodiqin - Fullstack Developer';
           name: 'Maulana Sodiqin',
         },
         inLanguage: 'en-US',
-        potentialAction: {
-          '@type': 'SearchAction',
-          target: {
-            '@type': 'EntryPoint',
-            urlTemplate: `${siteUrl}/?q={search_term_string}`,
-          },
-          'query-input': 'required name=search_term_string',
-        },
       })}
     />
 

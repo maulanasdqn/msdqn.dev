@@ -1,28 +1,12 @@
 ---
-import { supabase } from '@/libs/supabase';
+import { getSessionUser } from '@/libs/auth';
 
-const { cookies, redirect } = Astro;
-const accessToken = cookies.get('sb-access-token');
-const refreshToken = cookies.get('sb-refresh-token');
-
-if (!accessToken || !refreshToken) {
-  return redirect('/login');
+const user = await getSessionUser(Astro.locals, Astro.cookies);
+if (!user) {
+  return Astro.redirect('/login');
 }
 
-let session;
-try {
-  session = await supabase.auth.setSession({
-    refresh_token: refreshToken.value,
-    access_token: accessToken.value,
-  });
-  if (session.error) {
-    return redirect('/login');
-  }
-} catch {
-  return redirect('/login');
-}
-
-const email = session.data.user?.email;
+const email = user.email;
 ---
 
 <!doctype html>

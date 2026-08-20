@@ -1,6 +1,15 @@
 import { defineMiddleware } from 'astro:middleware';
 
 export const onRequest = defineMiddleware(async (context, next) => {
+  const url = context.url;
+
+  if (url.hostname === 'www.msdqn.dev') {
+    return context.redirect(
+      `https://msdqn.dev${url.pathname}${url.search}`,
+      301
+    );
+  }
+
   const response = await next();
 
   const securityHeaders = {
@@ -8,13 +17,14 @@ export const onRequest = defineMiddleware(async (context, next) => {
     'X-Frame-Options': 'DENY',
     'X-XSS-Protection': '1; mode=block',
     'Referrer-Policy': 'strict-origin-when-cross-origin',
-    'Permissions-Policy': 'camera=(), microphone=(), geolocation=(), interest-cohort=()',
+    'Permissions-Policy':
+      'camera=(), microphone=(), geolocation=(), interest-cohort=()',
     'Strict-Transport-Security': 'max-age=63072000; includeSubDomains; preload',
     'Cross-Origin-Opener-Policy': 'same-origin-allow-popups',
     'Cross-Origin-Resource-Policy': 'same-origin',
     'Cache-Control': 'no-cache, no-store, must-revalidate',
-    'Pragma': 'no-cache',
-    'Expires': '0',
+    Pragma: 'no-cache',
+    Expires: '0',
     'Content-Security-Policy': [
       "default-src 'self'",
       "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com",
@@ -22,14 +32,14 @@ export const onRequest = defineMiddleware(async (context, next) => {
       "font-src 'self'",
       "img-src 'self' data: https: blob:",
       "media-src 'self' data: blob:",
-      "connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://*.supabase.co wss://*.supabase.co",
+      "connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com",
       "worker-src 'self' blob:",
       "frame-src 'self'",
       "frame-ancestors 'none'",
       "object-src 'none'",
       "base-uri 'self'",
       "form-action 'self'",
-      "upgrade-insecure-requests",
+      'upgrade-insecure-requests',
     ].join('; '),
   };
 
@@ -37,6 +47,14 @@ export const onRequest = defineMiddleware(async (context, next) => {
   Object.entries(securityHeaders).forEach(([key, value]) => {
     newHeaders.set(key, value);
   });
+
+  if (
+    url.pathname.startsWith('/cms') ||
+    url.pathname.startsWith('/login') ||
+    url.pathname.startsWith('/api')
+  ) {
+    newHeaders.set('X-Robots-Tag', 'noindex, nofollow');
+  }
 
   return new Response(response.body, {
     status: response.status,

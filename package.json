@@ -2,13 +2,10 @@
   "name": "personal-website",
   "type": "module",
   "version": "0.0.1",
-  "overrides": {
-    "path-to-regexp": "^8.0.0"
-  },
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview",
+    "preview": "astro build && wrangler dev",
     "astro": "astro",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
@@ -16,16 +13,14 @@
     "lint": "eslint . --ext .js,.ts,.astro",
     "lint:fix": "eslint . --ext .js,.ts,.astro --fix",
     "lint:check": "eslint . --ext .js,.ts,.astro --max-warnings 0",
-    "check": "npm run format:check && npm run lint:check"
+    "check": "npm run format:check && npm run lint:check",
+    "deploy": "astro build && wrangler deploy"
   },
   "dependencies": {
+    "@astrojs/cloudflare": "^12.6.13",
     "@astrojs/mdx": "^4.3.13",
-    "@astrojs/node": "^9.5.1",
     "@astrojs/partytown": "^2.1.4",
     "@astrojs/tailwind": "^6.0.2",
-    "@astrojs/vercel": "^9.0.2",
-    "@sentry/astro": "^10.32.1",
-    "@supabase/supabase-js": "^2.89.0",
     "astro": "^5.16.6",
     "astro-icon": "^1.1.5",
     "lightningcss": "^1.30.2",
@@ -49,6 +44,7 @@
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "globals": "^16.5.0",
     "prettier": "^3.7.4",
-    "prettier-plugin-astro": "^0.14.1"
+    "prettier-plugin-astro": "^0.14.1",
+    "wrangler": "^4.124.0"
   }
 }

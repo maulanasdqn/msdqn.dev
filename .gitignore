@@ -11,3 +11,7 @@ pnpm-debug.log*
 .DS_Store
 .idea/
 result
+.vercel
+.env*
+.wrangler/
+worker-configuration.d.ts

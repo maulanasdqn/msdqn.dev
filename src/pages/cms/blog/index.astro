@@ -1,33 +1,24 @@
 ---
-import { supabase } from '@/libs/supabase';
+import { getSessionUser } from '@/libs/auth';
+import { decodeRows, getDb, tables } from '@/libs/d1';
 
-const { cookies, redirect } = Astro;
-const accessToken = cookies.get('sb-access-token');
-const refreshToken = cookies.get('sb-refresh-token');
-
-if (!accessToken || !refreshToken) {
-  return redirect('/login');
+const user = await getSessionUser(Astro.locals, Astro.cookies);
+if (!user) {
+  return Astro.redirect('/login');
 }
 
-let session;
+let blogPosts = [];
+let error = null;
 try {
-  session = await supabase.auth.setSession({
-    refresh_token: refreshToken.value,
-    access_token: accessToken.value,
-  });
-  if (session.error) {
-    return redirect('/login');
-  }
-} catch {
-  return redirect('/login');
+  const { results } = await getDb(Astro.locals)
+    .prepare('SELECT * FROM blog_posts ORDER BY created_at DESC')
+    .all();
+  blogPosts = decodeRows(tables.blog_posts, results);
+} catch (e) {
+  error = e;
 }
 
-const { data: blogPosts, error } = await supabase
-  .from('blog_posts')
-  .select('*')
-  .order('created_at', { ascending: false });
-
-const email = session.data.user?.email;
+const email = user.email;
 ---
 
 <!doctype html>

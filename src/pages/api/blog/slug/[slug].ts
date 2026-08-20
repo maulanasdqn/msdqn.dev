@@ -1,31 +1,24 @@
-import { supabase } from '@/libs/supabase';
+import { json, jsonError } from '@/libs/crud';
+import { decodeRow, getDb, tables } from '@/libs/d1';
 import type { APIRoute } from 'astro';
 
-export const GET: APIRoute = async ({ params }) => {
+export const GET: APIRoute = async ({ params, locals }) => {
   const slug = params.slug;
 
   if (!slug) {
-    return new Response(JSON.stringify({ error: 'Blog post slug required' }), {
-      status: 400,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return jsonError('Blog post slug required', 400);
   }
 
-  const { data, error } = await supabase
-    .from('blog_posts')
-    .select('*')
-    .eq('slug', slug)
-    .eq('published', true)
-    .single();
-
-  if (error) {
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: error.code === 'PGRST116' ? 404 : 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
+  try {
+    const row = await getDb(locals)
+      .prepare('SELECT * FROM blog_posts WHERE slug = ? AND published = 1')
+      .bind(slug)
+      .first();
+    if (!row) {
+      return jsonError('Blog post not found', 404);
+    }
+    return json(decodeRow(tables.blog_posts, row));
+  } catch (error) {
+    return jsonError((error as Error).message);
   }
-
-  return new Response(JSON.stringify(data), {
-    headers: { 'Content-Type': 'application/json' },
-  });
 };

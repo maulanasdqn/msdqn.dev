@@ -1,34 +1,22 @@
 ---
-import { supabase } from '@/libs/supabase';
 import ProjectCard from '@/components/ui/project-card.astro';
+import { getSessionUser } from '@/libs/auth';
+import { getDb, listRows } from '@/libs/d1';
 
-const { cookies, redirect } = Astro;
-const accessToken = cookies.get('sb-access-token');
-const refreshToken = cookies.get('sb-refresh-token');
-
-if (!accessToken || !refreshToken) {
-  return redirect('/login');
+const user = await getSessionUser(Astro.locals, Astro.cookies);
+if (!user) {
+  return Astro.redirect('/login');
 }
 
-let session;
+let projects = [];
+let error = null;
 try {
-  session = await supabase.auth.setSession({
-    refresh_token: refreshToken.value,
-    access_token: accessToken.value,
-  });
-  if (session.error) {
-    return redirect('/login');
-  }
-} catch {
-  return redirect('/login');
+  projects = await listRows(getDb(Astro.locals), 'projects');
+} catch (e) {
+  error = e;
 }
 
-const { data: projects, error } = await supabase
-  .from('projects')
-  .select('*')
-  .order('created_at', { ascending: false });
-
-const email = session.data.user?.email;
+const email = user.email;
 ---
 
 <!doctype html>

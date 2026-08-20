@@ -1,0 +1,26 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "msdqn-dev",
+  "main": "./dist/_worker.js/index.js",
+  "compatibility_date": "2026-08-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "binding": "ASSETS",
+    "directory": "./dist",
+  },
+  "observability": {
+    "enabled": true,
+  },
+  "routes": [
+    { "pattern": "msdqn.dev", "custom_domain": true },
+    { "pattern": "www.msdqn.dev", "custom_domain": true },
+  ],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "msdqn-dev",
+      "database_id": "aecc5320-304d-46a3-8316-2ca74ed79935",
+      "migrations_dir": "./migrations",
+    },
+  ],
+}

@@ -1,8 +1,9 @@
 ---
+import { getDb, listRows } from '@/libs/d1';
 import AnimationWrapper from './animation-wrapper.astro';
 
 interface Testimonial {
-  id: number;
+  id: number | string;
   name: string;
   role: string;
   company: string;
@@ -14,10 +15,10 @@ interface Testimonial {
 let testimonials: Testimonial[] = [];
 
 try {
-  const response = await fetch(`${Astro.url.origin}/api/testimonial`);
-  if (response.ok) {
-    testimonials = await response.json();
-  }
+  testimonials = (await listRows(
+    getDb(Astro.locals),
+    'testimonials'
+  )) as unknown as Testimonial[];
 } catch (error) {
   console.error('Error fetching testimonials:', error);
   testimonials = [

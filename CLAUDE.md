@@ -32,10 +32,10 @@ This project uses Agent OS for structured development workflows. When working on
 
 ### Tech Stack
 
-- **Framework**: Astro 5.10.1 with server-side rendering
+- **Framework**: Astro 5.x with server-side rendering
 - **Styling**: TailwindCSS with Rose Pine theme
-- **Database**: Supabase PostgreSQL with authentication
-- **Deployment**: Vercel with web analytics
+- **Database**: Cloudflare D1 (SQLite) with cookie-session authentication
+- **Deployment**: Cloudflare Workers via Wrangler (custom domain msdqn.dev)
 - **Development**: TypeScript, ESLint, Prettier
 
 ### Rose Pine Theme
@@ -54,20 +54,24 @@ src/
 ├── pages/                  # Astro pages with full HTML structure
 ├── pages/api/             # API endpoints for CRUD operations
 ├── pages/cms/             # Admin interface pages
-├── libs/                  # Utility libraries (supabase, analytics)
+├── libs/                  # Utility libraries (d1, auth, crud, analytics)
 └── styles/                # Global CSS
 ```
 
 ### Database Schema
 
-Key Supabase tables:
+Key D1 tables (schema in `migrations/`):
 
 - `about_content` - About page content
+- `home_content` - Homepage content
 - `experiences` - Work experience entries
 - `projects` - Portfolio projects
 - `case_studies` - Case study entries
 - `testimonials` - Client testimonials
-- `auth.users` - User authentication (Supabase managed)
+- `blog_posts` - Blog entries
+- `users` / `sessions` - CMS authentication (PBKDF2 + session cookie, see `src/libs/auth.ts`)
+
+Data access goes through `src/libs/d1.ts` (table specs, JSON/boolean column handling) and `src/libs/crud.ts` (API route factories). The D1 binding is `DB`, configured in `wrangler.jsonc`.
 
 ## Development Workflows
 
@@ -91,10 +95,11 @@ Key Supabase tables:
 | `npm run format`  | Format code with Prettier                  |
 | `npm run lint`    | Lint code with ESLint                      |
 | `npm run check`   | Run format and lint checks                 |
+| `npm run deploy`  | Build and deploy to Cloudflare Workers     |
 
 ## Important Notes
 
-- **Authentication**: CMS pages require Supabase authentication
+- **Authentication**: CMS pages require a D1-backed session (login at /login)
 - **SEO**: All pages must include proper meta tags and structured data
 - **Performance**: Code splitting and CSS minification are configured
 - **Accessibility**: Follow WCAG guidelines for all new components
@@ -102,7 +107,7 @@ Key Supabase tables:
 
 ## Deployment
 
-The site deploys automatically to Vercel on push to the main branch. Environment variables for Supabase must be configured in the Vercel dashboard.
+The site deploys to Cloudflare Workers with `npm run deploy` (wrangler). The custom domains msdqn.dev and www.msdqn.dev are attached via `routes` in `wrangler.jsonc`. D1 migrations are applied with `npx wrangler d1 migrations apply msdqn-dev --remote`.
 
 ---
 

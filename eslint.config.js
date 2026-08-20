@@ -9,7 +9,9 @@ export default [
     ignores: [
       'dist/',
       '.astro/',
-      '.vercel/',
+      '.wrangler/',
+      'worker-configuration.d.ts',
+      'migrations/',
       'node_modules/',
       '*.config.js',
       '*.config.ts',
@@ -50,6 +52,7 @@ export default [
       '@typescript-eslint': tsPlugin,
     },
     rules: {
+      'no-undef': 'off',
       'no-unused-vars': 'off',
       '@typescript-eslint/no-unused-vars': 'warn',
       '@typescript-eslint/no-explicit-any': 'warn',
