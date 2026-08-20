@@ -6,8 +6,6 @@ import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
 
-import partytown from '@astrojs/partytown';
-
 export default defineConfig({
   integrations: [
     tailwind(),
@@ -25,19 +23,6 @@ export default defineConfig({
           },
         ],
       ],
-    }),
-    partytown({
-      config: {
-        forward: [
-          'dataLayer.push',
-          'gtag',
-          'ga',
-          'GoogleAnalyticsObject',
-          '_gaq.push',
-          'gtm',
-        ],
-        debug: false,
-      },
     }),
   ],
   output: 'server',

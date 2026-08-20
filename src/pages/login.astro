@@ -1,6 +1,4 @@
 ---
-import AnalyticsPartytown from '@/components/ui/analytics-partytown.astro';
-
 const { cookies, redirect, url } = Astro;
 
 const session = cookies.get('session');
@@ -22,7 +20,6 @@ const message = url.searchParams.get('message');
       name="description"
       content="Login to access the content management system"
     />
-    <AnalyticsPartytown />
 
     <style>
       :root {

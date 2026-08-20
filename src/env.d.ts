@@ -6,12 +6,3 @@ type Runtime = import('@astrojs/cloudflare').Runtime<Env>;
 declare namespace App {
   interface Locals extends Runtime {}
 }
-
-interface ImportMetaEnv {
-  readonly GOOGLE_ANALYTICS_ID: string;
-  readonly GTM_ID: string;
-}
-
-interface ImportMeta {
-  readonly env: ImportMetaEnv;
-}
