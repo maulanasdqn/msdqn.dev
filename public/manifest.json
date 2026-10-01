@@ -1,31 +1,40 @@
 {
-  "name": "Maulana Sodiqin - Fullstack Developer",
+  "name": "Maulana Sodiqin — Software Engineer",
   "short_name": "Maulana Sodiqin",
-  "description": "Professional portfolio of Maulana Sodiqin, Senior Fullstack Developer specializing in React, TypeScript, and Rust development.",
+  "description": "Portfolio of Maulana Sodiqin, senior software engineer building production web platforms in Rust and TypeScript.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#191724",
-  "theme_color": "#191724",
+  "background_color": "#0a0a0a",
+  "theme_color": "#0a0a0a",
   "orientation": "portrait-primary",
-  "categories": ["business", "productivity", "developer"],
+  "categories": [
+    "business",
+    "productivity",
+    "developer"
+  ],
   "lang": "en",
   "scope": "/",
   "icons": [
     {
       "src": "/favicon.svg",
       "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "type": "image/svg+xml"
     },
     {
-      "src": "/favicon.svg",
+      "src": "/icon-192.png",
       "sizes": "192x192",
-      "type": "image/svg+xml"
+      "type": "image/png"
     },
     {
-      "src": "/favicon.svg",
+      "src": "/icon-512.png",
       "sizes": "512x512",
-      "type": "image/svg+xml"
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
   "shortcuts": [
@@ -36,24 +45,24 @@
       "url": "/hire-me",
       "icons": [
         {
-          "src": "/favicon.svg",
-          "sizes": "96x96",
-          "type": "image/svg+xml"
+          "src": "/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
         }
       ]
     },
     {
-      "name": "Blog",
-      "short_name": "Blog",
+      "name": "Writing",
+      "short_name": "Writing",
       "description": "Read latest blog posts and articles",
       "url": "/blog",
       "icons": [
         {
-          "src": "/favicon.svg",
-          "sizes": "96x96",
-          "type": "image/svg+xml"
+          "src": "/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
         }
       ]
     }
   ]
-} 
+}
