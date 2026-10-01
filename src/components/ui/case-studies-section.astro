@@ -1,76 +1,39 @@
 ---
-import { decodeRows, getDb, tables } from '@/libs/d1';
-import AnimationWrapper from './animation-wrapper.astro';
 import CaseStudyCard from './case-study-card.astro';
+import SectionHeading from './section-heading.astro';
 
-let caseStudies = [];
-try {
-  const { results } = await getDb(Astro.locals)
-    .prepare(
-      'SELECT * FROM case_studies WHERE is_featured = 1 ORDER BY created_at DESC'
-    )
-    .all();
-  caseStudies = decodeRows(tables.case_studies, results);
-} catch {
-  caseStudies = [];
+interface Props {
+  number: string;
+  caseStudies: Record<string, any>[];
 }
+
+const { number, caseStudies } = Astro.props;
 ---
 
-<section class="py-16 bg-rose-pine-base">
-  <div class="max-w-6xl mx-auto px-6">
-    <AnimationWrapper animation="fade-in" delay={0}>
-      <div class="text-center mb-16">
-        <h2 class="text-4xl font-bold text-rose-pine-text mb-6">
-          Case Studies
-        </h2>
-        <p
-          class="text-lg text-rose-pine-subtle max-w-3xl mx-auto leading-relaxed"
-        >
-          Real-world projects showcasing problem-solving skills and technical
-          expertise
-        </p>
-      </div>
-    </AnimationWrapper>
-
-    <div class="space-y-12">
-      {
-        caseStudies?.map((study, index) => (
-          <AnimationWrapper animation="slide-right" delay={index * 200}>
-            <CaseStudyCard
-              title={study.title}
-              client={study.client}
-              duration={study.duration}
-              technologies={study.technologies}
-              challenge={study.challenge}
-              solution={study.solution}
-              results={study.results}
-            />
-          </AnimationWrapper>
-        ))
-      }
-    </div>
-
-    <div class="mt-12 text-center">
-      <a
-        href="mailto:maulanasdqn@gmail.com?subject=Project Discussion - Case Study Inquiry"
-        class="bg-rose-pine-love hover:bg-rose-pine-love/80 text-rose-pine-base px-8 py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 inline-flex items-center gap-2"
-      >
-        <svg
-          class="w-5 h-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-3.582 8-8 8a8.959 8.959 0 01-4.126-1.016L5 19l.056-3.813A8.057 8.057 0 013 12c0-4.418 3.582-8 8-8s8 3.582 8 8z"
-          ></path>
-        </svg>
-        Discuss Your Project
-      </a>
-    </div>
+<section
+  id="case-studies"
+  class="max-w-5xl mx-auto px-6 sm:px-8 py-16 sm:py-20"
+  aria-labelledby="case-studies-heading"
+>
+  <SectionHeading
+    number={number}
+    title="Case Studies"
+    id="case-studies-heading"
+  />
+  <div>
+    {
+      caseStudies.map(study => (
+        <CaseStudyCard
+          title={study.title}
+          client={study.client}
+          duration={study.duration}
+          technologies={study.technologies}
+          challenge={study.challenge}
+          solution={study.solution}
+          results={study.results}
+        />
+      ))
+    }
   </div>
 </section>
 
@@ -84,14 +47,13 @@ try {
       '@type': 'WebPage',
       '@id': 'https://msdqn.dev',
     },
-    hasCredential:
-      caseStudies?.map(study => ({
-        '@type': 'EducationalOccupationalCredential',
-        name: study.title,
-        description: study.solution,
-        credentialCategory: 'Professional Experience',
-        educationalLevel: 'Professional',
-        competencyRequired: study.technologies?.join(', ') || '',
-      })) || [],
+    hasCredential: caseStudies.map(study => ({
+      '@type': 'EducationalOccupationalCredential',
+      name: study.title,
+      description: study.solution,
+      credentialCategory: 'Professional Experience',
+      educationalLevel: 'Professional',
+      competencyRequired: study.technologies?.join(', ') || '',
+    })),
   })}
 />

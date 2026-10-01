@@ -4,83 +4,42 @@ export interface Props {
   excerpt: string;
   slug: string;
   publishedAt: string;
-  readTime: string;
-  tags?: string[];
-  featured?: boolean;
 }
 
-const {
-  title,
-  excerpt,
-  slug,
-  publishedAt,
-  readTime,
-  tags = [],
-  featured = false,
-} = Astro.props;
+const { title, excerpt, slug, publishedAt } = Astro.props;
 
-const formattedDate = new Date(publishedAt).toLocaleDateString('en-US', {
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric',
-});
+const date = new Date(publishedAt);
+const valid = !Number.isNaN(date.getTime());
+const formattedDate = valid
+  ? date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    })
+  : '';
 ---
 
 <article
-  class={`bg-rose-pine-surface/50 backdrop-blur-sm p-6 rounded-xl border transition-all duration-300 hover:bg-rose-pine-surface/70 ${featured ? 'border-rose-pine-love' : 'border-rose-pine-highlight-med'}`}
+  class="group grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-8 py-8 border-b border-mono-line first:pt-0"
 >
-  {
-    featured && (
-      <div class="mb-3">
-        <span class="bg-rose-pine-love text-white px-2 py-1 rounded-full text-xs font-medium">
-          Featured
-        </span>
-      </div>
-    )
-  }
-
-  <div class="mb-4">
-    <div class="flex items-center gap-4 text-sm text-rose-pine-subtle mb-2">
-      <time datetime={publishedAt}>
-        {formattedDate}
-      </time>
-      <span>{readTime}</span>
-    </div>
-
-    <h2
-      class="text-xl font-bold text-rose-pine-text mb-3 hover:text-rose-pine-foam transition-colors"
-    >
-      <a href={`/blog/${slug}`}>{title}</a>
+  <p class="md:col-span-3 text-xs text-mono-muted tabular-nums pt-1.5">
+    {valid && <time datetime={date.toISOString()}>{formattedDate}</time>}
+  </p>
+  <div class="md:col-span-9">
+    <h2 class="font-medium text-2xl tracking-tight text-mono-text">
+      <a
+        href={`/blog/${slug}`}
+        class="underline decoration-transparent underline-offset-[6px] group-hover:decoration-mono-line-strong transition-colors"
+      >
+        {title}
+      </a>
     </h2>
-
-    <p class="text-rose-pine-subtle leading-relaxed mb-4">
-      {excerpt}
-    </p>
-
     {
-      tags.length > 0 && (
-        <div class="flex flex-wrap gap-2">
-          {tags.map(tag => (
-            <span class="bg-rose-pine-highlight-low text-rose-pine-text px-3 py-1 rounded-full text-sm">
-              {tag}
-            </span>
-          ))}
-        </div>
+      excerpt && (
+        <p class="mt-3 text-mono-subtle leading-relaxed line-clamp-3">
+          {excerpt}
+        </p>
       )
     }
   </div>
-
-  <a
-    href={`/blog/${slug}`}
-    class="text-rose-pine-love hover:text-rose-pine-love/80 font-semibold text-sm inline-flex items-center gap-1 transition-colors"
-  >
-    Read More
-    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        d="M9 5l7 7-7 7"></path>
-    </svg>
-  </a>
 </article>

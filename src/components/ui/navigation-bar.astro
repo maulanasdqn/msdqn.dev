@@ -1,261 +1,161 @@
 ---
-interface Props {
-  currentPath?: string;
-}
-
-const { currentPath = '' } = Astro.props;
+import '@fontsource-variable/onest';
 
 const navItems = [
-  { name: 'Home', href: '#home' },
-  { name: 'About', href: '#about' },
-  { name: 'Projects', href: '#projects' },
-  { name: 'Experience', href: '#experience' },
-  { name: 'Blog', href: '/blog' },
+  { name: 'About', href: '/#about' },
+  { name: 'Experience', href: '/#experience' },
+  { name: 'Projects', href: '/#projects' },
+  { name: 'Writing', href: '/blog' },
   { name: 'Infra', href: 'https://infra.msdqn.dev' },
-  { name: 'Contact', href: '#contact' },
-  { name: 'Hire Me', href: '/hire-me', isSpecial: true },
+  { name: 'Contact', href: '/#contact' },
 ];
+
+const path = Astro.url.pathname;
 ---
 
-<nav
-  class="fixed top-0 left-0 right-0 z-50 bg-rose-pine-base/20 backdrop-blur-xl border-b border-rose-pine-highlight-med/20 shadow-lg"
-  aria-label="Main navigation"
+<header
+  class="fixed top-0 inset-x-0 z-50 bg-mono-bg/85 border-b border-mono-line"
 >
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex justify-between items-center h-16">
-      <div class="flex-shrink-0">
-        <a
-          href="/"
-          class="text-2xl font-bold text-rose-pine-text hover:text-rose-pine-iris transition-colors duration-300"
-          aria-label="Homepage - Maulana Sodiqin Portfolio"
-        >
-          msdqn.
-        </a>
-      </div>
-
-      <div class="hidden md:flex items-center space-x-2">
-        {
-          navItems.map(item => (
-            <a
-              href={item.href}
-              class={`px-4 py-2 text-sm font-medium transition-all duration-300 rounded-lg backdrop-blur-sm ${
-                item.isSpecial
-                  ? 'bg-rose-pine-love/30 text-rose-pine-love hover:bg-rose-pine-love/40 border border-rose-pine-love/50 shadow-lg'
-                  : currentPath === item.href
-                    ? 'bg-rose-pine-iris/30 text-rose-pine-iris border border-rose-pine-iris/30 shadow-md'
-                    : 'text-rose-pine-text hover:text-rose-pine-iris hover:bg-rose-pine-surface/30 border border-transparent hover:border-rose-pine-highlight-med/20'
-              }`}
-            >
-              {item.name}
-            </a>
-          ))
-        }
-      </div>
-
-      <div class="md:hidden">
-        <button
-          id="mobile-menu-button"
-          class="inline-flex items-center justify-center p-2 rounded-lg text-rose-pine-text hover:text-rose-pine-iris hover:bg-rose-pine-surface/30 transition-all duration-300 backdrop-blur-sm border border-rose-pine-highlight-med/20"
-          aria-expanded="false"
-          aria-controls="mobile-menu"
-          aria-label="Toggle mobile menu"
-        >
-          <svg
-            class="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M4 6h16M4 12h16M4 18h16"></path>
-          </svg>
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <div id="mobile-menu" class="md:hidden hidden">
-    <div
-      class="px-4 pt-2 pb-3 space-y-2 bg-rose-pine-base/30 backdrop-blur-xl border-t border-rose-pine-highlight-med/20"
+  <nav
+    class="max-w-5xl mx-auto px-6 sm:px-8 h-16 flex items-center justify-between"
+    aria-label="Main navigation"
+  >
+    <a
+      href="/"
+      class="font-medium text-lg tracking-tight text-mono-text hover:text-mono-subtle transition-colors"
+      aria-label="Maulana Sodiqin, home"
     >
+      Maulana Sodiqin
+    </a>
+
+    <div class="hidden md:flex items-center gap-7">
       {
         navItems.map(item => (
           <a
             href={item.href}
-            class={`block px-4 py-3 text-base font-medium transition-all duration-300 rounded-lg backdrop-blur-sm ${
-              item.isSpecial
-                ? 'bg-rose-pine-love/30 text-rose-pine-love hover:bg-rose-pine-love/40 border border-rose-pine-love/50 shadow-lg'
-                : currentPath === item.href
-                  ? 'bg-rose-pine-iris/30 text-rose-pine-iris border border-rose-pine-iris/30 shadow-md'
-                  : 'text-rose-pine-text hover:text-rose-pine-iris hover:bg-rose-pine-surface/30 border border-transparent hover:border-rose-pine-highlight-med/20'
-            }`}
+            data-nav-link
+            aria-current={
+              path !== '/' && item.href === path ? 'page' : undefined
+            }
+            class="text-sm text-mono-subtle hover:text-mono-text transition-colors"
           >
             {item.name}
           </a>
         ))
       }
+      <a
+        href="/hire-me"
+        aria-current={path === '/hire-me' ? 'page' : undefined}
+        class="text-sm text-mono-text underline decoration-mono-line-strong underline-offset-[6px] hover:decoration-mono-text transition-colors"
+      >
+        Hire me
+      </a>
+    </div>
+
+    <button
+      id="mobile-menu-button"
+      class="md:hidden -mr-2 p-2 text-mono-text"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      aria-label="Toggle menu"
+    >
+      <svg
+        class="h-5 w-5"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path stroke-linecap="round" stroke-width="1.5" d="M4 8h16M4 16h16"
+        ></path>
+      </svg>
+    </button>
+  </nav>
+
+  <div id="mobile-menu" class="md:hidden hidden border-t border-mono-line">
+    <div class="max-w-5xl mx-auto px-6 py-4 flex flex-col">
+      {
+        navItems.map(item => (
+          <a
+            href={item.href}
+            class="py-3 text-base text-mono-subtle hover:text-mono-text border-b border-mono-line transition-colors"
+          >
+            {item.name}
+          </a>
+        ))
+      }
+      <a
+        href="/hire-me"
+        class="pt-4 pb-1 text-base text-mono-text underline underline-offset-[6px]"
+      >
+        Hire me
+      </a>
     </div>
   </div>
-</nav>
+</header>
 
 <style>
-  nav {
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    box-shadow:
-      0 4px 32px rgba(0, 0, 0, 0.1),
-      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  header {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
   }
 
-  nav a {
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  nav a:hover {
-    transform: translateY(-1px);
-    box-shadow:
-      0 4px 20px rgba(196, 167, 231, 0.2),
-      inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  }
-
-  #mobile-menu {
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    box-shadow:
-      0 8px 32px rgba(0, 0, 0, 0.2),
-      inset 0 1px 0 rgba(255, 255, 255, 0.05);
-  }
-
-  nav a[class*='bg-rose-pine-iris/30'] {
-    box-shadow:
-      0 0 20px rgba(196, 167, 231, 0.3),
-      inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  }
-
-  nav a[class*='bg-rose-pine-love/30'] {
-    box-shadow:
-      0 0 20px rgba(235, 111, 146, 0.3),
-      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  [data-nav-link][aria-current] {
+    color: #fafafa;
   }
 </style>
 
 <script is:inline>
   document.addEventListener('DOMContentLoaded', function () {
-    const mobileMenuButton = document.getElementById('mobile-menu-button');
-    const mobileMenu = document.getElementById('mobile-menu');
+    const button = document.getElementById('mobile-menu-button');
+    const menu = document.getElementById('mobile-menu');
 
-    if (mobileMenuButton && mobileMenu) {
-      mobileMenuButton.addEventListener('click', function () {
-        toggleMobileMenu();
+    function setOpen(open) {
+      menu.classList.toggle('hidden', !open);
+      button.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+
+    if (button && menu) {
+      button.addEventListener('click', function () {
+        setOpen(menu.classList.contains('hidden'));
       });
-
-      // Keyboard accessibility for mobile menu
-      mobileMenuButton.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          toggleMobileMenu();
-        }
-      });
-
-      // Close mobile menu on Escape key
       document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' && !mobileMenu.classList.contains('hidden')) {
-          mobileMenu.classList.add('hidden');
-          mobileMenuButton.setAttribute('aria-expanded', 'false');
-          mobileMenuButton.focus();
+        if (e.key === 'Escape' && !menu.classList.contains('hidden')) {
+          setOpen(false);
+          button.focus();
         }
       });
-
-      function toggleMobileMenu() {
-        const isHidden = mobileMenu.classList.contains('hidden');
-
-        if (isHidden) {
-          mobileMenu.classList.remove('hidden');
-          mobileMenuButton.setAttribute('aria-expanded', 'true');
-        } else {
-          mobileMenu.classList.add('hidden');
-          mobileMenuButton.setAttribute('aria-expanded', 'false');
-        }
-      }
-    }
-
-    document.querySelectorAll('a[href^="#"]').forEach(link => {
-      link.addEventListener('click', function (e) {
-        const href = this.getAttribute('href');
-        if (href && href.startsWith('#')) {
-          e.preventDefault();
-          const element = document.querySelector(href);
-          if (element) {
-            const offsetTop = element.offsetTop - 80;
-            window.scrollTo({
-              top: offsetTop,
-              behavior: 'smooth',
-            });
-          }
-
-          if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
-            mobileMenu.classList.add('hidden');
-            mobileMenuButton.setAttribute('aria-expanded', 'false');
-          }
-        }
-      });
-    });
-
-    function updateActiveSection() {
-      const sections = document.querySelectorAll('section[id]');
-      const navLinks = document.querySelectorAll('nav a[href^="#"]');
-
-      let currentSection = '';
-      const scrollPosition = window.scrollY + 100;
-
-      sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.offsetHeight;
-
-        if (
-          scrollPosition >= sectionTop &&
-          scrollPosition < sectionTop + sectionHeight
-        ) {
-          currentSection = '#' + section.id;
-        }
-      });
-
-      navLinks.forEach(link => {
-        const href = link.getAttribute('href');
-        if (href === currentSection) {
-          link.classList.add(
-            'bg-rose-pine-iris/30',
-            'text-rose-pine-iris',
-            'border-rose-pine-iris/30'
-          );
-          link.classList.remove('text-rose-pine-text', 'border-transparent');
-        } else if (href && href.startsWith('#')) {
-          link.classList.remove(
-            'bg-rose-pine-iris/30',
-            'text-rose-pine-iris',
-            'border-rose-pine-iris/30'
-          );
-          link.classList.add('text-rose-pine-text', 'border-transparent');
-        }
-      });
-    }
-
-    let ticking = false;
-    window.addEventListener('scroll', function () {
-      if (!ticking) {
-        requestAnimationFrame(function () {
-          updateActiveSection();
-          ticking = false;
+      menu.querySelectorAll('a').forEach(function (link) {
+        link.addEventListener('click', function () {
+          setOpen(false);
         });
-        ticking = true;
-      }
-    });
+      });
+    }
 
-    updateActiveSection();
+    if (location.pathname !== '/' || !('IntersectionObserver' in window)) {
+      return;
+    }
+
+    const links = document.querySelectorAll('[data-nav-link]');
+    const observer = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          const hash = '/#' + entry.target.id;
+          links.forEach(function (link) {
+            const href = link.getAttribute('href');
+            if (href === hash) {
+              link.setAttribute('aria-current', 'true');
+            } else if (href.startsWith('/#')) {
+              link.removeAttribute('aria-current');
+            }
+          });
+        });
+      },
+      { rootMargin: '-45% 0px -50% 0px' }
+    );
+
+    document.querySelectorAll('main section[id]').forEach(function (section) {
+      observer.observe(section);
+    });
   });
 </script>

@@ -33,18 +33,22 @@ This project uses Agent OS for structured development workflows. When working on
 ### Tech Stack
 
 - **Framework**: Astro 5.x with server-side rendering
-- **Styling**: TailwindCSS with Rose Pine theme
+- **Styling**: TailwindCSS with a monochrome black & white theme
 - **Database**: Cloudflare D1 (SQLite) with cookie-session authentication
 - **Deployment**: Cloudflare Workers via Wrangler (custom domain msdqn.dev)
 - **Development**: TypeScript, ESLint, Prettier
 
-### Rose Pine Theme
+### Monochrome Theme
 
-The site uses a custom Rose Pine color palette defined in `tailwind.config.ts`:
+The site uses a black & white `mono` palette defined in `tailwind.config.ts`. No hue anywhere; emphasis comes from weight, borders, underline, and inversion.
 
-- Base colors: `rose-pine-base`, `rose-pine-surface`, `rose-pine-overlay`
-- Text colors: `rose-pine-text`, `rose-pine-subtle`, `rose-pine-muted`
-- Accent colors: `rose-pine-iris`, `rose-pine-love`, `rose-pine-foam`, `rose-pine-pine`, `rose-pine-rose`, `rose-pine-gold`
+- Backgrounds: `mono-bg` (#0a0a0a), `mono-surface` (#111111), `mono-raised` (#171717)
+- Borders: `mono-line` (#262626), `mono-line-strong` (#404040)
+- Text: `mono-text` (#fafafa), `mono-subtle` (#a3a3a3), `mono-muted` (#737373)
+- Accent: `mono-accent` (#ffffff) — primary buttons are white with `text-mono-bg`
+- CMS/login pages use the same values as `--mono-*` CSS variables
+- Avoid gradients, glows, glass blur, and hover-scale effects
+- Typography: Onest (self-hosted via `@fontsource-variable/onest`, imported in `navigation-bar.astro`) for everything; hierarchy comes from size and weight, small uppercase tracked labels for section names; numbered sections via `section-heading.astro`, hairline dividers instead of cards
 
 ### File Structure Conventions
 
@@ -79,7 +83,7 @@ Data access goes through `src/libs/d1.ts` (table specs, JSON/boolean column hand
 
 1. **Planning**: Use `@~/.agent-os/instructions/create-spec.md` to create feature specifications
 2. **Implementation**: Use `@~/.agent-os/instructions/execute-tasks.md` for structured development
-3. **Standards**: Follow all project-specific rules (no comments, Astro components, Rose Pine theme)
+3. **Standards**: Follow all project-specific rules (no comments, Astro components, monochrome theme)
 
 ### For Existing Code Analysis
 

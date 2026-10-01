@@ -1,0 +1,19 @@
+---
+interface Props {
+  number: string;
+  title: string;
+  id: string;
+}
+
+const { number, title, id } = Astro.props;
+---
+
+<div class="flex items-baseline gap-4 border-t border-mono-line pt-6 mb-12">
+  <span class="text-xs text-mono-muted tabular-nums">{number}</span>
+  <h2
+    id={id}
+    class="text-xs font-medium uppercase tracking-[0.14em] text-mono-subtle"
+  >
+    {title}
+  </h2>
+</div>

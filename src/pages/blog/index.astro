@@ -45,10 +45,13 @@ try {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#0a0a0a" />
 
-    <title>
-      Tech Blog - Maulana Sodiqin | React, TypeScript, Rust Insights
-    </title>
+    <title>Writing — Maulana Sodiqin</title>
 
     <meta
       name="description"
@@ -63,7 +66,7 @@ try {
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href={`${siteUrl}/blog`} />
 
-    <meta property="og:title" content="Tech Blog - Maulana Sodiqin" />
+    <meta property="og:title" content="Writing — Maulana Sodiqin" />
     <meta
       property="og:description"
       content="Technical insights and tutorials on React, TypeScript, and Rust development"
@@ -104,59 +107,45 @@ try {
     />
   </head>
 
-  <body class="bg-rose-pine-base text-rose-pine-text">
+  <body class="bg-mono-bg text-mono-text antialiased">
     <NavigationBar />
 
-    <main class="pt-20">
-      <section class="py-20 px-6">
-        <div class="max-w-4xl mx-auto">
-          <div class="text-center mb-16">
-            <h1 class="text-5xl font-bold text-rose-pine-text mb-6">
-              Tech Blog
-            </h1>
-            <p
-              class="text-xl text-rose-pine-subtle max-w-3xl mx-auto leading-relaxed"
-            >
-              Insights, tutorials, and thoughts on modern web development, React
-              ecosystems, TypeScript best practices, and Rust exploration.
-            </p>
-          </div>
+    <main class="max-w-5xl mx-auto px-6 sm:px-8 pt-36 sm:pt-44 pb-24">
+      <p
+        class="text-xs font-medium uppercase tracking-[0.14em] text-mono-muted mb-10"
+      >
+        Writing
+      </p>
+      <h1
+        class="font-medium text-5xl sm:text-6xl tracking-tight text-mono-text max-w-3xl"
+      >
+        Notes on the web, React, TypeScript, and Rust.
+      </h1>
+      <p class="mt-8 max-w-xl text-lg leading-relaxed text-mono-subtle">
+        Tutorials and thoughts from building software. Posts live on
+        <a
+          href="https://blog.msdqn.dev"
+          class="text-mono-text underline decoration-mono-line-strong underline-offset-[6px] hover:decoration-mono-text"
+          >blog.msdqn.dev</a
+        >.
+      </p>
 
-          {
-            posts.length === 0 ? (
-              <div class="text-center py-20">
-                <div class="text-6xl mb-6">📝</div>
-                <h2 class="text-2xl font-bold text-rose-pine-text mb-4">
-                  No blog posts yet
-                </h2>
-                <p class="text-rose-pine-subtle">
-                  Check back soon for insights and tutorials!
-                </p>
-              </div>
-            ) : (
-              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {posts.map(post => (
-                  <BlogPostCard
-                    title={post.title}
-                    excerpt={post.description}
-                    slug={post.slug}
-                    publishedAt={post.pubDate}
-                    readTime="5 min read"
-                    tags={[]}
-                  />
-                ))}
-              </div>
-            )
-          }
-
-          <div class="mt-16 text-center">
-            <p class="text-rose-pine-subtle">
-              More articles coming soon. Subscribe to stay updated with the
-              latest insights.
-            </p>
-          </div>
-        </div>
-      </section>
+      <div class="mt-20 border-t border-mono-line pt-8">
+        {
+          posts.length === 0 ? (
+            <p class="text-mono-subtle">No posts yet. Check back soon.</p>
+          ) : (
+            posts.map(post => (
+              <BlogPostCard
+                title={post.title}
+                excerpt={post.description}
+                slug={post.slug}
+                publishedAt={post.pubDate}
+              />
+            ))
+          )
+        }
+      </div>
     </main>
 
     <FooterSection />

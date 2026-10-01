@@ -5,7 +5,7 @@ interface Props {
   duration: string;
   description: string;
   responsibilities?: string[];
-  type?: 'work' | 'education';
+  employmentType?: string;
 }
 
 const {
@@ -14,60 +14,46 @@ const {
   duration,
   description,
   responsibilities,
-  type = 'work',
+  employmentType,
 } = Astro.props;
 ---
 
-<div
-  class="bg-rose-pine-surface/50 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 mb-4 sm:mb-6 hover:bg-rose-pine-surface/70 hover:scale-[1.02] hover:shadow-lg hover:shadow-rose-pine-overlay/20 transition-all duration-300 border border-rose-pine-highlight-med"
+<article
+  class="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-8 py-10 border-b border-mono-line first:pt-0"
 >
-  <div
-    class="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-3 sm:mb-4"
-  >
-    <div class="mb-3 lg:mb-0">
-      <h3 class="text-lg sm:text-xl font-bold text-rose-pine-text mb-1">
-        {title}
-      </h3>
-      <h4 class="text-base sm:text-lg text-rose-pine-iris font-semibold">
-        {company}
-      </h4>
-    </div>
-    <div class="flex items-center text-rose-pine-muted lg:flex-shrink-0">
-      <svg
-        class="w-3 h-3 sm:w-4 sm:h-4 mr-2"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 002 2z"
-        ></path>
-      </svg>
-      <span class="font-medium text-sm sm:text-base">{duration}</span>
-    </div>
-  </div>
-
-  <p
-    class="text-rose-pine-subtle mb-3 sm:mb-4 leading-relaxed text-sm sm:text-base"
-  >
-    {description}
+  <p class="md:col-span-3 text-xs text-mono-muted tabular-nums pt-1.5">
+    {duration}
   </p>
-
-  {
-    responsibilities && responsibilities.length > 0 && (
-      <div>
-        <h5 class="font-semibold text-rose-pine-text mb-2 text-sm sm:text-base">
-          {type === 'work' ? 'Key Responsibilities:' : 'Key Achievements:'}
-        </h5>
-        <ul class="list-disc list-inside text-rose-pine-subtle space-y-1 sm:space-y-2">
+  <div class="md:col-span-9">
+    <h3 class="font-medium text-2xl tracking-tight text-mono-text">
+      {title}
+    </h3>
+    <p class="mt-1 text-mono-subtle">
+      {company}
+      {
+        employmentType && (
+          <span class="text-mono-muted"> &middot; {employmentType}</span>
+        )
+      }
+    </p>
+    {
+      description && (
+        <p class="mt-5 text-mono-subtle leading-relaxed">{description}</p>
+      )
+    }
+    {
+      responsibilities && responsibilities.length > 0 && (
+        <ul class="mt-5 space-y-2.5">
           {responsibilities.map(item => (
-            <li class="leading-relaxed text-sm sm:text-base pl-1">{item}</li>
+            <li class="relative pl-6 text-[15px] leading-relaxed text-mono-subtle">
+              <span class="absolute left-0 text-mono-muted" aria-hidden="true">
+                —
+              </span>
+              {item}
+            </li>
           ))}
         </ul>
-      </div>
-    )
-  }
-</div>
+      )
+    }
+  </div>
+</article>

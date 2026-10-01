@@ -1,42 +1,156 @@
 ---
 import AccessibilityImprovements from '@/components/ui/accessibility-improvements.astro';
-import AnimationWrapper from '@/components/ui/animation-wrapper.astro';
 import CaseStudiesSection from '@/components/ui/case-studies-section.astro';
 import CriticalCSS from '@/components/ui/critical-css.astro';
 import CriticalResources from '@/components/ui/critical-resources.astro';
 import ExperienceItem from '@/components/ui/experience-item.astro';
 import FooterSection from '@/components/ui/footer-section.astro';
 import HeroSection from '@/components/ui/hero-section.astro';
-import LazySection from '@/components/ui/lazy-section.astro';
 import LighthouseOptimizations from '@/components/ui/lighthouse-optimizations.astro';
 import NavigationBar from '@/components/ui/navigation-bar.astro';
 import PerformanceOptimizations from '@/components/ui/performance-optimizations.astro';
 import ProjectCard from '@/components/ui/project-card.astro';
+import SectionHeading from '@/components/ui/section-heading.astro';
 import TestimonialsSection from '@/components/ui/testimonials-section.astro';
 
-import { getDb, getSingleton, listRows } from '@/libs/d1';
+import { decodeRows, getDb, getSingleton, listRows, tables } from '@/libs/d1';
 
 const db = getDb(Astro.locals);
 
 let homeData = null;
 let aboutData = null;
-let experiences = [];
-let projects = [];
+let experiences: Record<string, any>[] = [];
+let projects: Record<string, any>[] = [];
+let caseStudies: Record<string, any>[] = [];
+let testimonials: Record<string, any>[] = [];
 
 try {
-  [homeData, aboutData, experiences, projects] = await Promise.all([
+  const [
+    home,
+    about,
+    experienceRows,
+    projectRows,
+    caseStudyRows,
+    testimonialRows,
+  ] = await Promise.all([
     getSingleton(db, 'home_content'),
     getSingleton(db, 'about_content'),
     listRows(db, 'experiences'),
     listRows(db, 'projects'),
+    db
+      .prepare(
+        'SELECT * FROM case_studies WHERE is_featured = 1 ORDER BY created_at DESC'
+      )
+      .all(),
+    listRows(db, 'testimonials'),
   ]);
+  homeData = home;
+  aboutData = about;
+  experiences = experienceRows;
+  projects = projectRows;
+  caseStudies = decodeRows(tables.case_studies, caseStudyRows.results);
+  testimonials = testimonialRows;
 } catch {
   experiences = [];
   projects = [];
 }
 
+const skills = [
+  {
+    title: 'Languages',
+    items: ['Rust', 'TypeScript', 'JavaScript', 'SQL', 'PHP'],
+  },
+  {
+    title: 'Backend',
+    items: ['Axum', 'Tokio', 'tonic (gRPC)', 'sqlx', 'Hono', 'oRPC', 'Laravel'],
+  },
+  {
+    title: 'Frontend',
+    items: [
+      'React',
+      'TanStack Start/Router/Query',
+      'Next.js',
+      'Vue',
+      'TailwindCSS',
+      'shadcn/ui',
+    ],
+  },
+  {
+    title: 'Data & Messaging',
+    items: [
+      'PostgreSQL',
+      'Redis',
+      'RabbitMQ',
+      'BullMQ',
+      'BigQuery',
+      'Drizzle ORM',
+    ],
+  },
+  {
+    title: 'Infra & QA',
+    items: [
+      'Docker',
+      'Kubernetes',
+      'GitHub Actions',
+      'DigitalOcean',
+      'Vercel',
+      'Cloudflare Workers',
+      'Vitest',
+      'Playwright',
+    ],
+  },
+  {
+    title: 'Web Automation',
+    items: [
+      'Chromium/CDP',
+      'Anti-bot bypass (Cloudflare, PerimeterX, Kasada)',
+      'Residential proxies',
+    ],
+  },
+];
+
+const contactLinks = [
+  {
+    label: 'Email',
+    value: 'maulanasdqn@gmail.com',
+    href: 'mailto:maulanasdqn@gmail.com',
+  },
+  { label: 'Phone', value: '+62 851-5608-5579', href: 'tel:+6285156085579' },
+  {
+    label: 'GitHub',
+    value: 'github.com/maulanasdqn',
+    href: 'https://github.com/maulanasdqn',
+  },
+  {
+    label: 'LinkedIn',
+    value: 'in/maulana-sodiqin',
+    href: 'https://www.linkedin.com/in/maulana-sodiqin/',
+  },
+];
+
+const formatMonth = (value?: string | null) => {
+  if (!value) return '';
+  const match = /^(\d{4})-(\d{2})/.exec(value);
+  if (!match) return value;
+  const month = new Date(
+    Date.UTC(2000, Number(match[2]) - 1, 1)
+  ).toLocaleString('en-US', { month: 'short', timeZone: 'UTC' });
+  return `${month} ${match[1]}`;
+};
+
+const sectionOrder = [
+  'about',
+  'experience',
+  'projects',
+  ...(caseStudies.length > 0 ? ['case-studies'] : []),
+  ...(testimonials.length > 0 ? ['testimonials'] : []),
+  'contact',
+];
+const num = (key: string) =>
+  String(sectionOrder.indexOf(key) + 1).padStart(2, '0');
+
 const siteUrl = 'https://msdqn.dev';
-const siteName = 'Maulana Sodiqin - Fullstack Developer';
+const siteName = 'Maulana Sodiqin';
 ---
 
 <!doctype html>
@@ -47,16 +161,13 @@ const siteName = 'Maulana Sodiqin - Fullstack Developer';
     <CriticalResources critical={true} />
 
     <title>
-      {
-        homeData?.title ||
-          'Hire Maulana Sodiqin - Senior Fullstack Developer | React, TypeScript, Rust Expert'
-      }
+      {homeData?.title || 'Maulana Sodiqin — Software Engineer'}
     </title>
 
     <meta
       name="description"
       content={homeData?.meta_description ||
-        'Hire experienced Fullstack Developer Maulana Sodiqin. 5+ years React, TypeScript, Rust expertise. Available for full-time positions, freelance projects. Based in Bandung, Indonesia. Open to remote work.'}
+        'Senior software engineer with 7 years of experience building production web platforms in Rust and TypeScript. Based in Bandung, Indonesia, open to remote and relocation.'}
     />
 
     <meta
@@ -75,19 +186,18 @@ const siteName = 'Maulana Sodiqin - Fullstack Developer';
     <meta name="classification" content="Professional Portfolio" />
     <meta name="rating" content="General" />
     <meta name="distribution" content="Global" />
-    <meta name="theme-color" content="#191724" />
+    <meta name="theme-color" content="#0a0a0a" />
 
     <link rel="canonical" href={siteUrl} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.json" />
 
-    <meta
-      property="og:title"
-      content="Hire Maulana Sodiqin - Senior Fullstack Developer | React, TypeScript, Rust Expert"
-    />
+    <meta property="og:title" content="Maulana Sodiqin — Software Engineer" />
     <meta
       property="og:description"
-      content="Experienced Fullstack Developer available for hire. 5+ years expertise in React, TypeScript, Rust. Open to full-time positions and freelance projects."
+      content="Senior software engineer with 7 years of experience building production web platforms in Rust and TypeScript. Based in Bandung, Indonesia, open to remote and relocation."
     />
     <meta property="og:type" content="profile" />
     <meta property="og:url" content={siteUrl} />
@@ -98,7 +208,7 @@ const siteName = 'Maulana Sodiqin - Fullstack Developer';
     <meta property="og:image:height" content="630" />
     <meta
       property="og:image:alt"
-      content="Maulana Sodiqin - Fullstack Developer Portfolio"
+      content="Maulana Sodiqin - Senior Software Engineer"
     />
     <meta property="og:locale" content="en_US" />
     <meta property="profile:first_name" content="Maulana" />
@@ -106,18 +216,15 @@ const siteName = 'Maulana Sodiqin - Fullstack Developer';
     <meta property="profile:username" content="maulanasdqn" />
 
     <meta name="twitter:card" content="summary_large_image" />
-    <meta
-      name="twitter:title"
-      content="Hire Maulana Sodiqin - Senior Fullstack Developer"
-    />
+    <meta name="twitter:title" content="Maulana Sodiqin — Software Engineer" />
     <meta
       name="twitter:description"
-      content="Experienced Fullstack Developer available for hire. 5+ years expertise in React, TypeScript, Rust."
+      content="Senior software engineer with 7 years of experience building production web platforms in Rust and TypeScript. Based in Bandung, Indonesia, open to remote and relocation."
     />
     <meta name="twitter:image" content={`${siteUrl}/og-image.png`} />
     <meta
       name="twitter:image:alt"
-      content="Maulana Sodiqin - Fullstack Developer Portfolio"
+      content="Maulana Sodiqin - Senior Software Engineer"
     />
     <meta name="twitter:creator" content="@maulanasdqn" />
     <meta name="twitter:site" content="@maulanasdqn" />
@@ -142,7 +249,7 @@ const siteName = 'Maulana Sodiqin - Fullstack Developer';
         ],
         jobTitle: 'Senior Software Engineer',
         description:
-          'Experienced Fullstack Developer with 5+ years of expertise in React, TypeScript, and Rust. Available for full-time positions and freelance projects.',
+          'Senior software engineer with 7 years of experience building production web platforms in Rust and TypeScript. Sole engineer behind a rebuilt web scraping engine (400 jobs/s sustained, anti-bot unblocking), and delivers full-stack client platforms end to end.',
         knowsAbout: [
           'Rust',
           'TypeScript',
@@ -179,11 +286,11 @@ const siteName = 'Maulana Sodiqin - Fullstack Developer';
         telephone: '+6285156085579',
         worksFor: {
           '@type': 'Organization',
-          name: 'MrScraper',
+          name: 'PT Pena Teknologi Indonesia (MrScraper)',
         },
         hasOccupation: {
           '@type': 'Occupation',
-          name: 'Fullstack Developer',
+          name: 'Senior Software Engineer',
           occupationLocation: {
             '@type': 'Place',
             name: 'Remote/Bandung, Indonesia',
@@ -213,7 +320,7 @@ const siteName = 'Maulana Sodiqin - Fullstack Developer';
         name: siteName,
         url: siteUrl,
         description:
-          'Professional portfolio of Maulana Sodiqin, Senior Fullstack Developer specializing in React, TypeScript, and Rust development.',
+          'Portfolio of Maulana Sodiqin, senior software engineer building production web platforms in Rust and TypeScript.',
         author: {
           '@type': 'Person',
           name: 'Maulana Sodiqin',
@@ -253,28 +360,13 @@ const siteName = 'Maulana Sodiqin - Fullstack Developer';
     <LighthouseOptimizations />
     <CriticalCSS />
     <PerformanceOptimizations />
-
-    <style>
-      .scrolling-section {
-        opacity: 1;
-      }
-
-      .scrolling-section .card {
-        opacity: 1;
-      }
-    </style>
   </head>
-  <body class="bg-rose-pine-base text-rose-pine-text">
+  <body class="bg-mono-bg text-mono-text antialiased">
     <AccessibilityImprovements />
     <NavigationBar />
 
-    <main role="main">
-      <section
-        id="home"
-        class="scrolling-section"
-        role="banner"
-        aria-label="Hero section"
-      >
+    <main role="main" id="main-content">
+      <section id="home" aria-label="Introduction">
         <HeroSection
           ctaText={homeData?.hero_cta_text || "Let's talk"}
           ctaLink={homeData?.hero_cta_link || '#contact'}
@@ -283,555 +375,184 @@ const siteName = 'Maulana Sodiqin - Fullstack Developer';
 
       <section
         id="about"
-        class="scrolling-section py-16 px-6 bg-rose-pine-surface"
-        role="region"
+        class="max-w-5xl mx-auto px-6 sm:px-8 py-16 sm:py-20"
         aria-labelledby="about-heading"
       >
-        <div class="max-w-4xl mx-auto">
-          <AnimationWrapper animation="fade-in" delay={0}>
-            <h2
-              id="about-heading"
-              class="text-3xl font-bold mb-8 text-rose-pine-text text-center"
+        <SectionHeading
+          number={num('about')}
+          title="About"
+          id="about-heading"
+        />
+
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+          <div class="md:col-start-4 md:col-span-9 space-y-6">
+            <p
+              class="font-medium text-2xl sm:text-[1.75rem] leading-snug text-mono-text"
             >
-              About Me
-            </h2>
-          </AnimationWrapper>
-
-          <AnimationWrapper animation="scale-up" delay={200}>
-            <div
-              class="bg-rose-pine-overlay/50 backdrop-blur-sm p-8 rounded-xl border border-rose-pine-highlight-med"
-            >
-              <p class="text-rose-pine-subtle text-lg leading-relaxed mb-6">
-                {
-                  aboutData?.description_1 ||
-                    'I am proficient in modular UI architecture, design systems, test-driven development, and modern state management with React Query and Jotai. I have extensive experience working with micro frontend structures and NX monorepos to support large-scale applications.'
-                }
-              </p>
-              <p class="text-rose-pine-subtle text-lg leading-relaxed">
-                {
-                  aboutData?.description_2 ||
-                    'Currently expanding my full-stack skills with Rust and Axum to gain deeper backend architecture understanding, while maintaining my expertise in modern frontend technologies.'
-                }
-              </p>
-            </div>
-          </AnimationWrapper>
-
-          <div class="mt-16">
-            <AnimationWrapper animation="fade-in" delay={400}>
-              <h3
-                class="text-2xl font-bold mb-8 text-rose-pine-text text-center"
-              >
-                Technical Skills
-              </h3>
-            </AnimationWrapper>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {
-                [
-                  {
-                    title: 'Frontend Development',
-                    color: 'iris',
-                    skills: [
-                      'ReactJS, NextJS, TypeScript',
-                      'JavaScript (ES6+)',
-                      'TailwindCSS, Shadcn, Ant Design',
-                      'HTML/CSS, Responsive Design',
-                    ],
-                  },
-                  {
-                    title: 'Backend & Database',
-                    color: 'gold',
-                    skills: [
-                      'Rust, Axum, SurrealDB',
-                      'PostgreSQL',
-                      'HonoJS, NestJS, ExpressJS',
-                      'Drizzle, Prisma, TypeORM',
-                    ],
-                  },
-                  {
-                    title: 'UI Tooling & Design',
-                    color: 'rose',
-                    skills: [
-                      'Storybook, Design Systems',
-                      'Component-Driven Development',
-                      'Performance Optimization',
-                      'Accessibility, Cross-Browser',
-                    ],
-                  },
-                ].map((skillSet, index) => (
-                  <div
-                    class={`card bg-rose-pine-surface/50 backdrop-blur-sm p-6 rounded-xl border border-rose-pine-highlight-med scroll-animate`}
-                    data-animation="fade-up"
-                    data-delay={600 + index * 100}
-                  >
-                    <div
-                      class={`w-12 h-12 bg-rose-pine-${skillSet.color}/20 rounded-lg flex items-center justify-center mb-4`}
-                    >
-                      <svg
-                        class={`w-6 h-6 text-rose-pine-${skillSet.color}`}
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path d="M12 0l3.09 6.26L22 7.27l-5 4.87 1.18 6.88L12 15.77l-6.18 3.25L7 12.14 2 7.27l6.91-1.01L12 0z" />
-                      </svg>
-                    </div>
-                    <h4 class="text-xl font-semibold mb-3 text-rose-pine-text">
-                      {skillSet.title}
-                    </h4>
-                    <ul class="text-rose-pine-subtle space-y-1 text-sm">
-                      {skillSet.skills.map(skill => (
-                        <li>• {skill}</li>
-                      ))}
-                    </ul>
-                  </div>
-                ))
+                aboutData?.description_1 ||
+                  'I am proficient in modular UI architecture, design systems, test-driven development, and modern state management with React Query and Jotai. I have extensive experience working with micro frontend structures and NX monorepos to support large-scale applications.'
               }
-            </div>
+            </p>
+            <p class="text-lg leading-relaxed text-mono-subtle">
+              {
+                aboutData?.description_2 ||
+                  'Currently expanding my full-stack skills with Rust and Axum to gain deeper backend architecture understanding, while maintaining my expertise in modern frontend technologies.'
+              }
+            </p>
           </div>
+        </div>
+
+        <div
+          class="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-12"
+        >
+          {
+            skills.map(group => (
+              <div>
+                <h3 class="text-xs font-medium uppercase tracking-[0.14em] text-mono-muted mb-5">
+                  {group.title}
+                </h3>
+                <p class="leading-relaxed text-mono-subtle">
+                  {group.items.join(', ')}
+                </p>
+              </div>
+            ))
+          }
         </div>
       </section>
 
       <section
         id="experience"
-        class="scrolling-section py-16 bg-rose-pine-base"
-        role="region"
+        class="max-w-5xl mx-auto px-6 sm:px-8 py-16 sm:py-20"
         aria-labelledby="experience-heading"
       >
-        <div class="max-w-4xl mx-auto px-6">
-          <AnimationWrapper animation="fade-in" delay={0}>
-            <div class="text-center mb-16">
-              <h2
-                id="experience-heading"
-                class="text-4xl font-bold text-rose-pine-text mb-6"
-              >
-                Experience & Skills
-              </h2>
-              <p
-                class="text-lg text-rose-pine-subtle max-w-3xl mx-auto leading-relaxed mb-8"
-              >
-                Software Engineer with 5+ years building scalable web
-                applications and leading development teams. Rust enthusiast
-                exploring modern backend technologies.
-              </p>
-            </div>
-          </AnimationWrapper>
-
-          <div class="mb-16">
-            <h3
-              class="text-3xl font-bold text-rose-pine-text mb-12 flex items-center justify-center"
-            >
-              <svg
-                class="w-8 h-8 mr-4 text-rose-pine-iris"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 012 2v6a2 2 0 01-2 2H6a2 2 0 01-2-2V8a2 2 0 012-2V6"
-                ></path>
-              </svg>
-              Work Experience
-            </h3>
-
-            <div class="space-y-6">
-              {
-                experiences &&
-                  experiences.length > 0 &&
-                  experiences.map((experience: any, index: number) => {
-                    const animations = [
-                      'slide-left',
-                      'slide-right',
-                      'rotate-in',
-                    ] as const;
-                    const animation = animations[index % animations.length];
-                    const duration = `${experience.start_date}${experience.end_date ? ` - ${experience.end_date}` : ' - Present'}`;
-
-                    return (
-                      <AnimationWrapper
-                        animation={animation}
-                        distance={80}
-                        delay={index * 200}
-                      >
-                        <ExperienceItem
-                          title={experience.title}
-                          company={experience.company}
-                          duration={duration}
-                          description={experience.description || ''}
-                          responsibilities={experience.responsibilities || []}
-                          type="work"
-                        />
-                      </AnimationWrapper>
-                    );
-                  })
-              }
-            </div>
-          </div>
-
-          <AnimationWrapper animation="zoom-in" delay={200}>
-            <div class="mb-16">
-              <div
-                class="bg-rose-pine-surface/50 rounded-2xl p-8 border border-rose-pine-highlight-med"
-              >
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
-                  <div>
-                    <div class="text-3xl font-bold text-rose-pine-iris mb-2">
-                      {aboutData?.stats_years || '5+'}
-                    </div>
-                    <div class="text-rose-pine-subtle font-medium">
-                      Years Experience
-                    </div>
-                  </div>
-                  <div>
-                    <div class="text-3xl font-bold text-rose-pine-foam mb-2">
-                      {aboutData?.stats_projects || '10+'}
-                    </div>
-                    <div class="text-rose-pine-subtle font-medium">
-                      Projects Delivered
-                    </div>
-                  </div>
-                  <div>
-                    <div class="text-3xl font-bold text-rose-pine-rose mb-2">
-                      {aboutData?.stats_users || '1000+'}
-                    </div>
-                    <div class="text-rose-pine-subtle font-medium">
-                      Users Served
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </AnimationWrapper>
+        <SectionHeading
+          number={num('experience')}
+          title="Experience"
+          id="experience-heading"
+        />
+        <div>
+          {
+            experiences.map(experience => (
+              <ExperienceItem
+                title={experience.title}
+                company={experience.company}
+                duration={`${formatMonth(experience.start_date)} — ${experience.end_date ? formatMonth(experience.end_date) : 'Present'}`}
+                employmentType={experience.location || undefined}
+                description={experience.description || ''}
+                responsibilities={experience.responsibilities || []}
+              />
+            ))
+          }
         </div>
       </section>
 
-      <LazySection data-section="case-studies" threshold={0.1}>
-        <CaseStudiesSection />
-      </LazySection>
+      <section
+        id="projects"
+        class="max-w-5xl mx-auto px-6 sm:px-8 py-16 sm:py-20"
+        aria-labelledby="projects-heading"
+      >
+        <SectionHeading
+          number={num('projects')}
+          title="Selected Projects"
+          id="projects-heading"
+        />
+        <div>
+          {
+            projects.map(project => (
+              <ProjectCard
+                title={project.title}
+                description={project.description || ''}
+                technologies={project.technologies || []}
+                period={
+                  project.start_date
+                    ? `${formatMonth(project.start_date)} — ${project.end_date ? formatMonth(project.end_date) : 'Present'}`
+                    : undefined
+                }
+                category={project.category || undefined}
+                featured={Boolean(project.is_featured)}
+                demoLink={project.live_url || undefined}
+                githubLink={project.github_url || undefined}
+              />
+            ))
+          }
+        </div>
+      </section>
 
-      <LazySection data-section="testimonials" threshold={0.1}>
-        <TestimonialsSection />
-      </LazySection>
+      {
+        caseStudies.length > 0 && (
+          <CaseStudiesSection
+            number={num('case-studies')}
+            caseStudies={caseStudies}
+          />
+        )
+      }
 
-      <LazySection data-section="projects" threshold={0.1}>
-        <section
-          id="projects"
-          class="scrolling-section py-16 px-6 bg-rose-pine-surface"
-        >
-          <div class="max-w-7xl mx-auto">
-            <AnimationWrapper animation="fade-in" delay={0}>
-              <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold mb-6 text-rose-pine-text">
-                  My Projects
-                </h2>
-                <p
-                  class="text-xl text-rose-pine-subtle max-w-3xl mx-auto leading-relaxed"
-                >
-                  A showcase of innovative software solutions I've built over
-                  the years, from enterprise applications to specialized
-                  platforms serving thousands of users.
-                </p>
-              </div>
-            </AnimationWrapper>
-
-            <div
-              class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8"
-              style="grid-auto-rows: 1fr;"
-            >
-              {
-                projects &&
-                  projects.length > 0 &&
-                  projects.map((project: any, index: number) => {
-                    const animations = [
-                      'fade-up',
-                      'scale-up',
-                      'fade-right',
-                      'zoom-in',
-                      'flip-up',
-                      'bounce-in',
-                    ] as const;
-                    const animation = animations[index % animations.length];
-
-                    return (
-                      <div class="h-full">
-                        <AnimationWrapper
-                          animation={animation}
-                          distance={50}
-                          class="h-full"
-                        >
-                          <ProjectCard
-                            title={project.title}
-                            description={project.description || ''}
-                            technologies={project.technologies || []}
-                            period={
-                              project.start_date
-                                ? `${project.start_date}${project.end_date ? ` – ${project.end_date}` : ''}`
-                                : undefined
-                            }
-                            category={project.category || undefined}
-                            demoLink={project.live_url || undefined}
-                            githubLink={project.github_url || undefined}
-                            highlights={project.is_featured ? ['Featured'] : []}
-                          />
-                        </AnimationWrapper>
-                      </div>
-                    );
-                  })
-              }
-            </div>
-          </div>
-        </section>
-      </LazySection>
+      {
+        testimonials.length > 0 && (
+          <TestimonialsSection
+            number={num('testimonials')}
+            testimonials={testimonials as any}
+          />
+        )
+      }
 
       <section
         id="contact"
-        class="scrolling-section py-20 bg-rose-pine-base"
-        role="region"
+        class="max-w-5xl mx-auto px-6 sm:px-8 py-16 sm:py-20"
         aria-labelledby="contact-heading"
       >
-        <div class="max-w-6xl mx-auto px-6">
-          <AnimationWrapper animation="fade-in" delay={0}>
-            <div class="text-center mb-20">
-              <h2
-                id="contact-heading"
-                class="text-5xl font-bold text-rose-pine-text mb-8"
-              >
-                Let's Connect
-              </h2>
-              <p
-                class="text-xl text-rose-pine-subtle max-w-3xl mx-auto leading-relaxed"
-              >
-                I'm always interested in discussing new opportunities,
-                collaborations, or just having a chat about technology. Feel
-                free to reach out!
-              </p>
-            </div>
-          </AnimationWrapper>
+        <SectionHeading
+          number={num('contact')}
+          title="Contact"
+          id="contact-heading"
+        />
 
-          <div class="max-w-4xl mx-auto">
-            <AnimationWrapper animation="slide-up" delay={200}>
-              <div class="space-y-8">
-                <div>
-                  <h3
-                    class="text-3xl font-bold text-rose-pine-text mb-8 text-center"
-                  >
-                    Get In Touch
-                  </h3>
-
-                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div
-                      class="flex items-center p-6 bg-rose-pine-surface/50 backdrop-blur-sm rounded-2xl hover:bg-rose-pine-surface/70 transition-all duration-300 border border-rose-pine-highlight-med"
-                    >
-                      <div
-                        class="w-12 h-12 bg-rose-pine-iris rounded-xl flex items-center justify-center mr-4"
-                      >
-                        <svg
-                          class="w-6 h-6 text-rose-pine-base"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                          ></path>
-                        </svg>
-                      </div>
-                      <div>
-                        <h4 class="font-semibold text-rose-pine-text">Email</h4>
-                        <a
-                          href="mailto:maulanasdqn@gmail.com"
-                          class="text-rose-pine-iris hover:text-rose-pine-iris/80 transition-colors"
-                        >
-                          maulanasdqn@gmail.com
-                        </a>
-                      </div>
-                    </div>
-
-                    <div
-                      class="flex items-center p-6 bg-rose-pine-surface/50 backdrop-blur-sm rounded-2xl hover:bg-rose-pine-surface/70 transition-all duration-300 border border-rose-pine-highlight-med"
-                    >
-                      <div
-                        class="w-12 h-12 bg-rose-pine-iris rounded-xl flex items-center justify-center mr-4"
-                      >
-                        <svg
-                          class="w-6 h-6 text-rose-pine-base"
-                          fill="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
-                          ></path>
-                        </svg>
-                      </div>
-                      <div>
-                        <h4 class="font-semibold text-rose-pine-text">
-                          LinkedIn
-                        </h4>
-                        <a
-                          href="https://www.linkedin.com/in/maulana-sodiqin/"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          class="text-rose-pine-iris hover:text-rose-pine-iris/80 transition-colors"
-                        >
-                          linkedin.com/in/maulana-sodiqin
-                        </a>
-                      </div>
-                    </div>
-
-                    <div
-                      class="flex items-center p-6 bg-rose-pine-surface/50 backdrop-blur-sm rounded-2xl hover:bg-rose-pine-surface/70 transition-all duration-300 border border-rose-pine-highlight-med"
-                    >
-                      <div
-                        class="w-12 h-12 bg-rose-pine-muted rounded-xl flex items-center justify-center mr-4"
-                      >
-                        <svg
-                          class="w-6 h-6 text-rose-pine-base"
-                          fill="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
-                          ></path>
-                        </svg>
-                      </div>
-                      <div>
-                        <h4 class="font-semibold text-rose-pine-text">
-                          GitHub
-                        </h4>
-                        <a
-                          href="https://github.com/maulanasdqn"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          class="text-rose-pine-subtle hover:text-rose-pine-text transition-colors"
-                        >
-                          github.com/maulanasdqn
-                        </a>
-                      </div>
-                    </div>
-
-                    <div
-                      class="flex items-center p-6 bg-rose-pine-surface/50 backdrop-blur-sm rounded-2xl hover:bg-rose-pine-surface/70 transition-all duration-300 border border-rose-pine-highlight-med"
-                    >
-                      <div
-                        class="w-12 h-12 bg-rose-pine-foam rounded-xl flex items-center justify-center mr-4"
-                      >
-                        <svg
-                          class="w-6 h-6 text-rose-pine-base"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-                          ></path>
-                        </svg>
-                      </div>
-                      <div>
-                        <h4 class="font-semibold text-rose-pine-text">Phone</h4>
-                        <a
-                          href="tel:+6285156085579"
-                          class="text-rose-pine-foam hover:text-rose-pine-foam/80 transition-colors"
-                        >
-                          +62 851-5608-5579
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div
-                  class="bg-gradient-to-br from-rose-pine-surface/50 to-rose-pine-overlay/50 backdrop-blur-sm p-8 rounded-2xl border border-rose-pine-highlight-med"
-                >
-                  <h4 class="text-2xl font-bold text-rose-pine-text mb-6">
-                    What I'm Looking For
-                  </h4>
-                  <ul class="space-y-4 text-rose-pine-subtle">
-                    <li class="flex items-start">
-                      <svg
-                        class="w-5 h-5 text-rose-pine-foam mr-3 mt-0.5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M5 13l4 4L19 7"></path>
-                      </svg>
-                      Full-time software development opportunities
-                    </li>
-                    <li class="flex items-start">
-                      <svg
-                        class="w-5 h-5 text-rose-pine-foam mr-3 mt-0.5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M5 13l4 4L19 7"></path>
-                      </svg>
-                      Freelance and contract projects
-                    </li>
-                    <li class="flex items-start">
-                      <svg
-                        class="w-5 h-5 text-rose-pine-foam mr-3 mt-0.5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M5 13l4 4L19 7"></path>
-                      </svg>
-                      Technical collaboration and consulting
-                    </li>
-                    <li class="flex items-start">
-                      <svg
-                        class="w-5 h-5 text-rose-pine-foam mr-3 mt-0.5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M5 13l4 4L19 7"></path>
-                      </svg>
-                      Open source project contributions
-                    </li>
-                  </ul>
-                </div>
-
-                <div class="text-center">
-                  <p class="text-rose-pine-muted mb-6">
-                    Located in Bandung, West Java, Indonesia
-                  </p>
-                  <p class="text-rose-pine-subtle text-sm">
-                    Open to remote work opportunities worldwide
-                  </p>
-                </div>
-              </div>
-            </AnimationWrapper>
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-12">
+          <div class="md:col-span-7">
+            <p
+              class="font-medium text-4xl sm:text-5xl leading-tight tracking-tight text-mono-text"
+            >
+              Let&rsquo;s build something good together.
+            </p>
+            <p class="mt-6 max-w-md text-mono-subtle leading-relaxed">
+              Open to full-time roles and contract work. Based in Bandung,
+              Indonesia, and open to remote and relocation.
+            </p>
+            <a
+              href="mailto:maulanasdqn@gmail.com"
+              class="mt-10 inline-flex items-center gap-2 bg-mono-text text-mono-bg px-5 py-3 text-sm hover:bg-mono-subtle transition-colors"
+            >
+              Write to me <span aria-hidden="true">&rarr;</span>
+            </a>
           </div>
+
+          <dl class="md:col-span-5 md:pt-2">
+            {
+              contactLinks.map(link => (
+                <div class="flex items-baseline justify-between gap-4 py-4 border-b border-mono-line first:border-t">
+                  <dt class="text-xs font-medium uppercase tracking-[0.14em] text-mono-muted">
+                    {link.label}
+                  </dt>
+                  <dd>
+                    <a
+                      href={link.href}
+                      class="text-mono-text hover:text-mono-subtle transition-colors"
+                      {...(link.href.startsWith('http')
+                        ? { target: '_blank', rel: 'noopener noreferrer' }
+                        : {})}
+                    >
+                      {link.value}
+                    </a>
+                  </dd>
+                </div>
+              ))
+            }
+          </dl>
         </div>
       </section>
-
-      <FooterSection />
     </main>
+
+    <FooterSection />
   </body>
 </html>
