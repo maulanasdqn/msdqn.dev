@@ -1,6 +1,6 @@
 # Maulana Sodiqin
 
-> Senior Software Engineer at MrScraper, based in Bandung, Indonesia (remote-friendly). 5+ years building production systems in Rust and TypeScript. Deep specialties: web scraping and anti-bot evasion at browser-engine level, AI agent tooling, Cloudflare edge infrastructure, and reproducible infrastructure with Nix. Open to full-time and freelance engagements.
+> Senior Software Engineer at MrScraper, based in Bandung, Indonesia (remote-friendly). 7 years building production systems in Rust and TypeScript. Deep specialties: web scraping and anti-bot evasion at browser-engine level, AI agent tooling, Cloudflare edge infrastructure, and reproducible infrastructure with Nix. Open to full-time and freelance engagements.
 
 ## Expertise
 
