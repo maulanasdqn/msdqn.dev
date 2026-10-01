@@ -36,24 +36,3 @@ const { number, caseStudies } = Astro.props;
     }
   </div>
 </section>
-
-<script
-  type="application/ld+json"
-  set:html={JSON.stringify({
-    '@context': 'https://schema.org',
-    '@type': 'Person',
-    name: 'Maulana Sodiqin',
-    mainEntityOfPage: {
-      '@type': 'WebPage',
-      '@id': 'https://msdqn.dev',
-    },
-    hasCredential: caseStudies.map(study => ({
-      '@type': 'EducationalOccupationalCredential',
-      name: study.title,
-      description: study.solution,
-      credentialCategory: 'Professional Experience',
-      educationalLevel: 'Professional',
-      competencyRequired: study.technologies?.join(', ') || '',
-    })),
-  })}
-/>

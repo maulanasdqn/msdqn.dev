@@ -6,18 +6,10 @@ interface Props {
   critical?: boolean;
 }
 
-const { priorityImage, heroImage, critical = true } = Astro.props;
+const { priorityImage, heroImage } = Astro.props;
 ---
 
-<!-- Critical DNS and Connection Setup -->
-
-<!-- DNS Prefetch for External Resources -->
-<link rel="dns-prefetch" href="//vercel-insights.com" />
-
-<!-- Critical Asset Preloading -->
-<link rel="preload" href="/favicon.svg" as="image" type="image/svg+xml" />
-
-{
+<!-- Critical DNS and Connection Setup -->{
   priorityImage && (
     <link rel="preload" href={priorityImage} as="image" fetchpriority="high" />
   )
@@ -29,31 +21,20 @@ const { priorityImage, heroImage, critical = true } = Astro.props;
   )
 }
 
-<!-- Prefetch Important Resources -->
-<link rel="prefetch" href="/resume.pdf" />
-<link rel="prefetch" href="/sitemap.xml" />
-
-<!-- Module Preloading for Critical JavaScript -->
-{
-  critical && (
-    <>
-      <!-- Only preload actual built JS modules, not source files -->
-    </>
-  )
-}
-
-<!-- Resource Hints for Better Performance -->
-<link rel="prefetch" href="/api/home" />
-<link rel="prefetch" href="/api/about" />
-
 <!-- Critical CSS Inline -->
 <style>
   /* Critical above-the-fold styles */
   html {
     font-family:
       'Onest Variable',
-      -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
-      Cantarell, sans-serif;
+      -apple-system,
+      BlinkMacSystemFont,
+      'Segoe UI',
+      Roboto,
+      Oxygen,
+      Ubuntu,
+      Cantarell,
+      sans-serif;
     line-height: 1.6;
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;

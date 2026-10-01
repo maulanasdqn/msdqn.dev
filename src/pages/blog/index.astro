@@ -2,41 +2,47 @@
 import BlogPostCard from '@/components/ui/blog-post-card.astro';
 import FooterSection from '@/components/ui/footer-section.astro';
 import NavigationBar from '@/components/ui/navigation-bar.astro';
+import SeoHead from '@/components/ui/seo-head.astro';
+import { getDb } from '@/libs/d1';
+import {
+  breadcrumbs,
+  graph,
+  person,
+  PERSON_ID,
+  SITE_URL,
+  website,
+  WEBSITE_ID,
+} from '@/libs/seo';
 
-const siteUrl = 'https://msdqn.dev';
+type TBlogPost = {
+  title: string;
+  description: string;
+  pubDate: string;
+  link: string;
+  slug: string;
+};
 
-function parseRSS(xml: string) {
-  const items = xml.match(/<item>([\s\S]*?)<\/item>/g) ?? [];
-  return items.map(item => {
-    const get = (tag: string) => {
-      const cdataMatch = item.match(
-        new RegExp(`<${tag}><!\\[CDATA\\[([\\s\\S]*?)\\]\\]><\\/${tag}>`)
-      );
-      if (cdataMatch) return cdataMatch[1].trim();
-      const plainMatch = item.match(
-        new RegExp(`<${tag}>([\\s\\S]*?)<\\/${tag}>`)
-      );
-      return plainMatch ? plainMatch[1].trim() : '';
-    };
-    const link = get('link');
-    const slug = link.split('/').filter(Boolean).pop() ?? '';
-    return {
-      title: get('title'),
-      description: get('description'),
-      pubDate: get('pubDate'),
-      link,
-      slug,
-    };
-  });
-}
-
-let posts: ReturnType<typeof parseRSS> = [];
+let posts: TBlogPost[] = [];
 try {
-  const res = await fetch('https://blog.msdqn.dev/rss.xml');
-  const xml = await res.text();
-  posts = parseRSS(xml);
+  const { results } = await getDb(Astro.locals)
+    .prepare(
+      'SELECT slug, title, excerpt, COALESCE(published_at, created_at) AS published FROM blog_posts WHERE published = 1 ORDER BY published DESC'
+    )
+    .all<{
+      slug: string;
+      title: string;
+      excerpt: string | null;
+      published: string;
+    }>();
+  posts = results.map(row => ({
+    title: row.title,
+    description: row.excerpt ?? '',
+    pubDate: row.published,
+    link: `https://blog.msdqn.dev/blog/${row.slug}`,
+    slug: row.slug,
+  }));
 } catch (e) {
-  console.error('Failed to fetch blog posts:', e);
+  console.error('Failed to load blog posts:', e);
 }
 ---
 
@@ -45,63 +51,27 @@ try {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <link rel="manifest" href="/manifest.json" />
-    <meta name="theme-color" content="#0a0a0a" />
-
-    <title>Writing — Maulana Sodiqin</title>
-
-    <meta
-      name="description"
-      content="Technical blog by Maulana Sodiqin covering React, TypeScript, Rust, and modern web development. Insights, tutorials, and best practices from a senior fullstack developer."
-    />
-
-    <meta
-      name="keywords"
-      content="react blog, typescript tutorials, rust programming, fullstack development blog, web development insights, maulana sodiqin blog, tech articles"
-    />
-
-    <meta name="robots" content="index, follow" />
-    <link rel="canonical" href={`${siteUrl}/blog`} />
-
-    <meta property="og:title" content="Writing — Maulana Sodiqin" />
-    <meta
-      property="og:description"
-      content="Technical insights and tutorials on React, TypeScript, and Rust development"
-    />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={`${siteUrl}/blog`} />
-    <meta property="og:image" content={`${siteUrl}/og-image.png`} />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content={`${siteUrl}/og-image.png`} />
-
-    <script
-      type="application/ld+json"
-      set:html={JSON.stringify({
-        '@context': 'https://schema.org',
+    <SeoHead
+      title="Writing — Maulana Sodiqin"
+      description="Notes and tutorials by Maulana Sodiqin on building web platforms with Rust and TypeScript, from backend systems to browser automation."
+      path="/blog"
+      noindex={posts.length === 0}
+      jsonLd={graph(person, website, breadcrumbs('Writing', '/blog'), {
         '@type': 'Blog',
-        name: 'Maulana Sodiqin Tech Blog',
-        description:
-          'Technical blog covering React, TypeScript, Rust, and modern web development',
-        url: `${siteUrl}/blog`,
-        author: {
-          '@type': 'Person',
-          name: 'Maulana Sodiqin',
-        },
+        '@id': `${SITE_URL}/blog#blog`,
+        url: `${SITE_URL}/blog`,
+        name: 'Writing — Maulana Sodiqin',
+        inLanguage: 'en',
+        isPartOf: { '@id': WEBSITE_ID },
+        author: { '@id': PERSON_ID },
+        breadcrumb: { '@id': `${SITE_URL}/blog#breadcrumb` },
         blogPost: posts.map(post => ({
           '@type': 'BlogPosting',
           headline: post.title,
           description: post.description,
           datePublished: post.pubDate,
-          author: {
-            '@type': 'Person',
-            name: 'Maulana Sodiqin',
-          },
           url: post.link,
+          author: { '@id': PERSON_ID },
         })),
       })}
     />
@@ -139,7 +109,7 @@ try {
               <BlogPostCard
                 title={post.title}
                 excerpt={post.description}
-                slug={post.slug}
+                href={post.link || `/blog/${post.slug}`}
                 publishedAt={post.pubDate}
               />
             ))

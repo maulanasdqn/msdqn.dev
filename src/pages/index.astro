@@ -4,6 +4,7 @@ import CaseStudiesSection from '@/components/ui/case-studies-section.astro';
 import CriticalCSS from '@/components/ui/critical-css.astro';
 import CriticalResources from '@/components/ui/critical-resources.astro';
 import ExperienceItem from '@/components/ui/experience-item.astro';
+import FontPreload from '@/components/ui/font-preload.astro';
 import FooterSection from '@/components/ui/footer-section.astro';
 import HeroSection from '@/components/ui/hero-section.astro';
 import LighthouseOptimizations from '@/components/ui/lighthouse-optimizations.astro';
@@ -14,6 +15,17 @@ import SectionHeading from '@/components/ui/section-heading.astro';
 import TestimonialsSection from '@/components/ui/testimonials-section.astro';
 
 import { decodeRows, getDb, getSingleton, listRows, tables } from '@/libs/d1';
+import {
+  DEFAULT_DESCRIPTION,
+  graph,
+  OG_IMAGE,
+  person,
+  PERSON_ID,
+  SITE_NAME,
+  SITE_URL,
+  website,
+  WEBSITE_ID,
+} from '@/libs/seo';
 
 const db = getDb(Astro.locals);
 
@@ -149,8 +161,9 @@ const sectionOrder = [
 const num = (key: string) =>
   String(sectionOrder.indexOf(key) + 1).padStart(2, '0');
 
-const siteUrl = 'https://msdqn.dev';
-const siteName = 'Maulana Sodiqin';
+const pageTitle = homeData?.title || 'Maulana Sodiqin — Software Engineer';
+const pageDescription = homeData?.meta_description || DEFAULT_DESCRIPTION;
+const pageUrl = `${SITE_URL}/`;
 ---
 
 <!doctype html>
@@ -158,202 +171,66 @@ const siteName = 'Maulana Sodiqin';
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <CriticalResources critical={true} />
+    <CriticalResources />
+    <FontPreload />
 
-    <title>
-      {homeData?.title || 'Maulana Sodiqin — Software Engineer'}
-    </title>
-
-    <meta
-      name="description"
-      content={homeData?.meta_description ||
-        'Senior software engineer with 7 years of experience building production web platforms in Rust and TypeScript. Based in Bandung, Indonesia, open to remote and relocation.'}
-    />
-
-    <meta
-      name="keywords"
-      content={homeData?.meta_keywords ||
-        'hire fullstack developer, react developer for hire, typescript expert, rust developer, frontend developer job, software engineer hire, maulana sodiqin, fullstack developer malang, remote developer indonesia, react typescript developer, senior frontend developer, javascript developer hire, software engineer portfolio, web developer for hire, full stack engineer, react specialist, modern web developer'}
-    />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
 
     <meta name="author" content="Maulana Sodiqin" />
     <meta
       name="robots"
       content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
     />
-    <meta name="language" content="English" />
-    <meta name="revisit-after" content="7 days" />
-    <meta name="classification" content="Professional Portfolio" />
-    <meta name="rating" content="General" />
-    <meta name="distribution" content="Global" />
     <meta name="theme-color" content="#0a0a0a" />
 
-    <link rel="canonical" href={siteUrl} />
+    <link rel="canonical" href={pageUrl} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.json" />
-
-    <meta property="og:title" content="Maulana Sodiqin — Software Engineer" />
-    <meta
-      property="og:description"
-      content="Senior software engineer with 7 years of experience building production web platforms in Rust and TypeScript. Based in Bandung, Indonesia, open to remote and relocation."
+    <link
+      rel="alternate"
+      type="text/plain"
+      href="/llms.txt"
+      title="Machine-readable profile"
     />
+
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
     <meta property="og:type" content="profile" />
-    <meta property="og:url" content={siteUrl} />
-    <meta property="og:site_name" content={siteName} />
-    <meta property="og:image" content={`${siteUrl}/og-image.png`} />
+    <meta property="og:url" content={pageUrl} />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:image" content={OG_IMAGE} />
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta
-      property="og:image:alt"
-      content="Maulana Sodiqin - Senior Software Engineer"
-    />
+    <meta property="og:image:alt" content={pageTitle} />
     <meta property="og:locale" content="en_US" />
     <meta property="profile:first_name" content="Maulana" />
     <meta property="profile:last_name" content="Sodiqin" />
     <meta property="profile:username" content="maulanasdqn" />
 
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Maulana Sodiqin — Software Engineer" />
-    <meta
-      name="twitter:description"
-      content="Senior software engineer with 7 years of experience building production web platforms in Rust and TypeScript. Based in Bandung, Indonesia, open to remote and relocation."
-    />
-    <meta name="twitter:image" content={`${siteUrl}/og-image.png`} />
-    <meta
-      name="twitter:image:alt"
-      content="Maulana Sodiqin - Senior Software Engineer"
-    />
-    <meta name="twitter:creator" content="@maulanasdqn" />
-    <meta name="twitter:site" content="@maulanasdqn" />
-
-    <meta name="linkedin:owner" content="maulana-sodiqin" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={pageDescription} />
+    <meta name="twitter:image" content={OG_IMAGE} />
+    <meta name="twitter:image:alt" content={pageTitle} />
 
     <script
       is:inline
       type="application/ld+json"
-      set:html={JSON.stringify({
-        '@context': 'https://schema.org',
-        '@type': 'Person',
-        name: 'Maulana Sodiqin',
-        givenName: 'Maulana',
-        familyName: 'Sodiqin',
-        url: siteUrl,
-        image: `${siteUrl}/og-image.png`,
-        sameAs: [
-          'https://www.linkedin.com/in/maulana-sodiqin/',
-          'https://github.com/maulanasdqn',
-          'mailto:maulanasdqn@gmail.com',
-        ],
-        jobTitle: 'Senior Software Engineer',
-        description:
-          'Senior software engineer with 7 years of experience building production web platforms in Rust and TypeScript. Sole engineer behind a rebuilt web scraping engine (400 jobs/s sustained, anti-bot unblocking), and delivers full-stack client platforms end to end.',
-        knowsAbout: [
-          'Rust',
-          'TypeScript',
-          'React',
-          'Web Scraping',
-          'Browser Automation',
-          'Browser Fingerprinting & Anti-Bot Evasion',
-          'Chromium Internals',
-          'Cloudflare Workers',
-          'Edge Computing',
-          'WebAssembly',
-          'AI Agents',
-          'Model Context Protocol (MCP)',
-          'LLM Tooling',
-          'gRPC Microservices',
-          'Next.js',
-          'Nx Monorepo',
-          'Micro Frontends',
-          'Nix & NixOS',
-          'Infrastructure as Code',
-          'Full Stack Development',
-        ],
-        alumniOf: {
-          '@type': 'EducationalOrganization',
-          name: 'Universitas Islam Nusantara',
-        },
-        address: {
-          '@type': 'PostalAddress',
-          addressLocality: 'Bandung',
-          addressRegion: 'West Java',
-          addressCountry: 'Indonesia',
-        },
-        email: 'maulanasdqn@gmail.com',
-        telephone: '+6285156085579',
-        worksFor: {
-          '@type': 'Organization',
-          name: 'PT Pena Teknologi Indonesia (MrScraper)',
-        },
-        hasOccupation: {
-          '@type': 'Occupation',
-          name: 'Senior Software Engineer',
-          occupationLocation: {
-            '@type': 'Place',
-            name: 'Remote/Bandung, Indonesia',
-          },
-          skills: [
-            'React Development',
-            'TypeScript Programming',
-            'JavaScript Development',
-            'Rust Programming',
-            'Frontend Architecture',
-            'Backend Development',
-            'Full Stack Development',
-            'Web Application Development',
-            'Software Engineering',
-            'UI/UX Implementation',
-          ],
-        },
-      })}
-    />
-
-    <script
-      is:inline
-      type="application/ld+json"
-      set:html={JSON.stringify({
-        '@context': 'https://schema.org',
-        '@type': 'WebSite',
-        name: siteName,
-        url: siteUrl,
-        description:
-          'Portfolio of Maulana Sodiqin, senior software engineer building production web platforms in Rust and TypeScript.',
-        author: {
-          '@type': 'Person',
-          name: 'Maulana Sodiqin',
-        },
-        inLanguage: 'en-US',
-      })}
-    />
-
-    <script
-      is:inline
-      type="application/ld+json"
-      set:html={JSON.stringify({
-        '@context': 'https://schema.org',
-        '@type': 'ProfessionalService',
-        name: 'Maulana Sodiqin - Fullstack Development Services',
-        description:
-          'Professional fullstack development services specializing in React, TypeScript, and Rust applications',
-        provider: {
-          '@type': 'Person',
-          name: 'Maulana Sodiqin',
-        },
-        areaServed: 'Worldwide',
-        availableLanguage: 'English',
-        priceRange: '$$',
-        serviceType: [
-          'Fullstack Development',
-          'Frontend Development',
-          'Backend Development',
-          'Web Application Development',
-          'React Development',
-          'TypeScript Development',
-          'Rust Development',
-        ],
+      set:html={graph(person, website, {
+        '@type': 'ProfilePage',
+        '@id': `${pageUrl}#webpage`,
+        url: pageUrl,
+        name: pageTitle,
+        description: pageDescription,
+        inLanguage: 'en',
+        isPartOf: { '@id': WEBSITE_ID },
+        about: { '@id': PERSON_ID },
+        mainEntity: { '@id': PERSON_ID },
+        primaryImageOfPage: { '@type': 'ImageObject', url: OG_IMAGE },
       })}
     />
 

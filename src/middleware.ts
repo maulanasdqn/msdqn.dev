@@ -3,11 +3,21 @@ import { defineMiddleware } from 'astro:middleware';
 export const onRequest = defineMiddleware(async (context, next) => {
   const url = context.url;
 
-  if (url.hostname === 'www.msdqn.dev') {
-    return context.redirect(
-      `https://msdqn.dev${url.pathname}${url.search}`,
-      301
-    );
+  const isProductionHost =
+    url.hostname === 'msdqn.dev' || url.hostname === 'www.msdqn.dev';
+  const hasTrailingSlash =
+    url.pathname.length > 1 && url.pathname.endsWith('/');
+
+  if (
+    isProductionHost &&
+    (url.hostname === 'www.msdqn.dev' ||
+      url.protocol === 'http:' ||
+      hasTrailingSlash)
+  ) {
+    const pathname = hasTrailingSlash
+      ? url.pathname.replace(/\/+$/, '')
+      : url.pathname;
+    return context.redirect(`https://msdqn.dev${pathname}${url.search}`, 301);
   }
 
   const response = await next();

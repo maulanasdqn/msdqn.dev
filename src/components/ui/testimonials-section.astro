@@ -47,30 +47,3 @@ const { number, testimonials } = Astro.props;
     }
   </div>
 </section>
-
-<script
-  type="application/ld+json"
-  set:html={JSON.stringify({
-    '@context': 'https://schema.org',
-    '@type': 'Person',
-    name: 'Maulana Sodiqin',
-    review: testimonials.map(testimonial => ({
-      '@type': 'Review',
-      reviewRating: {
-        '@type': 'Rating',
-        ratingValue: testimonial.rating,
-        bestRating: 5,
-      },
-      author: {
-        '@type': 'Person',
-        name: testimonial.name,
-        jobTitle: testimonial.role,
-        worksFor: {
-          '@type': 'Organization',
-          name: testimonial.company,
-        },
-      },
-      reviewBody: testimonial.content,
-    })),
-  })}
-/>

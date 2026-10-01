@@ -1,14 +1,27 @@
 import type { APIRoute } from 'astro';
+import { getDb } from '@/libs/d1';
 
-const pages = [
-  { path: '/', priority: '1.0', changefreq: 'weekly' },
-  { path: '/hire-me', priority: '0.9', changefreq: 'monthly' },
-  { path: '/blog', priority: '0.8', changefreq: 'weekly' },
-  { path: '/resume.pdf', priority: '0.7', changefreq: 'monthly' },
-];
+const blogHasPosts = async (locals: App.Locals): Promise<boolean> => {
+  try {
+    const row = await getDb(locals)
+      .prepare('SELECT 1 FROM blog_posts WHERE published = 1 LIMIT 1')
+      .first();
+    return row !== null;
+  } catch {
+    return false;
+  }
+};
 
-export const GET: APIRoute = async () => {
+export const GET: APIRoute = async ({ locals }) => {
   const lastmod = new Date().toISOString().slice(0, 10);
+  const pages = [
+    { path: '/', priority: '1.0', changefreq: 'weekly' },
+    { path: '/hire-me', priority: '0.9', changefreq: 'monthly' },
+    ...((await blogHasPosts(locals))
+      ? [{ path: '/blog', priority: '0.8', changefreq: 'weekly' }]
+      : []),
+    { path: '/resume.pdf', priority: '0.7', changefreq: 'monthly' },
+  ];
   const urls = pages
     .map(
       page => `  <url>

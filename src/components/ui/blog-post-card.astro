@@ -2,11 +2,11 @@
 export interface Props {
   title: string;
   excerpt: string;
-  slug: string;
+  href: string;
   publishedAt: string;
 }
 
-const { title, excerpt, slug, publishedAt } = Astro.props;
+const { title, excerpt, href, publishedAt } = Astro.props;
 
 const date = new Date(publishedAt);
 const valid = !Number.isNaN(date.getTime());
@@ -28,7 +28,7 @@ const formattedDate = valid
   <div class="md:col-span-9">
     <h2 class="font-medium text-2xl tracking-tight text-mono-text">
       <a
-        href={`/blog/${slug}`}
+        href={href}
         class="underline decoration-transparent underline-offset-[6px] group-hover:decoration-mono-line-strong transition-colors"
       >
         {title}

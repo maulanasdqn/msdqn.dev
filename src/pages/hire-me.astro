@@ -2,8 +2,16 @@
 import FooterSection from '@/components/ui/footer-section.astro';
 import NavigationBar from '@/components/ui/navigation-bar.astro';
 import SectionHeading from '@/components/ui/section-heading.astro';
-
-const siteUrl = 'https://msdqn.dev';
+import SeoHead from '@/components/ui/seo-head.astro';
+import {
+  breadcrumbs,
+  graph,
+  person,
+  PERSON_ID,
+  SITE_URL,
+  website,
+  WEBSITE_ID,
+} from '@/libs/seo';
 
 const lookingFor = [
   {
@@ -46,77 +54,19 @@ const expertise = [
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <link rel="manifest" href="/manifest.json" />
-    <meta name="theme-color" content="#0a0a0a" />
-
-    <title>Hire me — Maulana Sodiqin</title>
-
-    <meta
-      name="description"
-      content="Hire Maulana Sodiqin, senior software engineer with 7 years of experience building production web platforms in Rust and TypeScript. Open to full-time and contract work, remote or relocation."
-    />
-
-    <meta
-      name="keywords"
-      content="hire maulana sodiqin, react developer for hire, fullstack developer hire, typescript developer available, rust developer freelance, senior frontend developer job, software engineer hire, remote developer indonesia, fullstack developer available, react specialist hire, javascript developer hire"
-    />
-
-    <meta name="robots" content="index, follow" />
-    <link rel="canonical" href={`${siteUrl}/hire-me`} />
-
-    <meta property="og:title" content="Hire me — Maulana Sodiqin" />
-    <meta
-      property="og:description"
-      content="Senior software engineer with 7 years of experience in Rust and TypeScript. Open to remote and relocation."
-    />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={`${siteUrl}/hire-me`} />
-    <meta property="og:image" content={`${siteUrl}/og-image.png`} />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content={`${siteUrl}/og-image.png`} />
-
-    <script
-      type="application/ld+json"
-      set:html={JSON.stringify({
-        '@context': 'https://schema.org',
-        '@type': 'ProfilePage',
-        name: 'Hire Maulana Sodiqin - Senior Software Engineer',
-        url: `${siteUrl}/hire-me`,
-        mainEntity: {
-          '@type': 'Person',
-          name: 'Maulana Sodiqin',
-          url: siteUrl,
-          image: `${siteUrl}/og-image.png`,
-          jobTitle: 'Senior Software Engineer',
-          description:
-            'Senior software engineer with 7 years of experience building production web platforms in Rust and TypeScript. Sole engineer behind a rebuilt web scraping engine (400 jobs/s sustained, anti-bot unblocking), and delivers full-stack client platforms end to end.',
-          sameAs: [
-            'https://www.linkedin.com/in/maulana-sodiqin/',
-            'https://github.com/maulanasdqn',
-          ],
-          knowsAbout: [
-            'React',
-            'TypeScript',
-            'JavaScript',
-            'Rust',
-            'Next.js',
-            'Node.js',
-            'Frontend Development',
-            'Backend Development',
-            'Full Stack Development',
-          ],
-          address: {
-            '@type': 'PostalAddress',
-            addressLocality: 'Bandung',
-            addressRegion: 'West Java',
-            addressCountry: 'Indonesia',
-          },
-        },
+    <SeoHead
+      title="Hire me — Maulana Sodiqin"
+      description="Hire Maulana Sodiqin, senior software engineer with 7 years of experience building production web platforms in Rust and TypeScript. Open to full-time and contract work, remote or relocation."
+      path="/hire-me"
+      jsonLd={graph(person, website, breadcrumbs('Hire me', '/hire-me'), {
+        '@type': 'WebPage',
+        '@id': `${SITE_URL}/hire-me#webpage`,
+        url: `${SITE_URL}/hire-me`,
+        name: 'Hire me — Maulana Sodiqin',
+        inLanguage: 'en',
+        isPartOf: { '@id': WEBSITE_ID },
+        about: { '@id': PERSON_ID },
+        breadcrumb: { '@id': `${SITE_URL}/hire-me#breadcrumb` },
       })}
     />
   </head>
