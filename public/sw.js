@@ -1,7 +1,7 @@
-const CACHE_NAME = 'personal-website-v3';
-const STATIC_CACHE_NAME = 'static-v3';
-const RUNTIME_CACHE_NAME = 'runtime-v3';
-const IMAGES_CACHE_NAME = 'images-v3';
+const CACHE_NAME = 'personal-website-v5';
+const STATIC_CACHE_NAME = 'static-v5';
+const RUNTIME_CACHE_NAME = 'runtime-v5';
+const IMAGES_CACHE_NAME = 'images-v5';
 
 const STATIC_CACHE = [
   '/',
@@ -63,7 +63,7 @@ self.addEventListener('fetch', (event) => {
   // Handle different types of requests with different strategies
   if (url.origin === self.location.origin) {
     // Static assets - cache first
-    if (STATIC_CACHE.some(path => url.pathname === path)) {
+    if (event.request.destination !== 'document' && STATIC_CACHE.some(path => url.pathname === path)) {
       event.respondWith(cacheFirst(event.request, STATIC_CACHE_NAME));
       return;
     }
