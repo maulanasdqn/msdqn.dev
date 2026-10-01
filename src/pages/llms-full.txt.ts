@@ -24,7 +24,7 @@ export const GET: APIRoute = async ({ locals }) => {
   ]);
 
   const lines: string[] = [
-    '# Maulana Sodiqin — Full Profile',
+    '# Maulana Sodiqin: Full Profile',
     '',
     '> Senior Software Engineer specializing in Rust, web scraping, AI agent tooling, and Cloudflare edge infrastructure. Based in Bandung, Indonesia. Open to full-time and freelance work. Contact: maulanasdqn@gmail.com — https://msdqn.dev',
     '',
