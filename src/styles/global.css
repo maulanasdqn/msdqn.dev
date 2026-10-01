@@ -1,6 +1,6 @@
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 2rem;
+  scroll-padding-top: 5rem;
 }
 
 body {
@@ -18,7 +18,7 @@ body {
 }
 
 section[id] {
-  scroll-margin-top: 2rem;
+  scroll-margin-top: 0;
 }
 
 .scroll-animate {
@@ -33,7 +33,7 @@ section[id] {
 }
 
 *:focus {
-  outline: 2px solid #c4a7e7;
+  outline: 2px solid #fafafa;
   outline-offset: 2px;
 }
 
@@ -42,16 +42,16 @@ section[id] {
 }
 
 ::-webkit-scrollbar-track {
-  background: #232136;
+  background: #0a0a0a;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #44415a;
+  background: #262626;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #524f67;
+  background: #404040;
 }
 
 .scroll-fade-in {

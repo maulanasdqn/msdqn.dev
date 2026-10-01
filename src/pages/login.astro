@@ -15,6 +15,7 @@ const message = url.searchParams.get('message');
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>Login - CMS</title>
     <meta
       name="description"
@@ -23,23 +24,18 @@ const message = url.searchParams.get('message');
 
     <style>
       :root {
-        --rp-base: #191724;
-        --rp-surface: #1f1d2e;
-        --rp-overlay: #26233a;
-        --rp-muted: #6e6a86;
-        --rp-subtle: #908caa;
-        --rp-text: #e0def4;
-        --rp-love: #eb6f92;
-        --rp-gold: #f6c177;
-        --rp-rose: #ebbcba;
-        --rp-pine: #31748f;
-        --rp-foam: #9ccfd8;
-        --rp-iris: #c4a7e7;
+        --mono-bg: #0a0a0a;
+        --mono-surface: #111111;
+        --mono-raised: #262626;
+        --mono-muted: #737373;
+        --mono-subtle: #a3a3a3;
+        --mono-text: #fafafa;
+        --mono-accent: #fafafa;
       }
 
       body {
-        background-color: var(--rp-base);
-        color: var(--rp-text);
+        background-color: var(--mono-bg);
+        color: var(--mono-text);
         font-family:
           system-ui,
           -apple-system,
@@ -47,16 +43,16 @@ const message = url.searchParams.get('message');
       }
 
       .login-container {
-        background-color: var(--rp-surface);
-        border: 1px solid var(--rp-overlay);
+        background-color: var(--mono-surface);
+        border: 1px solid var(--mono-raised);
         border-radius: 12px;
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
       }
 
       .form-input {
-        background-color: var(--rp-overlay);
-        border: 1px solid var(--rp-muted);
-        color: var(--rp-text);
+        background-color: var(--mono-raised);
+        border: 1px solid var(--mono-muted);
+        color: var(--mono-text);
         border-radius: 6px;
         padding: 12px 16px;
         width: 100%;
@@ -66,17 +62,17 @@ const message = url.searchParams.get('message');
 
       .form-input:focus {
         outline: none;
-        border-color: var(--rp-pine);
-        box-shadow: 0 0 0 3px rgba(49, 116, 143, 0.2);
+        border-color: var(--mono-accent);
+        box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.08);
       }
 
       .form-input::placeholder {
-        color: var(--rp-muted);
+        color: var(--mono-muted);
       }
 
       .btn-primary {
-        background-color: var(--rp-pine);
-        color: white;
+        background-color: var(--mono-accent);
+        color: var(--mono-bg);
         border: none;
         border-radius: 6px;
         padding: 12px 24px;
@@ -87,25 +83,25 @@ const message = url.searchParams.get('message');
       }
 
       .btn-primary:hover {
-        background-color: var(--rp-foam);
-        color: var(--rp-base);
+        background-color: var(--mono-accent);
+        color: var(--mono-bg);
       }
 
       .btn-primary:focus {
         outline: none;
-        box-shadow: 0 0 0 3px rgba(49, 116, 143, 0.3);
+        box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.08);
       }
 
       .success-message {
-        background-color: rgba(49, 116, 143, 0.2);
-        border: 1px solid var(--rp-pine);
-        color: var(--rp-pine);
+        background-color: rgba(255, 255, 255, 0.08);
+        border: 1px solid var(--mono-accent);
+        color: var(--mono-accent);
         border-radius: 6px;
         padding: 12px 16px;
       }
 
       .logo-text {
-        color: var(--rp-text);
+        color: var(--mono-text);
         font-size: 2rem;
         font-weight: bold;
         margin-bottom: 8px;
@@ -116,7 +112,7 @@ const message = url.searchParams.get('message');
       }
 
       .subtitle {
-        color: var(--rp-subtle);
+        color: var(--mono-subtle);
       }
 
       .form-group {
@@ -125,7 +121,7 @@ const message = url.searchParams.get('message');
 
       .form-label {
         display: block;
-        color: var(--rp-text);
+        color: var(--mono-text);
         font-size: 14px;
         font-weight: 500;
         margin-bottom: 6px;
@@ -153,14 +149,14 @@ const message = url.searchParams.get('message');
 
       .form-input:focus + .form-label,
       .form-input:not(:placeholder-shown) + .form-label {
-        color: var(--rp-pine);
+        color: var(--mono-accent);
       }
     </style>
   </head>
   <body class="min-h-screen flex items-center justify-center py-12 px-4">
     <div class="login-container max-w-md w-full p-8">
       <div class="text-center mb-8">
-        <div class="logo-text">🌹 Admin Login</div>
+        <div class="logo-text">Admin Login</div>
         <p class="subtitle text-center">
           Personal website content management system
         </p>

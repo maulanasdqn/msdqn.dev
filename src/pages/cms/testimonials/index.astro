@@ -27,38 +27,33 @@ const email = user.email;
     <meta name="description" content="Manage client testimonials" />
     <style>
       :root {
-        --rp-base: #191724;
-        --rp-surface: #1f1d2e;
-        --rp-overlay: #26233a;
-        --rp-muted: #6e6a86;
-        --rp-subtle: #908caa;
-        --rp-text: #e0def4;
-        --rp-love: #eb6f92;
-        --rp-gold: #f6c177;
-        --rp-rose: #ebbcba;
-        --rp-pine: #31748f;
-        --rp-foam: #9ccfd8;
-        --rp-iris: #c4a7e7;
+        --mono-bg: #0a0a0a;
+        --mono-surface: #111111;
+        --mono-raised: #262626;
+        --mono-muted: #737373;
+        --mono-subtle: #a3a3a3;
+        --mono-text: #fafafa;
+        --mono-accent: #fafafa;
       }
       body {
-        background-color: var(--rp-base);
-        color: var(--rp-text);
+        background-color: var(--mono-bg);
+        color: var(--mono-text);
         font-family:
           system-ui,
           -apple-system,
           sans-serif;
       }
       .nav-bg {
-        background-color: var(--rp-surface);
-        border-bottom: 1px solid var(--rp-overlay);
+        background-color: var(--mono-surface);
+        border-bottom: 1px solid var(--mono-raised);
       }
       .card-bg {
-        background-color: var(--rp-surface);
-        border: 1px solid var(--rp-overlay);
+        background-color: var(--mono-surface);
+        border: 1px solid var(--mono-raised);
       }
       .btn-primary {
-        background-color: var(--rp-pine);
-        color: white;
+        background-color: var(--mono-accent);
+        color: var(--mono-bg);
         border: none;
         padding: 8px 16px;
         border-radius: 6px;
@@ -66,12 +61,12 @@ const email = user.email;
         transition: all 0.2s;
       }
       .btn-primary:hover {
-        background-color: var(--rp-foam);
-        color: var(--rp-base);
+        background-color: var(--mono-accent);
+        color: var(--mono-bg);
       }
       .btn-edit {
-        background-color: var(--rp-iris);
-        color: white;
+        background-color: var(--mono-accent);
+        color: var(--mono-bg);
         border: none;
         padding: 6px 12px;
         border-radius: 4px;
@@ -79,11 +74,11 @@ const email = user.email;
         transition: all 0.2s;
       }
       .btn-edit:hover {
-        background-color: var(--rp-rose);
+        background-color: var(--mono-accent);
       }
       .btn-delete {
-        background-color: var(--rp-love);
-        color: white;
+        background-color: var(--mono-accent);
+        color: var(--mono-bg);
         border: none;
         padding: 6px 12px;
         border-radius: 4px;
@@ -91,39 +86,39 @@ const email = user.email;
         transition: all 0.2s;
       }
       .btn-delete:hover {
-        background-color: #d4556a;
+        background-color: #d4d4d4;
       }
       .btn-signout {
-        background-color: var(--rp-love);
-        color: white;
+        background-color: var(--mono-accent);
+        color: var(--mono-bg);
         border: none;
         padding: 8px 16px;
         border-radius: 6px;
         cursor: pointer;
       }
       .btn-signout:hover {
-        background-color: #d4556a;
+        background-color: #d4d4d4;
       }
       .text-muted {
-        color: var(--rp-muted);
+        color: var(--mono-muted);
       }
       .text-subtle {
-        color: var(--rp-subtle);
+        color: var(--mono-subtle);
       }
       .nav-link {
-        color: var(--rp-subtle);
+        color: var(--mono-subtle);
         border-bottom: 2px solid transparent;
         text-decoration: none;
         padding: 8px 4px;
         transition: all 0.2s;
       }
       .nav-link:hover {
-        color: var(--rp-text);
-        border-bottom-color: var(--rp-overlay);
+        color: var(--mono-text);
+        border-bottom-color: var(--mono-raised);
       }
       .nav-link.active {
-        color: var(--rp-pine);
-        border-bottom-color: var(--rp-pine);
+        color: var(--mono-accent);
+        border-bottom-color: var(--mono-accent);
       }
       .modal {
         position: fixed;
@@ -141,8 +136,8 @@ const email = user.email;
         display: none;
       }
       .modal-content {
-        background-color: var(--rp-surface);
-        border: 1px solid var(--rp-overlay);
+        background-color: var(--mono-surface);
+        border: 1px solid var(--mono-raised);
         border-radius: 8px;
         padding: 24px;
         width: 100%;
@@ -152,19 +147,19 @@ const email = user.email;
         overflow-y: auto;
       }
       .form-input {
-        background-color: var(--rp-overlay);
-        border: 1px solid var(--rp-muted);
-        color: var(--rp-text);
+        background-color: var(--mono-raised);
+        border: 1px solid var(--mono-muted);
+        color: var(--mono-text);
         padding: 8px 12px;
         border-radius: 4px;
         width: 100%;
       }
       .form-input:focus {
         outline: none;
-        border-color: var(--rp-pine);
+        border-color: var(--mono-accent);
       }
       .star-rating {
-        color: var(--rp-foam);
+        color: var(--mono-accent);
         font-size: 16px;
       }
     </style>
@@ -179,8 +174,8 @@ const email = user.email;
             <div style="display: flex; align-items: center;">
               <a
                 href="/cms"
-                style="text-decoration: none; color: var(--rp-text); font-size: 20px; font-weight: bold;"
-                >🌹 CMS</a
+                style="text-decoration: none; color: var(--mono-text); font-size: 20px; font-weight: bold;"
+                >CMS</a
               >
             </div>
             <div
@@ -209,7 +204,7 @@ const email = user.email;
 
     <main style="max-width: 1200px; margin: 0 auto; padding: 24px 16px;">
       <div
-        style="border-bottom: 1px solid var(--rp-overlay); padding-bottom: 20px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;"
+        style="border-bottom: 1px solid var(--mono-raised); padding-bottom: 20px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;"
       >
         <h1 style="font-size: 24px; font-weight: bold; margin: 0;">
           Testimonials Management
@@ -221,7 +216,7 @@ const email = user.email;
 
       {
         error && (
-          <div style="background-color: rgba(235, 111, 146, 0.2); border: 1px solid var(--rp-love); color: var(--rp-love); padding: 12px; border-radius: 6px; margin-bottom: 16px;">
+          <div style="background-color: rgba(255, 255, 255, 0.08); border: 1px solid var(--mono-accent); color: var(--mono-accent); padding: 12px; border-radius: 6px; margin-bottom: 16px;">
             Error loading testimonials: {error.message}
           </div>
         )
@@ -230,7 +225,9 @@ const email = user.email;
       {
         testimonials && testimonials.length === 0 && (
           <div style="text-align: center; padding: 48px 0;">
-            <div style="font-size: 48px; margin-bottom: 16px;">💬</div>
+            <div style="font-size: 48px; margin-bottom: 16px; filter: grayscale(1);">
+              💬
+            </div>
             <h3 style="margin: 8px 0; font-size: 18px;">No testimonials</h3>
             <p style="margin: 4px 0; font-size: 14px;" class="text-subtle">
               Get started by adding your first client testimonial.
@@ -247,14 +244,14 @@ const email = user.email;
           >
             {testimonials.map((testimonial: any, index: number) => (
               <div
-                style={`padding: 20px; ${index !== testimonials.length - 1 ? 'border-bottom: 1px solid var(--rp-overlay);' : ''}`}
+                style={`padding: 20px; ${index !== testimonials.length - 1 ? 'border-bottom: 1px solid var(--mono-raised);' : ''}`}
               >
                 <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                   <div style="flex: 1; display: flex; gap: 16px;">
                     <img
                       src={testimonial.image || '/favicon.svg'}
                       alt={testimonial.name}
-                      style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; background-color: var(--rp-overlay);"
+                      style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; background-color: var(--mono-raised);"
                     />
                     <div style="flex: 1;">
                       <h3 style="font-size: 18px; font-weight: 600; margin: 0 0 4px 0;">
@@ -276,7 +273,7 @@ const email = user.email;
                             .join('')}
                         </div>
                       </div>
-                      <blockquote style="font-size: 14px; margin: 8px 0; font-style: italic; color: var(--rp-subtle); border-left: 3px solid var(--rp-overlay); padding-left: 12px;">
+                      <blockquote style="font-size: 14px; margin: 8px 0; font-style: italic; color: var(--mono-subtle); border-left: 3px solid var(--mono-raised); padding-left: 12px;">
                         "{testimonial.content}"
                       </blockquote>
                     </div>
@@ -382,7 +379,7 @@ const email = user.email;
             <button
               type="button"
               onclick="closeModal()"
-              style="background: none; border: 1px solid var(--rp-muted); color: var(--rp-subtle); padding: 8px 16px; border-radius: 4px; cursor: pointer;"
+              style="background: none; border: 1px solid var(--mono-muted); color: var(--mono-subtle); padding: 8px 16px; border-radius: 4px; cursor: pointer;"
               >Cancel</button
             >
             <button type="submit" class="btn-primary">Save Testimonial</button>

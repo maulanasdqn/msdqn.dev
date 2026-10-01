@@ -4,10 +4,10 @@ import AnimationWrapper from './animation-wrapper.astro';
 
 <AnimationWrapper animation="scale-up" delay={100}>
   <form
-    class="bg-rose-pine-surface/50 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 max-w-2xl mx-auto border border-rose-pine-highlight-med"
+    class="bg-mono-surface rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 max-w-2xl mx-auto border border-mono-line"
   >
     <h2
-      class="text-xl sm:text-2xl font-bold text-rose-pine-text mb-4 sm:mb-6 text-center"
+      class="text-xl sm:text-2xl font-bold text-mono-text mb-4 sm:mb-6 text-center"
     >
       Get In Touch
     </h2>
@@ -16,7 +16,7 @@ import AnimationWrapper from './animation-wrapper.astro';
       <div>
         <label
           for="name"
-          class="block text-sm font-medium text-rose-pine-subtle mb-2"
+          class="block text-sm font-medium text-mono-subtle mb-2"
         >
           Full Name
         </label>
@@ -25,7 +25,7 @@ import AnimationWrapper from './animation-wrapper.astro';
           id="name"
           name="name"
           required
-          class="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-rose-pine-overlay/50 border border-rose-pine-highlight-med rounded-lg sm:rounded-xl text-rose-pine-text placeholder-rose-pine-muted focus:ring-2 focus:ring-rose-pine-iris focus:border-transparent transition-all text-sm sm:text-base"
+          class="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-mono-surface border border-mono-line rounded-lg sm:rounded-xl text-mono-text placeholder-mono-muted focus:ring-2 focus:ring-mono-accent focus:border-transparent transition-all text-sm sm:text-base"
           placeholder="Your full name"
         />
       </div>
@@ -33,7 +33,7 @@ import AnimationWrapper from './animation-wrapper.astro';
       <div>
         <label
           for="email"
-          class="block text-sm font-medium text-rose-pine-subtle mb-2"
+          class="block text-sm font-medium text-mono-subtle mb-2"
         >
           Email Address
         </label>
@@ -42,7 +42,7 @@ import AnimationWrapper from './animation-wrapper.astro';
           id="email"
           name="email"
           required
-          class="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-rose-pine-overlay/50 border border-rose-pine-highlight-med rounded-lg sm:rounded-xl text-rose-pine-text placeholder-rose-pine-muted focus:ring-2 focus:ring-rose-pine-iris focus:border-transparent transition-all text-sm sm:text-base"
+          class="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-mono-surface border border-mono-line rounded-lg sm:rounded-xl text-mono-text placeholder-mono-muted focus:ring-2 focus:ring-mono-accent focus:border-transparent transition-all text-sm sm:text-base"
           placeholder="your.email@example.com"
         />
       </div>
@@ -51,7 +51,7 @@ import AnimationWrapper from './animation-wrapper.astro';
     <div class="mb-4 sm:mb-6">
       <label
         for="subject"
-        class="block text-sm font-medium text-rose-pine-subtle mb-2"
+        class="block text-sm font-medium text-mono-subtle mb-2"
       >
         Subject
       </label>
@@ -59,7 +59,7 @@ import AnimationWrapper from './animation-wrapper.astro';
         type="text"
         id="subject"
         name="subject"
-        class="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-rose-pine-overlay/50 border border-rose-pine-highlight-med rounded-lg sm:rounded-xl text-rose-pine-text placeholder-rose-pine-muted focus:ring-2 focus:ring-rose-pine-iris focus:border-transparent transition-all text-sm sm:text-base"
+        class="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-mono-surface border border-mono-line rounded-lg sm:rounded-xl text-mono-text placeholder-mono-muted focus:ring-2 focus:ring-mono-accent focus:border-transparent transition-all text-sm sm:text-base"
         placeholder="What's this about?"
       />
     </div>
@@ -67,7 +67,7 @@ import AnimationWrapper from './animation-wrapper.astro';
     <div class="mb-4 sm:mb-6">
       <label
         for="message"
-        class="block text-sm font-medium text-rose-pine-subtle mb-2"
+        class="block text-sm font-medium text-mono-subtle mb-2"
       >
         Message
       </label>
@@ -76,14 +76,14 @@ import AnimationWrapper from './animation-wrapper.astro';
         name="message"
         rows="4"
         required
-        class="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-rose-pine-overlay/50 border border-rose-pine-highlight-med rounded-lg sm:rounded-xl text-rose-pine-text placeholder-rose-pine-muted focus:ring-2 focus:ring-rose-pine-iris focus:border-transparent transition-all resize-vertical text-sm sm:text-base"
+        class="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-mono-surface border border-mono-line rounded-lg sm:rounded-xl text-mono-text placeholder-mono-muted focus:ring-2 focus:ring-mono-accent focus:border-transparent transition-all resize-vertical text-sm sm:text-base"
         placeholder="Tell me about your project or opportunity..."></textarea>
     </div>
 
     <div class="text-center">
       <button
         type="submit"
-        class="w-full sm:w-auto bg-rose-pine-iris hover:bg-rose-pine-iris/80 text-rose-pine-base px-6 sm:px-8 py-3 rounded-lg sm:rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 inline-flex items-center justify-center gap-2 text-sm sm:text-base"
+        class="w-full sm:w-auto bg-mono-accent hover:bg-mono-subtle text-mono-bg px-6 sm:px-8 py-3 rounded-lg sm:rounded-xl font-semibold transition-all duration-300 inline-flex items-center justify-center gap-2 text-sm sm:text-base"
       >
         <svg
           class="w-4 h-4 sm:w-5 sm:h-5"
@@ -101,7 +101,7 @@ import AnimationWrapper from './animation-wrapper.astro';
       </button>
     </div>
 
-    <p class="text-xs sm:text-sm text-rose-pine-muted mt-3 sm:mt-4 text-center">
+    <p class="text-xs sm:text-sm text-mono-muted mt-3 sm:mt-4 text-center">
       I'll get back to you within 24 hours.
     </p>
   </form>

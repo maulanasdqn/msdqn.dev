@@ -18,66 +18,61 @@ const email = user.email;
     <meta name="description" content="Content management system dashboard" />
     <style>
       :root {
-        --rp-base: #191724;
-        --rp-surface: #1f1d2e;
-        --rp-overlay: #26233a;
-        --rp-muted: #6e6a86;
-        --rp-subtle: #908caa;
-        --rp-text: #e0def4;
-        --rp-love: #eb6f92;
-        --rp-gold: #f6c177;
-        --rp-rose: #ebbcba;
-        --rp-pine: #31748f;
-        --rp-foam: #9ccfd8;
-        --rp-iris: #c4a7e7;
+        --mono-bg: #0a0a0a;
+        --mono-surface: #111111;
+        --mono-raised: #262626;
+        --mono-muted: #737373;
+        --mono-subtle: #a3a3a3;
+        --mono-text: #fafafa;
+        --mono-accent: #fafafa;
       }
       body {
-        background-color: var(--rp-base);
-        color: var(--rp-text);
+        background-color: var(--mono-bg);
+        color: var(--mono-text);
       }
       .nav-bg {
-        background-color: var(--rp-surface);
-        border-bottom: 1px solid var(--rp-overlay);
+        background-color: var(--mono-surface);
+        border-bottom: 1px solid var(--mono-raised);
       }
       .card-bg {
-        background-color: var(--rp-surface);
-        border: 1px solid var(--rp-overlay);
+        background-color: var(--mono-surface);
+        border: 1px solid var(--mono-raised);
       }
       .card-bg:hover {
-        background-color: var(--rp-overlay);
+        background-color: var(--mono-raised);
       }
       .btn-signout {
-        background-color: var(--rp-love);
+        background-color: var(--mono-accent);
       }
       .btn-signout:hover {
-        background-color: #d4556a;
+        background-color: #d4d4d4;
       }
       .text-muted {
-        color: var(--rp-muted);
+        color: var(--mono-muted);
       }
       .text-subtle {
-        color: var(--rp-subtle);
+        color: var(--mono-subtle);
       }
       .link-pine {
-        color: var(--rp-pine);
+        color: var(--mono-accent);
       }
       .link-pine:hover {
-        color: var(--rp-foam);
+        color: var(--mono-accent);
       }
       .icon-iris {
-        background-color: var(--rp-iris);
+        background-color: var(--mono-accent);
       }
       .icon-pine {
-        background-color: var(--rp-pine);
+        background-color: var(--mono-accent);
       }
       .icon-love {
-        background-color: var(--rp-love);
+        background-color: var(--mono-accent);
       }
       .icon-gold {
-        background-color: var(--rp-gold);
+        background-color: var(--mono-accent);
       }
       .icon-rose {
-        background-color: var(--rp-rose);
+        background-color: var(--mono-accent);
       }
     </style>
   </head>
@@ -86,7 +81,7 @@ const email = user.email;
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16">
           <div class="flex items-center">
-            <h1 class="text-lg sm:text-xl font-bold">🌹 CMS</h1>
+            <h1 class="text-lg sm:text-xl font-bold">CMS</h1>
           </div>
           <div class="flex items-center space-x-2 sm:space-x-4">
             <span class="text-xs sm:text-sm text-subtle hidden sm:inline"
@@ -94,7 +89,7 @@ const email = user.email;
             >
             <form action="/api/auth/signout" method="post">
               <button
-                class="btn-signout text-white px-2 py-1 sm:px-3 sm:py-2 rounded-md text-xs sm:text-sm font-medium transition-colors"
+                class="btn-signout text-mono-bg px-2 py-1 sm:px-3 sm:py-2 rounded-md text-xs sm:text-sm font-medium transition-colors"
               >
                 Sign Out
               </button>
@@ -126,7 +121,7 @@ const email = user.email;
                     class="w-8 h-8 icon-iris rounded-md flex items-center justify-center"
                   >
                     <svg
-                      class="w-5 h-5 text-white"
+                      class="w-5 h-5 text-mono-bg"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -168,7 +163,7 @@ const email = user.email;
                     class="w-8 h-8 icon-pine rounded-md flex items-center justify-center"
                   >
                     <svg
-                      class="w-5 h-5 text-white"
+                      class="w-5 h-5 text-mono-bg"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -210,7 +205,7 @@ const email = user.email;
                     class="w-8 h-8 icon-love rounded-md flex items-center justify-center"
                   >
                     <svg
-                      class="w-5 h-5 text-white"
+                      class="w-5 h-5 text-mono-bg"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -250,7 +245,7 @@ const email = user.email;
                     class="w-8 h-8 icon-rose rounded-md flex items-center justify-center"
                   >
                     <svg
-                      class="w-5 h-5 text-white"
+                      class="w-5 h-5 text-mono-bg"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -292,7 +287,7 @@ const email = user.email;
                     class="w-8 h-8 icon-gold rounded-md flex items-center justify-center"
                   >
                     <svg
-                      class="w-5 h-5 text-white"
+                      class="w-5 h-5 text-mono-bg"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -330,10 +325,10 @@ const email = user.email;
                 <div class="flex-shrink-0">
                   <div
                     class="w-8 h-8 icon-foam rounded-md flex items-center justify-center"
-                    style="background-color: var(--rp-foam);"
+                    style="background-color: var(--mono-accent);"
                   >
                     <svg
-                      class="w-5 h-5 text-white"
+                      class="w-5 h-5 text-mono-bg"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -373,10 +368,10 @@ const email = user.email;
                 <div class="flex-shrink-0">
                   <div
                     class="w-8 h-8 rounded-md flex items-center justify-center"
-                    style="background-color: var(--rp-pine);"
+                    style="background-color: var(--mono-accent);"
                   >
                     <svg
-                      class="w-5 h-5 text-white"
+                      class="w-5 h-5 text-mono-bg"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"

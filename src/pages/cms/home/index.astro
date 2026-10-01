@@ -21,22 +21,17 @@ const email = user.email;
     <meta name="description" content="Manage homepage content" />
     <style>
       :root {
-        --rp-base: #191724;
-        --rp-surface: #1f1d2e;
-        --rp-overlay: #26233a;
-        --rp-muted: #6e6a86;
-        --rp-subtle: #908caa;
-        --rp-text: #e0def4;
-        --rp-love: #eb6f92;
-        --rp-gold: #f6c177;
-        --rp-rose: #ebbcba;
-        --rp-pine: #31748f;
-        --rp-foam: #9ccfd8;
-        --rp-iris: #c4a7e7;
+        --mono-bg: #0a0a0a;
+        --mono-surface: #111111;
+        --mono-raised: #262626;
+        --mono-muted: #737373;
+        --mono-subtle: #a3a3a3;
+        --mono-text: #fafafa;
+        --mono-accent: #fafafa;
       }
       body {
-        background-color: var(--rp-base);
-        color: var(--rp-text);
+        background-color: var(--mono-bg);
+        color: var(--mono-text);
         font-family:
           system-ui,
           -apple-system,
@@ -45,18 +40,18 @@ const email = user.email;
         padding: 0;
       }
       .nav-bg {
-        background-color: var(--rp-surface);
-        border-bottom: 1px solid var(--rp-overlay);
+        background-color: var(--mono-surface);
+        border-bottom: 1px solid var(--mono-raised);
       }
       .card-bg {
-        background-color: var(--rp-surface);
-        border: 1px solid var(--rp-overlay);
+        background-color: var(--mono-surface);
+        border: 1px solid var(--mono-raised);
         border-radius: 8px;
         padding: 24px;
       }
       .btn-primary {
-        background-color: var(--rp-pine);
-        color: white;
+        background-color: var(--mono-accent);
+        color: var(--mono-bg);
         border: none;
         padding: 12px 24px;
         border-radius: 6px;
@@ -66,40 +61,40 @@ const email = user.email;
         font-weight: 500;
       }
       .btn-primary:hover {
-        background-color: var(--rp-foam);
-        color: var(--rp-base);
+        background-color: var(--mono-accent);
+        color: var(--mono-bg);
       }
       .btn-signout {
-        background-color: var(--rp-love);
-        color: white;
+        background-color: var(--mono-accent);
+        color: var(--mono-bg);
         border: none;
         padding: 8px 16px;
         border-radius: 6px;
         cursor: pointer;
       }
       .btn-signout:hover {
-        background-color: #d4556a;
+        background-color: #d4d4d4;
       }
       .text-muted {
-        color: var(--rp-muted);
+        color: var(--mono-muted);
       }
       .text-subtle {
-        color: var(--rp-subtle);
+        color: var(--mono-subtle);
       }
       .nav-link {
-        color: var(--rp-subtle);
+        color: var(--mono-subtle);
         border-bottom: 2px solid transparent;
         text-decoration: none;
         padding: 8px 4px;
         transition: all 0.2s;
       }
       .nav-link:hover {
-        color: var(--rp-text);
-        border-bottom-color: var(--rp-overlay);
+        color: var(--mono-text);
+        border-bottom-color: var(--mono-raised);
       }
       .nav-link.active {
-        color: var(--rp-pine);
-        border-bottom-color: var(--rp-pine);
+        color: var(--mono-accent);
+        border-bottom-color: var(--mono-accent);
       }
       .form-group {
         margin-bottom: 20px;
@@ -109,12 +104,12 @@ const email = user.email;
         font-size: 14px;
         font-weight: 500;
         margin-bottom: 8px;
-        color: var(--rp-text);
+        color: var(--mono-text);
       }
       .form-input {
-        background-color: var(--rp-overlay);
-        border: 1px solid var(--rp-muted);
-        color: var(--rp-text);
+        background-color: var(--mono-raised);
+        border: 1px solid var(--mono-muted);
+        color: var(--mono-text);
         padding: 12px;
         border-radius: 6px;
         width: 100%;
@@ -123,24 +118,24 @@ const email = user.email;
       }
       .form-input:focus {
         outline: none;
-        border-color: var(--rp-pine);
+        border-color: var(--mono-accent);
       }
       .form-textarea {
         min-height: 100px;
         resize: vertical;
       }
       .success-message {
-        background-color: rgba(156, 207, 216, 0.2);
-        border: 1px solid var(--rp-foam);
-        color: var(--rp-foam);
+        background-color: rgba(255, 255, 255, 0.08);
+        border: 1px solid var(--mono-accent);
+        color: var(--mono-accent);
         padding: 12px;
         border-radius: 6px;
         margin-bottom: 16px;
       }
       .error-message {
-        background-color: rgba(235, 111, 146, 0.2);
-        border: 1px solid var(--rp-love);
-        color: var(--rp-love);
+        background-color: rgba(255, 255, 255, 0.08);
+        border: 1px solid var(--mono-accent);
+        color: var(--mono-accent);
         padding: 12px;
         border-radius: 6px;
         margin-bottom: 16px;
@@ -157,8 +152,8 @@ const email = user.email;
             <div style="display: flex; align-items: center;">
               <a
                 href="/cms"
-                style="text-decoration: none; color: var(--rp-text); font-size: 20px; font-weight: bold;"
-                >🌹 CMS</a
+                style="text-decoration: none; color: var(--mono-text); font-size: 20px; font-weight: bold;"
+                >CMS</a
               >
             </div>
             <div

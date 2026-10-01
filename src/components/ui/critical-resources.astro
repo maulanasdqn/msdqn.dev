@@ -51,6 +51,7 @@ const { priorityImage, heroImage, critical = true } = Astro.props;
   /* Critical above-the-fold styles */
   html {
     font-family:
+      'Onest Variable',
       -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
       Cantarell, sans-serif;
     line-height: 1.6;
@@ -61,14 +62,14 @@ const { priorityImage, heroImage, critical = true } = Astro.props;
   body {
     margin: 0;
     padding: 0;
-    background-color: #191724;
-    color: #e0def4;
+    background-color: #0a0a0a;
+    color: #fafafa;
     font-display: swap;
   }
 
   /* Critical navigation styles */
   nav {
-    background-color: #1f1d2e;
+    background-color: #111111;
     position: sticky;
     top: 0;
     z-index: 100;
@@ -146,20 +147,20 @@ const { priorityImage, heroImage, critical = true } = Astro.props;
       color: var(--text-contrast) !important;
     }
 
-    .text-rose-pine-subtle,
-    .text-rose-pine-muted {
+    .text-mono-subtle,
+    .text-mono-muted {
       color: #ffffff !important;
     }
 
-    .bg-rose-pine-surface,
-    .bg-rose-pine-overlay {
+    .bg-mono-surface,
+    .bg-mono-raised {
       background-color: #1a1a1a !important;
     }
   }
 
   /* Improved focus indicators for accessibility */
   *:focus {
-    outline: 2px solid #c4a7e7;
+    outline: 2px solid #fafafa;
     outline-offset: 2px;
   }
 

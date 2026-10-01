@@ -57,7 +57,7 @@ const aspectRatio = (height / width) * 100;
     position: relative;
     overflow: hidden;
     border-radius: 0.5rem;
-    background-color: #1f1d2e;
+    background-color: #111111;
   }
 
   .responsive-image-wrapper::before {
@@ -75,8 +75,8 @@ const aspectRatio = (height / width) * 100;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #6e6a86;
-    background: linear-gradient(135deg, #191724 0%, #26233a 100%);
+    color: #737373;
+    background: linear-gradient(135deg, #0a0a0a 0%, #171717 100%);
     transition: opacity 0.3s ease;
     z-index: 1;
   }
@@ -123,17 +123,6 @@ const aspectRatio = (height / width) * 100;
     .responsive-image,
     .image-placeholder {
       transition: none !important;
-    }
-  }
-
-  @media (prefers-color-scheme: light) {
-    .responsive-image-wrapper {
-      background-color: #f2e9e1;
-    }
-
-    .image-placeholder {
-      background: linear-gradient(135deg, #faf4ed 0%, #f2e9e1 100%);
-      color: #9893a5;
     }
   }
 </style>
