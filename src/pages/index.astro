@@ -314,7 +314,7 @@ const pageUrl = `${SITE_URL}/`;
               <ExperienceItem
                 title={experience.title}
                 company={experience.company}
-                duration={`${formatMonth(experience.start_date)} — ${experience.end_date ? formatMonth(experience.end_date) : 'Present'}`}
+                duration={`${formatMonth(experience.start_date)} – ${experience.end_date ? formatMonth(experience.end_date) : 'Present'}`}
                 employmentType={experience.location || undefined}
                 description={experience.description || ''}
                 responsibilities={experience.responsibilities || []}
@@ -343,7 +343,7 @@ const pageUrl = `${SITE_URL}/`;
                 technologies={project.technologies || []}
                 period={
                   project.start_date
-                    ? `${formatMonth(project.start_date)} — ${project.end_date ? formatMonth(project.end_date) : 'Present'}`
+                    ? `${formatMonth(project.start_date)} – ${project.end_date ? formatMonth(project.end_date) : 'Present'}`
                     : undefined
                 }
                 category={project.category || undefined}
