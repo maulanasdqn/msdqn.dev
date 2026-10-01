@@ -36,7 +36,7 @@ const config: Config = {
           'line-strong': '#404040',
           text: '#fafafa',
           subtle: '#a3a3a3',
-          muted: '#737373',
+          muted: '#8a8a8a',
           accent: '#ffffff',
         },
       },

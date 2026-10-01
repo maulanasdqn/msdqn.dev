@@ -51,6 +51,7 @@ const meta = [category, featured ? 'Featured' : undefined].filter(Boolean);
           {demoLink && (
             <a
               href={demoLink}
+              aria-label={`Visit ${title} (opens in a new tab)`}
               target="_blank"
               rel="noopener noreferrer"
               class="text-mono-text underline decoration-mono-line-strong underline-offset-[6px] hover:decoration-mono-text transition-colors"
@@ -61,6 +62,7 @@ const meta = [category, featured ? 'Featured' : undefined].filter(Boolean);
           {githubLink && (
             <a
               href={githubLink}
+              aria-label={`Source code for ${title} (opens in a new tab)`}
               target="_blank"
               rel="noopener noreferrer"
               class="text-mono-text underline decoration-mono-line-strong underline-offset-[6px] hover:decoration-mono-text transition-colors"

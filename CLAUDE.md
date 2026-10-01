@@ -44,7 +44,7 @@ The site uses a black & white `mono` palette defined in `tailwind.config.ts`. No
 
 - Backgrounds: `mono-bg` (#0a0a0a), `mono-surface` (#111111), `mono-raised` (#171717)
 - Borders: `mono-line` (#262626), `mono-line-strong` (#404040)
-- Text: `mono-text` (#fafafa), `mono-subtle` (#a3a3a3), `mono-muted` (#737373)
+- Text: `mono-text` (#fafafa), `mono-subtle` (#a3a3a3), `mono-muted` (#8a8a8a)
 - Accent: `mono-accent` (#ffffff) — primary buttons are white with `text-mono-bg`
 - CMS/login pages use the same values as `--mono-*` CSS variables
 - Avoid gradients, glows, glass blur, and hover-scale effects
